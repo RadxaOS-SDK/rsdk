@@ -1,0 +1,86 @@
+local base_packages = import "base.libjsonnet";
+local distro_check = import "../../lib/distro_check.libjsonnet";
+
+function(suite, product, temp_dir) base_packages(suite, product, temp_dir, vendor_packages=true) + {
+    mmdebstrap+: {
+        packages+:
+        [
+            "accountsservice",
+            "aha",
+            "breeze-cursor-theme",
+            "clinfo",
+            "codium",
+            "cups",
+            "desktop-base",
+            "fonts-noto-cjk",
+            "fprintd",
+            "fwupd",
+            "gstreamer1.0-gtk3",
+            "gstreamer1.0-libav",
+            "gstreamer1.0-plugins-bad",
+            "gstreamer1.0-plugins-base",
+            "gstreamer1.0-plugins-good",
+            "gstreamer1.0-plugins-rtp",
+            "gstreamer1.0-plugins-ugly",
+            "gstreamer1.0-qt5",
+            "gstreamer1.0-vaapi",
+            "gvfs",
+            "gvfs-backends",
+            "gvfs-fuse",
+            "mesa-utils",
+            "mesa-va-drivers",
+            "plymouth",
+            "plymouth-theme-breeze",
+            "plymouth-themes",
+            "vdpau-driver-all",
+            "vulkan-tools",
+            "xdg-desktop-portal",
+            "xdg-desktop-portal-gtk",
+            "xdg-user-dirs",
+            "xdg-user-dirs-gtk",
+            "xdg-utils",
+        ] +
+
+(if distro_check(suite) == "debian"
+then
+        [
+            "firefox-esr",
+            "maliit-keyboard",
+        ]
+else if distro_check(suite) == "ubuntu"
+then
+        [
+            "firefox",
+        ]
+else
+        []
+) +
+
+(if suite != "focal"
+then
+        [
+            "bup",
+        ]
+else
+        []
+) + 
+
+(if suite == "bookworm"
+then
+        // Install Debian 12 packages
+        [
+            "wayland-utils",
+            "gstreamer1.0-pipewire",
+        ]
+else
+        // Install common X.Org packages
+        [
+            "xiccd",
+        ]
+),
+        "customize-hooks"+:
+        [
+            'copy-in %s/keyrings/vscodium-archive-keyring.gpg /usr/share/keyrings' % [temp_dir],
+        ],
+    },
+}

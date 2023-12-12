@@ -1,0 +1,52 @@
+{
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "mkhl.direnv",
+        "grafana.vscode-jsonnet",
+      ]
+    }
+  },
+  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "features": {
+    "ghcr.io/devcontainers/features/nix:1": {
+      "packages": [
+        "cachix",
+        "direnv"
+      ],
+      "extraNixConfig": [
+        "experimental-features = nix-command flakes",
+        "trusted-users = root vscode"
+      ]
+    }
+  },
+  "mounts": [
+    {
+      "source": "${localWorkspaceFolder}/.devcontainer/.devenv",
+      "target": "${containerWorkspaceFolder}/.devenv",
+      "type": "bind"
+    },
+    {
+      "source": "${localWorkspaceFolder}/.devcontainer/.direnv",
+      "target": "${containerWorkspaceFolder}/.direnv",
+      "type": "bind"
+    }
+  ],
+  "runArgs": [
+    // https://github.com/moby/moby/issues/27195#issuecomment-1410745778
+    "--ulimit", "nofile=1024:524288",
+    // Needed for root mode
+    // https://gitlab.mister-muffin.de/josch/mmdebstrap/src/branch/main/mmdebstrap#L4970
+    "--cap-add", "SYS_ADMIN",
+    // Needed for kpartx to mount and unmount target image
+    // https://serverfault.com/a/701427
+    // https://stackoverflow.com/a/58953658
+    "--privileged",
+    "-v", "/dev:/dev"
+  ],
+  "overrideCommand": true,
+  "updateContentCommand": "command -v devenv && devenv ci || true",
+  "postCreateCommand": "bin/sub/rsdk-setup"
+}
+
+

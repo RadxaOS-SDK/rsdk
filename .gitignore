@@ -1,0 +1,15 @@
+# Devenv
+/.devenv*
+/devenv.local.nix
+
+# direnv
+/.direnv
+
+# pre-commit
+/.pre-commit-config.yaml
+
+# node.js
+/node_modules
+
+# Build output
+/out

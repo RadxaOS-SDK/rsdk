@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+DEBUG="${DEBUG:-false}"
+
+TEMP="$(mktemp -d)"
+# Need the temp folder to be viewable for apt-key to access
+chmod 0755 $TEMP
+if [[ $DEBUG == "true" ]]; then
+	echo "rsdk temp dir: $TEMP"
+fi
+
+OUTPUT="$PWD/out"
+mkdir -p "$OUTPUT"
+
+JSONNET_ARGS=(
+	"--tla-str" "temp_dir=$TEMP"
+	"--tla-str" "output_dir=$OUTPUT"
+	"--tla-str" "build_date=$(date --iso-8601=s)"
+)
+BDEBSTRAP_ARGS=()
+
+if [[ $DEBUG == "true" ]]; then
+	BDEBSTRAP_ARGS+=("--debug")
+fi
+
+if [[ -n $RBUILD_DISTRO_MIRROR ]]; then
+	JSONNET_ARGS+=("--tla-str" "distro_mirror=$RBUILD_DISTRO_MIRROR")
+fi
+
+if [[ -n $RBUILD_RADXA_MIRROR ]]; then
+	JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RBUILD_RADXA_MIRROR")
+fi
+
+# Initially the -test marking is a prefix
+if [[ -n $REPO_PREFIX ]]; then
+	JSONNET_ARGS+=("--tla-str" "radxa_repo_postfix=$REPO_PREFIX")
+fi
+
+# Collect keyrings
+mkdir "$TEMP/keyrings/"
+wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg -O "$TEMP/keyrings/vscodium-archive-keyring"
+gpg --dearmor "$TEMP/keyrings/vscodium-archive-keyring"
+wget https://radxa-repo.github.io/bookworm/keyring.gpg -O "$TEMP/keyrings/radxa-archive-keyring"
+gpg --dearmor "$TEMP/keyrings/radxa-archive-keyring"
+cp /etc/apt/trusted.gpg.d/*.gpg "$TEMP/keyrings/"
+cp /usr/share/keyrings/*.gpg "$TEMP/keyrings/"
+
+jsonnet "${JSONNET_ARGS[@]}" templates/image.jsonnet -o "$TEMP/image.json"
+if [[ $DEBUG == "true" ]]; then
+	cat "$TEMP/image.json"
+fi
+sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/image.json" --name "$OUTPUT" --force
+sudo chown -R $UID:${GID:-$UID} "$OUTPUT"
+rm -rf "$TEMP"

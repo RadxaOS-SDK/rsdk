@@ -1,0 +1,75 @@
+local distro_check = import "../../lib/distro_check.libjsonnet";
+local desktop_packages = import "desktop.libjsonnet";
+
+function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + {
+    mmdebstrap+: {
+        packages+:
+        [
+            "accountwizard",
+            "bluedevil",
+            "dragonplayer",
+            "kamera",
+            "kde-config-plymouth",
+            "kde-config-screenlocker",
+            "kde-config-sddm",
+            "kdeconnect",
+            "khotkeys",
+            "kinfocenter",
+            "kio-extras",
+            "konqueror",
+            "kscreen",
+            "kup-backup",
+            "kwin-x11",
+            "libkf5kdelibs4support5",
+            "libkf5kdelibs4support5-bin",
+            "phonon4qt5-backend-gstreamer",
+            "phonon4qt5settings",
+            "plasma-discover",
+            "plasma-nm",
+            "powerdevil",
+            "print-manager",
+            "qtvirtualkeyboard-plugin",
+            "qml-module-org-kde-newstuff",
+            "qml-module-qt-labs-platform",
+            "sddm-theme-breeze",
+            "sonnet-plugins",
+            "systemsettings",
+            "yakuake",
+            "xdg-desktop-portal-kde",
+        ] +
+
+(if distro_check(suite) == "debian"
+then
+        [
+            "task-kde-desktop",
+        ]
+else if distro_check(suite) == "ubuntu"
+then
+        [
+            "kubuntu-desktop",
+        ]
+else
+        []
+) +
+
+(if suite != "focal"
+then
+        [
+            "kde-config-systemd",
+        ]
+else
+        []
+) +
+
+(if suite == "bookworm"
+then
+        // Install Debian 12 packages
+        [
+            "plasma-workspace-wayland",
+            "qml-module-org-kde-pipewire",
+        ]
+else
+        []
+)
+    },
+}

@@ -1,0 +1,11 @@
+function() {
+    mmdebstrap+: {
+        "cleanup-hooks"+: [
+            // delete DNS conf which is specific to the build environment
+            'rm -rf "$1/etc/resolv.conf"',
+            'rm -rf "$1/var/lib/apt/lists"/*',
+            'rm -rf "$1/etc/machine-id" "$1/var/lib/dbus/machine-id"',
+            'rm -rf "$1/var/log/journal"/*',
+        ],
+    }
+}

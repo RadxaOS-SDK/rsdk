@@ -1,0 +1,3 @@
+local base_packages = import "base.libjsonnet";
+
+function(suite, product, temp_dir) base_packages(suite, product, temp_dir)

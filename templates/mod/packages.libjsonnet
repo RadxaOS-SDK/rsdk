@@ -1,0 +1,19 @@
+local cli_packages = import "packages/cli.libjsonnet";
+local sway_packages = import "packages/sway.libjsonnet";
+local kde_packages = import "packages/kde.libjsonnet";
+local xfce_packages = import "packages/xfce.libjsonnet";
+
+function(suite, edition, product, temp_dir) (
+if edition == "cli"
+then
+    cli_packages(suite, product, temp_dir)
+else if edition == "kde"
+then
+    kde_packages(suite, product, temp_dir)
+else if edition == "xfce"
+then
+    xfce_packages(suite, product, temp_dir)
+else if edition == "sway"
+then
+    sway_packages(suite, product, temp_dir)
+)

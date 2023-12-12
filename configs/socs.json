@@ -1,0 +1,28 @@
+[
+    {
+        "soc_family": "amlogic",
+        "partition_table_type": "mbr",
+        "soc_list": [
+            "a311d",
+            "s905y2"
+        ]
+    },
+    {
+        "soc_family": "rockchip",
+        "partition_table_type": "gpt",
+        "soc_list": [
+            "rk3308",
+            "rk3328",
+            "rk3399t",
+            "rk3399",
+            "op1",
+            "rk3399pro",
+            "rk3562",
+            "rk3566",
+            "rk3568",
+            "rk3582",
+            "rk3588s",
+            "rk3588"
+        ]
+    }
+]

@@ -1,0 +1,14 @@
+# You can use devenv.local.nix to override the default settings.
+# This file is provided as an example.
+
+{ pkgs, ... }:
+
+{
+  # Override rsdk defaults here
+  env  =  {
+    CONTAINER_BACKEND = "podman";
+    REPO_PREFIX = "-test";
+    RBUILD_DISTRO_MIRROR = "http://apt.vamrs.com";
+    RBUILD_RADXA_MIRROR = "http://apt.vamrs.com/rbuild-";
+  };
+}

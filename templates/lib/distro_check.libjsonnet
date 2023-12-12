@@ -1,0 +1,7 @@
+function(suite)
+    if suite == "bullseye" || suite == "bookworm" || suite == "trixie"
+    then
+        "debian"
+    else if suite == "focal" || suite == "jammy"
+    then
+        "ubuntu"

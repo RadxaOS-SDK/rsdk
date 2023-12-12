@@ -1,0 +1,34 @@
+local soc_family = import "../lib/soc_family.libjsonnet";
+local product_soc = import "../lib/product_soc.libjsonnet";
+local product_soc_family(product) = soc_family(product_soc(product));
+
+local vscodium_url(radxa_mirror) = (
+    if radxa_mirror == ""
+    then
+        "https://download.vscodium.com/"
+    else
+        radxa_mirror
+) + "debs";
+
+local radxa_url(suite, radxa_mirror, radxa_repo_postfix) = (
+    if radxa_mirror == ""
+    then
+        "https://radxa-repo.github.io/"
+    else
+        radxa_mirror
+) + suite + radxa_repo_postfix;
+
+function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
+    mmdebstrap+: {
+        "setup-hooks"+: [
+            'echo deb %s vscodium main > "$1/etc/apt/sources.list.d/vscodium.list"'
+                % [vscodium_url(radxa_mirror)],
+            'echo deb %s %s main > "$1/etc/apt/sources.list.d/radxa.list"'
+                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix), suite + radxa_repo_postfix],
+            'echo deb %s %s main > "$1/etc/apt/sources.list.d/radxa-%s.list"'
+                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix), product_soc_family(product) + "-" + suite + radxa_repo_postfix, product_soc_family(product)],
+            'curl -L -o "$1/etc/radxa_apt_snapshot" %s/pkgs.json'
+                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix)],
+        ],
+    }
+}

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [[ -f /.dockerenv ]]; then
+	echo "Already inside of container." >&2
+	exit 1
+fi
+
+case "${1:-}" in
+"build")
+	devcontainer "${1:-}" --workspace-folder "$DEVENV_ROOT"
+	;;
+"up")
+	devcontainer "${1:-}" --workspace-folder "$DEVENV_ROOT" --remove-existing-container
+	;;
+"exec" | "")
+	devcontainer exec --workspace-folder "$DEVENV_ROOT" bash
+	;;
+*)
+	echo "Unknown command ${1:-}." >&2
+	exit 1
+	;;
+esac

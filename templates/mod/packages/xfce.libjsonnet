@@ -1,0 +1,40 @@
+local distro_check = import "../../lib/distro_check.libjsonnet";
+local desktop_packages = import "desktop.libjsonnet";
+
+function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + {
+    mmdebstrap+: {
+        packages+:
+        [
+            "blueman",
+            "light-locker",
+            "network-manager-gnome",
+            "parole",
+            "pavucontrol",
+            "thunar-volman",
+            "xfce4-clipman",
+            "xfce4-notifyd",
+            "xfce4-power-manager",
+            "xfce4-screenshooter",
+            "xfce4-terminal",
+            'xfce4-screensaver',
+        ] +
+
+(if distro_check(suite) == "debian"
+then
+        [
+            "task-xfce-desktop",
+        ]
+else if distro_check(suite) == "ubuntu"
+then
+        [
+            "xfce4",
+        ]
+else
+        []
+),
+        "customize-hooks"+: [
+            // Remove light-locker in favor of xfce4-screensaver
+            'chroot "$1" apt-get remove -y light-locker',
+        ]
+    },
+}

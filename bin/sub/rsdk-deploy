@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+OUTPUT_DIR="out"
+OUTPUT_IMAGE="output.img"
+
+PRODUCT="$(yq -r .metadata.product "$OUTPUT_DIR/config.yaml")"
+PRODUCT_SOC="$(jsonnet "$SCRIPT_DIR/../../templates/lib/product_soc.libjsonnet" --tla-str "product=$PRODUCT" -S)"
+PRODUCT_PARTITION_TYPE="$(jq -r ".[] | select(.soc_list[] | contains(\"$PRODUCT_SOC\")) | .partition_table_type" "$SCRIPT_DIR/../../configs/socs.json")"
+
+rm -f "$OUTPUT_DIR/$OUTPUT_IMAGE"
+truncate -s 6G "$OUTPUT_DIR/$OUTPUT_IMAGE"
+
+sfdisk -w always -X "$PRODUCT_PARTITION_TYPE" "$OUTPUT_DIR/$OUTPUT_IMAGE" <<EOF
+16M,+16M
+,+300M,U,*
+332M,,,*
+EOF
+
+PTUUID="$(blkid -o value -s PTUUID "$OUTPUT_DIR/$OUTPUT_IMAGE")"
+
+sudo "$(command -v kpartx)" -a "$OUTPUT_DIR/$OUTPUT_IMAGE"
+LOOP_ROOT="$(sudo blkid -t "PTUUID=$PTUUID" -o device)"
+LOOP_DEV="/dev/mapper/$(basename "$LOOP_ROOT")p"
+
+sudo mkfs.ext4 -F -L rootfs "$LOOP_DEV"3
+sudo "$(command -v mkfs.vfat)" -F32 -n efi "$LOOP_DEV"2
+sudo "$(command -v mkfs.vfat)" -F16 -n config "$LOOP_DEV"1
+
+mkdir -p "$OUTPUT_DIR/mnt"
+sudo mount "$LOOP_DEV"3 "$OUTPUT_DIR/mnt"
+sudo mkdir -p "$OUTPUT_DIR/mnt/boot/efi" "$OUTPUT_DIR/mnt/config"
+sudo mount "$LOOP_DEV"2 "$OUTPUT_DIR/mnt/boot/efi"
+sudo mount "$LOOP_DEV"1 "$OUTPUT_DIR/mnt/config"
+
+sudo tar xvf "$OUTPUT_DIR/rootfs.tar" -C "$OUTPUT_DIR/mnt"
+sudo "$OUTPUT_DIR/mnt/usr/lib/u-boot/$PRODUCT/setup.sh" update_bootloader "$LOOP_ROOT"
+cat <<EOF | sudo tee "$OUTPUT_DIR/mnt/etc/fstab"
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+UUID=$(sudo blkid "$LOOP_DEV"1 -s UUID -o value)    /config     vfat    defaults    0   2
+UUID=$(sudo blkid "$LOOP_DEV"2 -s UUID -o value)    /boot/efi   vfat    defaults    0   2
+UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)    /           ext4    defaults    0   1
+EOF
+
+sudo umount -R "$OUTPUT_DIR/mnt"
+sudo "$(command -v kpartx)" -d "$OUTPUT_DIR/$OUTPUT_IMAGE"
+sync

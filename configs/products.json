@@ -1,0 +1,118 @@
+[
+    {
+        "product": "radxa-zero-2pro",
+        "soc": "a311d"
+    },
+    {
+        "product": "radxa-zero",
+        "soc": "s905y2"
+    },
+    {
+        "product": "rock-pi-s",
+        "soc": "rk3308"
+    },
+    {
+        "product": "rock-s0",
+        "soc": "rk3308"
+    },
+    {
+        "product": "rock-pi-e",
+        "soc": "rk3328"
+    },
+    {
+        "product": "rock-4c-plus",
+        "soc": "rk3399t"
+    },
+    {
+        "product": "rock-4se",
+        "soc": "rk3399t"
+    },
+    {
+        "product": "rock-pi-4a",
+        "soc": "rk3399"
+    },
+    {
+        "product": "rock-pi-4b",
+        "soc": "rk3399"
+    },
+    {
+        "product": "rock-pi-4c",
+        "soc": "rk3399"
+    },
+    {
+        "product": "rock-pi-4a-plus",
+        "soc": "op1"
+    },
+    {
+        "product": "rock-pi-4b-plus",
+        "soc": "op1"
+    },
+    {
+        "product": "rock-pi-n10",
+        "soc": "rk3399pro"
+    },
+    {
+        "product": "radxa-cm3-io",
+        "soc": "rk3566"
+    },
+    {
+        "product": "radxa-cm3-rpi-cm4-io",
+        "soc": "rk3566"
+    },
+    {
+        "product": "radxa-cm3-sodimm-io",
+        "soc": "rk3566"
+    },
+    {
+        "product": "radxa-e23",
+        "soc": "rk3566"
+    },
+    {
+        "product": "radxa-zero3",
+        "soc": "rk3566"
+    },
+    {
+        "product": "rock-3c",
+        "soc": "rk3566"
+    },
+    {
+        "product": "radxa-cm3i-io",
+        "soc": "rk3568"
+    },
+    {
+        "product": "radxa-e25",
+        "soc": "rk3568"
+    },
+    {
+        "product": "rock-3a",
+        "soc": "rk3568"
+    },
+    {
+        "product": "rock-3b",
+        "soc": "rk3568"
+    },
+    {
+        "product": "radxa-cm5-io",
+        "soc": "rk3588s"
+    },
+    {
+        "product": "radxa-cm5-rpi-cm4-io",
+        "soc": "rk3588s"
+    },
+    {
+        "product": "radxa-nx5-io",
+        "soc": "rk3588s"
+    },
+    {
+        "product": "rock-5a",
+        "soc": "rk3588s"
+    },
+    {
+        "product": "rock-5b-plus",
+        "soc": "rk3588"
+    },
+    {
+        "product": "rock-5b",
+        "soc": "rk3588"
+    }
+]

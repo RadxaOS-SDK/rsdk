@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+_rsdk_completions() {
+	if [ "${#COMP_WORDS[@]}" != "2" ]; then
+		return
+	fi
+
+	local subcommands=(
+		"build"
+		"deploy"
+		"devcon"
+		"setup"
+		"shell"
+		"help"
+	)
+
+	COMPREPLY=(
+		$(compgen -W "${subcommands[*]}" "${COMP_WORDS[1]}")
+	)
+} &&
+	complete -F _rsdk_completions rsdk

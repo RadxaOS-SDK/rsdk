@@ -1,0 +1,70 @@
+local distro_check = import "../lib/distro_check.libjsonnet";
+
+local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_default) = {
+    mmdebstrap+: {
+        components+: [
+            "main",
+        ],
+        mirrors+: [
+            // Primary archive
+            (if distro_mirror == ""
+            then
+                distro_mirror_default
+            else
+                distro_mirror)
+                + "/" +
+            (if distro == "ubuntu" && architecture != "amd64"
+            then
+                distro + "-ports"
+            else
+                distro),
+        ],
+        "setup-hooks"+: [
+            // updates archive
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-updates/" > "$1/etc/apt/sources.list.d/%s-updates.list"' % [suite, suite],
+            // backports archive
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-backports/" > "$1/etc/apt/sources.list.d/%s-backports.list"' % [suite, suite],
+            // security archive
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-security/" -e "s|/debian |/debian-security |" > "$1/etc/apt/sources.list.d/%s-security.list"' % [suite, suite],
+        ],
+        suite+: suite,
+    }
+};
+
+local distro_debian(
+    suite,
+    distro_mirror,
+    architecture,
+    distro = "debian",
+) = distro_base(suite, distro_mirror, distro, architecture, "https://deb.debian.org") + {
+    mmdebstrap+: {
+        components+: std.prune([
+            "contrib",
+            "non-free",
+            if suite == "bookworm" || suite == "trixie" then "non-free-firmware",
+        ])
+    }
+};
+
+local distro_ubuntu(
+    suite,
+    distro_mirror,
+    architecture,
+    distro = "ubuntu",
+) = distro_base(suite, distro_mirror, distro, architecture, "http://ports.ubuntu.com") + {
+    mmdebstrap+: {
+        components+: [
+            "restricted",
+            "universe",
+            "multiverse",
+        ]
+    }
+};
+
+function(suite, distro_mirror, architecture)
+    if distro_check(suite) == "debian"
+    then
+        distro_debian(suite, distro_mirror, architecture)
+    else if distro_check(suite) == "ubuntu"
+    then
+        distro_ubuntu(suite, distro_mirror, architecture)
