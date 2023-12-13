@@ -26,16 +26,16 @@ if [[ $DEBUG == "true" ]]; then
 	BDEBSTRAP_ARGS+=("--debug")
 fi
 
-if [[ -n $RBUILD_DISTRO_MIRROR ]]; then
+if [[ -n ${RBUILD_DISTRO_MIRROR:-} ]]; then
 	JSONNET_ARGS+=("--tla-str" "distro_mirror=$RBUILD_DISTRO_MIRROR")
 fi
 
-if [[ -n $RBUILD_RADXA_MIRROR ]]; then
+if [[ -n ${RBUILD_RADXA_MIRROR:-} ]]; then
 	JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RBUILD_RADXA_MIRROR")
 fi
 
 # Initially the -test marking is a prefix
-if [[ -n $REPO_PREFIX ]]; then
+if [[ -n ${REPO_PREFIX:-} ]]; then
 	JSONNET_ARGS+=("--tla-str" "radxa_repo_postfix=$REPO_PREFIX")
 fi
 
