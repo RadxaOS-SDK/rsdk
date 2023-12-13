@@ -42,8 +42,8 @@ cat <<EOF | sudo tee "$OUTPUT_DIR/mnt/etc/fstab"
 # See fstab(5) for details.
 
 # <file system> <dir> <type> <options> <dump> <pass>
-UUID=$(sudo blkid "$LOOP_DEV"1 -s UUID -o value)    /config     vfat    defaults    0   2
-UUID=$(sudo blkid "$LOOP_DEV"2 -s UUID -o value)    /boot/efi   vfat    defaults    0   2
+UUID=$(sudo blkid "$LOOP_DEV"1 -s UUID -o value)    /config     vfat    defaults,x-systemd.automount    0   2
+UUID=$(sudo blkid "$LOOP_DEV"2 -s UUID -o value)    /boot/efi   vfat    defaults,x-systemd.automount    0   2
 UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)    /           ext4    defaults    0   1
 EOF
 
