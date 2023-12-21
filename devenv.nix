@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 {
   # https://devenv.sh/packages/
@@ -40,7 +40,10 @@
 
   pre-commit.hooks = {
     commitizen.enable = true;
-    #shellcheck.enable = true;
+    shellcheck = {
+      enable = true;
+      entry = lib.mkForce "${pkgs.shellcheck}/bin/shellcheck -x";
+    };
     shfmt.enable = true;
     statix.enable = true;
     typos.enable = true;

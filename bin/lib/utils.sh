@@ -64,6 +64,7 @@ printf_array() {
 		jq --compact-output --null-input '$ARGS.positional' --args -- "${ARRAY[@]}"
 	else
 		for i in "${ARRAY[@]}"; do
+			# shellcheck disable=SC2059
 			printf "$FORMAT" "$i"
 		done
 	fi
@@ -72,5 +73,5 @@ printf_array() {
 in_array() {
 	local item="$1"
 	shift
-	[[ " $* " =~ " $item " ]]
+	[[ $* =~ $item ]]
 }

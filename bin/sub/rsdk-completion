@@ -14,8 +14,6 @@ _rsdk_completions() {
 		"help"
 	)
 
-	COMPREPLY=(
-		$(compgen -W "${subcommands[*]}" "${COMP_WORDS[1]}")
-	)
+	mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" "${COMP_WORDS[1]}")
 } &&
 	complete -F _rsdk_completions rsdk

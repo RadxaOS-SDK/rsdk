@@ -4,20 +4,20 @@ rate_limited() {
 	echo "You might be rate limited by GitHub."
 	echo "Please request a PAT from GitHub website, and add it to your Dev Container:"
 	echo "mkdir -p ~/.config/nix/ && echo 'access-tokens = github.com=YOUR_GITHUB_PAT' >> ~/.config/nix/nix.conf && bin/sub/rsdk-setup"
-	read -p "Press Enter to continue..."
+	read -rp "Press Enter to continue..."
 	exit 0
 }
 
 get_distro_id() {
-	(source /etc/os-release && echo $ID)
+	(source /etc/os-release && echo "$ID")
 }
 
 get_distro_version_id() {
-	(source /etc/os-release && echo $VERSION_ID)
+	(source /etc/os-release && echo "$VERSION_ID")
 }
 
 get_distro_version_codename() {
-	(source /etc/os-release && echo $VERSION_CODENAME)
+	(source /etc/os-release && echo "$VERSION_CODENAME")
 }
 
 install_native_dependency() {
@@ -83,9 +83,11 @@ EOF
 }
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
 
 direnv allow
+# shellcheck disable=SC2016
 echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 
 install_native_dependency

@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
 
 DEBUG="${DEBUG:-false}"
 
 TEMP="$(mktemp -d)"
 # Need the temp folder to be viewable for apt-key to access
-chmod 0755 $TEMP
+chmod 0755 "$TEMP"
 if [[ $DEBUG == "true" ]]; then
 	echo "rsdk temp dir: $TEMP"
 fi
@@ -53,5 +54,5 @@ if [[ $DEBUG == "true" ]]; then
 	cat "$TEMP/image.json"
 fi
 sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/image.json" --name "$OUTPUT" --force
-sudo chown -R $UID:${GID:-$UID} "$OUTPUT"
+sudo chown -R "$UID:${GID:-$UID}" "$OUTPUT"
 rm -rf "$TEMP"
