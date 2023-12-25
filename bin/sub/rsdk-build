@@ -43,7 +43,7 @@ fi
 # Prepare keyrings
 rsdk prepare-keyrings "$TEMP/keyrings/"
 
-jsonnet "${JSONNET_ARGS[@]}" templates/image.jsonnet -o "$TEMP/image.json"
+jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$TEMP/image.json"
 if [[ $DEBUG == "true" ]]; then
 	cat "$TEMP/image.json"
 fi
