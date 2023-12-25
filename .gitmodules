@@ -1,0 +1,12 @@
+[submodule "keyrings/debian"]
+	path = keyrings/debian
+	url = https://salsa.debian.org/release-team/debian-archive-keyring.git
+[submodule "keyrings/ubuntu"]
+	path = keyrings/ubuntu
+	url = https://git.launchpad.net/ubuntu/+source/ubuntu-keyring
+[submodule "keyrings/radxa"]
+	path = keyrings/radxa
+	url = https://github.com/radxa-pkg/radxa-archive-keyring.git
+[submodule "keyrings/vscodium"]
+	path = keyrings/vscodium
+	url = https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo.git

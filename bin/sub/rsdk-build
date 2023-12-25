@@ -40,14 +40,8 @@ if [[ -n ${REPO_PREFIX:-} ]]; then
 	JSONNET_ARGS+=("--tla-str" "radxa_repo_postfix=$REPO_PREFIX")
 fi
 
-# Collect keyrings
-mkdir "$TEMP/keyrings/"
-wget https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg -O "$TEMP/keyrings/vscodium-archive-keyring"
-gpg --dearmor "$TEMP/keyrings/vscodium-archive-keyring"
-wget https://radxa-repo.github.io/bookworm/keyring.gpg -O "$TEMP/keyrings/radxa-archive-keyring"
-gpg --dearmor "$TEMP/keyrings/radxa-archive-keyring"
-cp /etc/apt/trusted.gpg.d/*.gpg "$TEMP/keyrings/"
-cp /usr/share/keyrings/*.gpg "$TEMP/keyrings/"
+# Prepare keyrings
+rsdk prepare-keyrings "$TEMP/keyrings/"
 
 jsonnet "${JSONNET_ARGS[@]}" templates/image.jsonnet -o "$TEMP/image.json"
 if [[ $DEBUG == "true" ]]; then
