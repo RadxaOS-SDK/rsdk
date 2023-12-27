@@ -12,9 +12,9 @@ The first boot will be slow since it has to rebuild the entire development envir
 
 To run `rsdk` without Dev Container, you will ideally need an Ubuntu system, as it is the base system used in Dev Container.
 
-Please first install [`devenv``](https://devenv.sh/getting-started/#2-install-cachix) on your system.
+Please first install [`devenv`](https://devenv.sh/getting-started/#2-install-cachix) on your system.
 
-Optionally you can setup [`direnv``](https://devenv.sh/automatic-shell-activation/).
+Optionally you can setup [`direnv`](https://devenv.sh/automatic-shell-activation/), then run `direnv allow` within the project folder to enable it.
 
 You can then run `devenv shell` to enter the development shell. This shell will manipulate your PATH to have the development dependency available.
 
