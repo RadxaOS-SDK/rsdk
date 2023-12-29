@@ -1,4 +1,4 @@
-local distro_check = import "../../lib/distro_check.libjsonnet";
+local distro_check = import "../../../lib/distro_check.libjsonnet";
 
 function(suite, product, temp_dir, vendor_packages=false) {
     mmdebstrap+: {

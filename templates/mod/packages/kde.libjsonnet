@@ -1,5 +1,5 @@
 local distro_check = import "../../lib/distro_check.libjsonnet";
-local desktop_packages = import "desktop.libjsonnet";
+local desktop_packages = import "categories/desktop.libjsonnet";
 
 function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + {
     mmdebstrap+: {
