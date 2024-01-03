@@ -8,6 +8,7 @@
     dosfstools
     git
     gh
+    gptfdisk
     jq
     multipath-tools
     util-linux

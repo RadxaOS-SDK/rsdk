@@ -20,6 +20,15 @@ sfdisk -w always -X "$PRODUCT_PARTITION_TYPE" "$OUTPUT_DIR/$OUTPUT_IMAGE" <<EOF
 332M,,,*
 EOF
 
+case "$PRODUCT_PARTITION_TYPE" in
+gpt)
+	sgdisk -A 2:set:2 -A 3:set:2 "$OUTPUT_DIR/$OUTPUT_IMAGE"
+	;;
+mbr)
+	sfdisk -A "$OUTPUT_DIR/$OUTPUT_IMAGE" 2 3
+	;;
+esac
+
 PTUUID="$(blkid -o value -s PTUUID "$OUTPUT_DIR/$OUTPUT_IMAGE")"
 
 sudo "$(command -v kpartx)" -a "$OUTPUT_DIR/$OUTPUT_IMAGE"
