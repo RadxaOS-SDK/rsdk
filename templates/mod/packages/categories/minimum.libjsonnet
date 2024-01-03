@@ -1,0 +1,110 @@
+local distro_check = import "../../../lib/distro_check.libjsonnet";
+
+function(suite, product, temp_dir, vendor_packages=false) {
+    mmdebstrap+: {
+        packages+:
+        [
+            // Core system package
+            "init",
+            "initramfs-tools",
+            "sudo",
+        ] +
+
+        // Firmware
+(if distro_check(suite) == "debian"
+then
+        [
+            "firmware-brcm80211",
+            "firmware-realtek",
+        ]
+else if distro_check(suite) == "ubuntu"
+then
+        [
+            "linux-firmware",
+        ]
+else
+        []
+) +
+
+        [
+            // System utils
+            "bash-completion",
+            "ca-certificates",
+            "cloud-initramfs-growroot",
+            "nano",
+            "ssh",
+            "systemd-timesyncd",
+        ] +
+
+        [
+            // Network
+            "bluetooth",
+            "ca-certificates",
+            "iputils-ping",
+            "iw",
+            "network-manager",
+            "wireless-regdb",
+            "wpasupplicant",
+        ] +
+
+        [
+            // Radxa backported
+            "u-boot-menu",
+        ] +
+
+        [
+            // Radxa
+            "android-tools-adbd",
+            "libreelec-alsa-utils",
+            "radxa-archive-keyring",
+            "radxa-bootutils",
+            "radxa-firmware",
+            "radxa-udev",
+            "rsetup",
+            "rsetup-config-first-boot",
+            "u-boot-%s" % [product],
+            "linux-headers-%s" % [product],
+            "linux-image-%s" % [product],
+        ],
+
+        "essential-hooks"+:
+        [
+            |||
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -y apt \
+                -o "DPkg::Options::=--root=$1" \
+                -o "DPkg::Options::=--force-architecture"
+            |||,
+            |||
+                chroot "$1" \
+                apt-get install -y %s task-%s \
+                -o "Dpkg::Options::=--force-confnew"
+            ||| % [(if distro_check(suite) == "debian" && vendor_packages
+                    then
+                        "--install-recommends"
+                    else
+                        "--no-install-recommends"
+                    ), product],
+        ],
+
+        "customize-hooks"+:
+        [
+            "sed -i 's/\\${_BOOT_DIRECTORY}\\${U_BOOT_FDT_OVERLAYS_DIR}/\\${U_BOOT_FDT_OVERLAYS_DIR}/g' $1/usr/sbin/u-boot-update",
+            "sed -i 's/^prompt.*$/prompt 1/' $1/usr/sbin/u-boot-update",
+            'echo "copy_exec /usr/bin/grep /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/sed /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/rm /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/awk /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            '$BDEBSTRAP_HOOKS/enable-units "$1" haveged',
+        ] +
+
+(if distro_check(suite) == "debian"
+then
+        [
+            'chroot "$1" update-alternatives --set regulatory.db /lib/firmware/regulatory.db-upstream',
+        ]
+else
+        []
+),
+    },
+}
