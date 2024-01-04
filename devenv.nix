@@ -9,7 +9,9 @@
     git
     gh
     gptfdisk
+    guestfs-tools
     jq
+    libguestfs
     multipath-tools
     util-linux
     wget
