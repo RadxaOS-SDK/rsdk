@@ -11,7 +11,7 @@
     gptfdisk
     guestfs-tools
     jq
-    libguestfs
+    libguestfs-with-appliance
     multipath-tools
     util-linux
     wget
