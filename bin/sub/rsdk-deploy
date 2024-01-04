@@ -57,6 +57,8 @@ UUID=$(sudo blkid "$LOOP_DEV"2 -s UUID -o value)    /boot/efi   vfat    defaults
 UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)    /           ext4    defaults    0   1
 EOF
 
+sudo sed -i "s/root=[^[:space:]]*/root=UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)/g" "$OUTPUT_DIR/mnt/boot/extlinux/extlinux.conf"
+
 sudo umount -R "$OUTPUT_DIR/mnt"
 sudo "$(command -v kpartx)" -d "$OUTPUT_DIR/$OUTPUT_IMAGE"
 sync
