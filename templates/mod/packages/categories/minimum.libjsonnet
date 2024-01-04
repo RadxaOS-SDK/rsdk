@@ -89,8 +89,6 @@ else
 
         "customize-hooks"+:
         [
-            "sed -i 's/\\${_BOOT_DIRECTORY}\\${U_BOOT_FDT_OVERLAYS_DIR}/\\${U_BOOT_FDT_OVERLAYS_DIR}/g' $1/usr/sbin/u-boot-update",
-            "sed -i 's/^prompt.*$/prompt 1/' $1/usr/sbin/u-boot-update",
             'echo "copy_exec /usr/bin/grep /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
             'echo "copy_exec /usr/bin/sed /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
             'echo "copy_exec /usr/bin/rm /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
