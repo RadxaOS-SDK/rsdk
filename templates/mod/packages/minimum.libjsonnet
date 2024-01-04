@@ -1,3 +1,3 @@
-local minimum_packages = import "categories/minimum.libjsonnet";
+local core_packages = import "categories/core.libjsonnet";
 
-function(suite, product, temp_dir) minimum_packages(suite, product, temp_dir)
+function(suite, product, temp_dir) core_packages(suite, product, temp_dir)

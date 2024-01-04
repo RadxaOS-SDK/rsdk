@@ -1,7 +1,7 @@
-local minimum_packages = import "minimum.libjsonnet";
+local core_packages = import "core.libjsonnet";
 local distro_check = import "../../../lib/distro_check.libjsonnet";
 
-function(suite, product, temp_dir, vendor_packages=false) minimum_packages(suite, product, temp_dir, vendor_packages=true) + {
+function(suite, product, temp_dir, vendor_packages=false) core_packages(suite, product, temp_dir, vendor_packages=true) + {
     mmdebstrap+: {
         packages+:
         // Firmware
