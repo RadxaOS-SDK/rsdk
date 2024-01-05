@@ -106,14 +106,15 @@ else
     resize2fs-M /dev/sda%(rootdev)d
     tune2fs-l /dev/sda%(rootdev)d | cat > "%(temp_dir)s/tune2fs"
     !echo "resizepart %(rootdev)d" > "%(temp_dir)s/parted"
-    !echo "$(( $(grep "Block count:" %(temp_dir)s/tune2fs | cut -d " " -f 3) * $(grep "Block size:" %(temp_dir)s/tune2fs | cut -d " " -f 3) ))B" >> "%(temp_dir)s/parted"
+    !echo "$(( $(sgdisk -i %(rootdev)d "%(output)s" | grep "First sector:" | cut -d " " -f 3) * 512 + $(grep "Block count:" %(temp_dir)s/tune2fs | cut -d " " -f 3) * $(grep "Block size:" %(temp_dir)s/tune2fs | cut -d " " -f 3) ))B" >> "%(temp_dir)s/parted"
     !echo "yes" >> "%(temp_dir)s/parted"
     sync
 
     echo "Installing bootloader..."
     shutdown
-    !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * 512 ))" "%(output)s"
     !cat "%(temp_dir)s/parted" | parted ---pretend-input-tty "%(output)s" > /dev/null 2>&1
+    !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * 512 ))" "%(output)s"
+    !sgdisk -ge "%(output)s" > /dev/null 2>&1 || true
     !chmod +x "%(temp_dir)s/u-boot/%(product)s/setup.sh"
     !"%(temp_dir)s/u-boot/%(product)s/setup.sh" update_bootloader "%(output)s" 2> /dev/null
 ||| % {
@@ -141,8 +142,6 @@ else
 
     echo "Cleaning up..."
     !rm -rf "%(temp_dir)s"
-    !sgdisk -ge "%(output)s" > /dev/null || true
-    !sgdisk -v "%(output)s" > /dev/null
     !sync
 
     echo "Deploy succeed!"
