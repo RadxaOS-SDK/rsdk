@@ -4,61 +4,19 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
 
-OUTPUT_DIR="out"
-OUTPUT_IMAGE="output.img"
+OUTPUT="$PWD/out"
 
-PRODUCT="$(yq -r .metadata.product "$OUTPUT_DIR/config.yaml")"
-PRODUCT_SOC="$(jsonnet "$SCRIPT_DIR/../../templates/lib/product_soc.libjsonnet" --tla-str "product=$PRODUCT" -S)"
-PRODUCT_PARTITION_TYPE="$(jq -r ".[] | select(.soc_list[] | contains(\"$PRODUCT_SOC\")) | .partition_table_type" "$SCRIPT_DIR/../../configs/socs.json")"
+DEBUG="${DEBUG:-false}"
 
-rm -f "$OUTPUT_DIR/$OUTPUT_IMAGE"
-truncate -s 6G "$OUTPUT_DIR/$OUTPUT_IMAGE"
+JSONNET_ARGS=(
+	"-S"
+	"--tla-str" "product=radxa-zero-2pro"
+	"--tla-code" "efi=true"
+)
 
-sfdisk -w always -X "$PRODUCT_PARTITION_TYPE" "$OUTPUT_DIR/$OUTPUT_IMAGE" <<EOF
-16M,+16M
-,+300M,U,*
-332M,,,*
-EOF
+jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/deploy.jsonnet" -o "$OUTPUT/deploy"
+chmod +x "$OUTPUT/deploy"
 
-case "$PRODUCT_PARTITION_TYPE" in
-gpt)
-	sgdisk -A 2:set:2 -A 3:set:2 "$OUTPUT_DIR/$OUTPUT_IMAGE"
-	;;
-mbr)
-	sfdisk -A "$OUTPUT_DIR/$OUTPUT_IMAGE" 2 3
-	;;
-esac
-
-PTUUID="$(blkid -o value -s PTUUID "$OUTPUT_DIR/$OUTPUT_IMAGE")"
-
-sudo "$(command -v kpartx)" -a "$OUTPUT_DIR/$OUTPUT_IMAGE"
-LOOP_ROOT="$(sudo blkid -t "PTUUID=$PTUUID" -o device)"
-LOOP_DEV="/dev/mapper/$(basename "$LOOP_ROOT")p"
-
-sudo mkfs.ext4 -F -L rootfs "$LOOP_DEV"3
-sudo "$(command -v mkfs.vfat)" -F32 -n efi "$LOOP_DEV"2
-sudo "$(command -v mkfs.vfat)" -F16 -n config "$LOOP_DEV"1
-
-mkdir -p "$OUTPUT_DIR/mnt"
-sudo mount "$LOOP_DEV"3 "$OUTPUT_DIR/mnt"
-sudo mkdir -p "$OUTPUT_DIR/mnt/boot/efi" "$OUTPUT_DIR/mnt/config"
-sudo mount "$LOOP_DEV"2 "$OUTPUT_DIR/mnt/boot/efi"
-sudo mount "$LOOP_DEV"1 "$OUTPUT_DIR/mnt/config"
-
-sudo tar xvf "$OUTPUT_DIR/rootfs.tar" -C "$OUTPUT_DIR/mnt"
-sudo "$OUTPUT_DIR/mnt/usr/lib/u-boot/$PRODUCT/setup.sh" update_bootloader "$LOOP_ROOT"
-cat <<EOF | sudo tee "$OUTPUT_DIR/mnt/etc/fstab"
-# Static information about the filesystems.
-# See fstab(5) for details.
-
-# <file system> <dir> <type> <options> <dump> <pass>
-UUID=$(sudo blkid "$LOOP_DEV"1 -s UUID -o value)    /config     vfat    defaults,x-systemd.automount    0   2
-UUID=$(sudo blkid "$LOOP_DEV"2 -s UUID -o value)    /boot/efi   vfat    defaults,x-systemd.automount    0   2
-UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)    /           ext4    defaults    0   1
-EOF
-
-sudo sed -i "s/root=[^[:space:]]*/root=UUID=$(sudo blkid "$LOOP_DEV"3 -s UUID -o value)/g" "$OUTPUT_DIR/mnt/boot/extlinux/extlinux.conf"
-
-sudo umount -R "$OUTPUT_DIR/mnt"
-sudo "$(command -v kpartx)" -d "$OUTPUT_DIR/$OUTPUT_IMAGE"
-sync
+pushd "$OUTPUT"
+./deploy
+popd

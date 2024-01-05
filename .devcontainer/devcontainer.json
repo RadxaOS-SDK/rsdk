@@ -41,8 +41,10 @@
     // Needed for kpartx to mount and unmount target image
     // https://serverfault.com/a/701427
     // https://stackoverflow.com/a/58953658
-    "--privileged",
-    "-v", "/dev:/dev"
+    // "--privileged",
+    // "-v", "/dev:/dev",
+    // Needed for guestfish to accelerate VM for disk operation
+    "--device", "/dev/kvm"
   ],
   "overrideCommand": true,
   "updateContentCommand": "command -v devenv && devenv ci || true",
