@@ -38,13 +38,21 @@
     // Needed for root mode
     // https://gitlab.mister-muffin.de/josch/mmdebstrap/src/branch/main/mmdebstrap#L4970
     "--cap-add", "SYS_ADMIN",
+    // ****************************************
+    // OPTIONAL FEATURES
+    // ****************************************
     // Needed for kpartx to mount and unmount target image
     // https://serverfault.com/a/701427
     // https://stackoverflow.com/a/58953658
+    // Require /dev mapped inside for accessing newly created loop devices
+    // Only enable this if you need to work with loop devices, as disk images
+    // are not created with kpartx anymore.
     // "--privileged",
-    // "-v", "/dev:/dev",
     // Needed for guestfish to accelerate VM for disk operation
-    "--device", "/dev/kvm"
+    // Usually covered by /dev mapping.
+    // "--device", "/dev/kvm",
+    // Needed to write to raw disks
+    "-v", "/dev:/dev"
   ],
   "overrideCommand": true,
   "updateContentCommand": "command -v devenv && devenv ci || true",
