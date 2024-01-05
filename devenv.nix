@@ -13,6 +13,7 @@
     jq
     libguestfs-with-appliance
     multipath-tools
+    parted
     util-linux
     wget
     xz
