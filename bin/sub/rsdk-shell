@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+PROJECT_DIR="$(realpath "$SCRIPT_DIR"/../../)"
+OLD_DIR="$PWD"
+
+pushd "$PROJECT_DIR" || (
+	echo "Unable to switch to project folder $PROJECT_DIR."
+	exit 1
+)
 devenv shell
+popd || (
+	echo "Unable to return to previous folder $OLD_DIR."
+	exit 1
+)
