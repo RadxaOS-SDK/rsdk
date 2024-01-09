@@ -19,6 +19,7 @@ else
             "apt-listchanges",
             "apt-transport-https",
             "apt-utils",
+            "bash-completion",
             "bc",
             "binutils",
             "curl",
@@ -32,6 +33,7 @@ else
             "less",
             "locales",
             "man-db",
+            "nano",
             "ntfs-3g",
             "python-is-python3",
             "python3",
@@ -60,12 +62,15 @@ else
         [
             // Network
             "avahi-daemon",
+            "ca-certificates",
             "dnsmasq",
             "ldnsutils",
             "ifupdown",
             "iproute2",
             "iptables",
+            "iputils-ping",
             "samba",
+            "wireless-regdb",
         ] +
 
         [
@@ -96,6 +101,23 @@ else
             "rfkill",
             "spi-tools",
             "usbutils",
+        ] +
+
+        [
+            // Radxa
+            "android-tools-adbd",
+            "libreelec-alsa-utils",
+            "radxa-otgutils",
         ],
+
+        "customize-hooks"+:
+(if distro_check(suite) == "debian"
+then
+        [
+            'chroot "$1" update-alternatives --set regulatory.db /lib/firmware/regulatory.db-upstream',
+        ]
+else
+        []
+),
     },
 }

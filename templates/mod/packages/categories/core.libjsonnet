@@ -28,10 +28,7 @@ else
 
         [
             // System utils
-            "bash-completion",
-            "ca-certificates",
             "cloud-initramfs-growroot",
-            "nano",
             "ssh",
             "systemd-timesyncd",
         ] +
@@ -39,11 +36,8 @@ else
         [
             // Network
             "bluetooth",
-            "ca-certificates",
-            "iputils-ping",
             "iw",
             "network-manager",
-            "wireless-regdb",
             "wpasupplicant",
         ] +
 
@@ -54,8 +48,6 @@ else
 
         [
             // Radxa
-            "android-tools-adbd",
-            "libreelec-alsa-utils",
             "radxa-archive-keyring",
             "radxa-bootutils",
             "radxa-firmware",
@@ -94,15 +86,6 @@ else
             'echo "copy_exec /usr/bin/rm /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
             'echo "copy_exec /usr/bin/awk /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
             '$BDEBSTRAP_HOOKS/enable-units "$1" haveged',
-        ] +
-
-(if distro_check(suite) == "debian"
-then
-        [
-            'chroot "$1" update-alternatives --set regulatory.db /lib/firmware/regulatory.db-upstream',
-        ]
-else
-        []
-),
+        ],
     },
 }
