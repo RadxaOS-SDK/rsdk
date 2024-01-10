@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+PRODUCT="${1}"
+SUITE="${2:-bullseye}"
+EDITION="${3:-cli}"
+OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
+
+DEBUG="${DEBUG:-false}"
+
+JSONNET_ARGS=(
+	"-S"
+	"--tla-str" "product=$PRODUCT"
+	"--tla-code" "efi=true"
+)
+
+jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$OUTPUT/build-image"
+chmod +x "$OUTPUT/build-image"
+
+pushd "$OUTPUT"
+./build-image
+popd

@@ -4,49 +4,12 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
 
-DEBUG="${DEBUG:-false}"
+PRODUCT="${1}"
+SUITE="${2:-bullseye}"
+EDITION="${3:-cli}"
+OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
-TEMP="$(mktemp -d)"
-# Need the temp folder to be viewable for apt-key to access
-chmod 0755 "$TEMP"
-if [[ $DEBUG == "true" ]]; then
-	echo "rsdk temp dir: $TEMP"
+if [[ ! -f "$OUTPUT/rootfs.tar" ]]; then
+	rsdk build-rootfs "$PRODUCT" "$SUITE" "$EDITION"
 fi
-
-OUTPUT="$PWD/out"
-mkdir -p "$OUTPUT"
-
-JSONNET_ARGS=(
-	"--tla-str" "temp_dir=$TEMP"
-	"--tla-str" "output_dir=$OUTPUT"
-	"--tla-str" "build_date=$(date --iso-8601=s)"
-)
-BDEBSTRAP_ARGS=()
-
-if [[ $DEBUG == "true" ]]; then
-	BDEBSTRAP_ARGS+=("--debug")
-fi
-
-if [[ -n ${RBUILD_DISTRO_MIRROR:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "distro_mirror=$RBUILD_DISTRO_MIRROR")
-fi
-
-if [[ -n ${RBUILD_RADXA_MIRROR:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RBUILD_RADXA_MIRROR")
-fi
-
-# Initially the -test marking is a prefix
-if [[ -n ${REPO_PREFIX:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "radxa_repo_postfix=$REPO_PREFIX")
-fi
-
-# Prepare keyrings
-rsdk prepare-keyrings "$TEMP/keyrings/"
-
-jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$TEMP/image.json"
-if [[ $DEBUG == "true" ]]; then
-	cat "$TEMP/image.json"
-fi
-sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/image.json" --name "$OUTPUT" --force
-sudo chown -R "$UID:${GID:-$UID}" "$OUTPUT"
-rm -rf "$TEMP"
+rsdk build-image "$PRODUCT" "$SUITE" "$EDITION"

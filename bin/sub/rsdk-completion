@@ -7,11 +7,12 @@ _rsdk_completions() {
 
 	local subcommands=(
 		"build"
-		"deploy"
+		"build-rootfs"
+		"build-image"
 		"devcon"
+		"help"
 		"setup"
 		"shell"
-		"help"
 	)
 
 	mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" "${COMP_WORDS[1]}")
