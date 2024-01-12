@@ -7,7 +7,7 @@ function(
     architecture = "arm64",
     mode = "root",
     target = "rootfs.tar",
-    variant = "important",
+    variant = "apt",
 
     temp_dir,
     output_dir,

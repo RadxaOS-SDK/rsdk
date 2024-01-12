@@ -62,12 +62,6 @@ else
         "essential-hooks"+:
         [
             |||
-                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
-                apt-get install -y apt \
-                -o "DPkg::Options::=--root=$1" \
-                -o "DPkg::Options::=--force-architecture"
-            |||,
-            |||
                 chroot "$1" \
                 apt-get install -y %s task-%s \
                 -o "Dpkg::Options::=--force-confnew"
