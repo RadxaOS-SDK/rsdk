@@ -20,6 +20,9 @@ local radxa_url(suite, radxa_mirror, radxa_repo_postfix) = (
 
 function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
     mmdebstrap+: {
+        packages+: [
+            "radxa-archive-keyring",
+        ],
         "setup-hooks"+: [
             'echo deb %s vscodium main > "$1/etc/apt/sources.list.d/vscodium.list"'
                 % [vscodium_url(radxa_mirror)],
@@ -29,6 +32,10 @@ function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
                 % [radxa_url(suite, radxa_mirror, radxa_repo_postfix), product_soc_family(product) + "-" + suite + radxa_repo_postfix, product_soc_family(product)],
             'curl -L -o "$1/etc/radxa_apt_snapshot" %s/pkgs.json'
                 % [radxa_url(suite, radxa_mirror, radxa_repo_postfix)],
+        ],
+        "customize-hooks"+:
+        [
+            'upload %s/keyrings/pub.gpg.gpg /usr/share/keyrings/vscodium-archive-keyring.gpg' % [temp_dir],
         ],
     }
 }

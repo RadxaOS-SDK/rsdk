@@ -43,7 +43,6 @@ else
 
         [
             // Radxa
-            "radxa-archive-keyring",
             "radxa-bootutils",
             "radxa-firmware",
             "radxa-udev",

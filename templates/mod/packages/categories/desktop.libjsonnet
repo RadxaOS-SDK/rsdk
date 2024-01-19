@@ -78,9 +78,5 @@ else
             "xiccd",
         ]
 ),
-        "customize-hooks"+:
-        [
-            'copy-in %s/keyrings/vscodium-archive-keyring.gpg /usr/share/keyrings' % [temp_dir],
-        ],
     },
 }
