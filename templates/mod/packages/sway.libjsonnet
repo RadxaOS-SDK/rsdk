@@ -5,20 +5,29 @@ function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + 
         packages+:
         [
             "foot",
-            "greetd",
             "suckless-tools",
             "sway",
             "sway-backgrounds",
             "swaybg",
             "swayidle",
-            "swaylock",
             "xdg-desktop-portal-wlr",
             "xwayland",
-        ],
+        ] +
+
+(if suite == "bookworm"
+then
+        // Install Debian 12 packages
+        [
+            "greetd",
+            "swaylock",
+        ]
+else
+        []
+),
         "customize-hooks"+:
         [
             'mkdir -p "$1/etc/skel/.config/foot"',
-            'cp "$1/etc/xdg/foot/foot.ini" "$1/etc/skel/.config/foot/foot.ini"',
+            '[ -f "$1/etc/xdg/foot/foot.ini" ] && cp "$1/etc/xdg/foot/foot.ini" "$1/etc/skel/.config/foot/foot.ini" || true',
             'mkdir -p "$1/etc/skel/.config/sway"',
             'cp "$1/etc/sway/config" "$1/etc/skel/.config/sway/config"',
         ]
