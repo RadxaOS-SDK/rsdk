@@ -5,6 +5,7 @@
   packages = with pkgs; [
     bash-completion
     commitizen
+    curl
     dosfstools
     git
     gh
