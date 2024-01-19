@@ -114,5 +114,9 @@
     {
         "product": "rock-5b",
         "soc": "rk3588"
+    },
+    {
+        "product": "rock-5-itx",
+        "soc": "rk3588"
     }
 ]
