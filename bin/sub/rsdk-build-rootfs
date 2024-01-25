@@ -10,12 +10,15 @@ EDITION="${3:-cli}"
 OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 mkdir -p "$OUTPUT"
 
-DEBUG="${DEBUG:-false}"
+RSDK_OPTION_DEBUG="${RSDK_OPTION_DEBUG:-false}"
+RSDK_OPTION_REPO_SUFFIX="${RSDK_OPTION_REPO_SUFFIX:-}"
+RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
+RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 
 TEMP="$(mktemp -d)"
 # Need the temp folder to be viewable for apt-key to access
 chmod 0755 "$TEMP"
-if [[ $DEBUG == "true" ]]; then
+if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	echo "rsdk temp dir: $TEMP"
 fi
 
@@ -29,28 +32,27 @@ JSONNET_ARGS=(
 )
 BDEBSTRAP_ARGS=()
 
-if [[ $DEBUG == "true" ]]; then
+if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	BDEBSTRAP_ARGS+=("--debug")
 fi
 
-if [[ -n ${RBUILD_DISTRO_MIRROR:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "distro_mirror=$RBUILD_DISTRO_MIRROR")
+if [[ -n ${RSDK_OPTION_DISTRO_MIRROR} ]]; then
+	JSONNET_ARGS+=("--tla-str" "distro_mirror=$RSDK_OPTION_DISTRO_MIRROR")
 fi
 
-if [[ -n ${RBUILD_RADXA_MIRROR:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RBUILD_RADXA_MIRROR")
+if [[ -n ${RSDK_OPTION_RADXA_MIRROR} ]]; then
+	JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RSDK_OPTION_RADXA_MIRROR")
 fi
 
-# Initially the -test marking is a prefix
-if [[ -n ${REPO_PREFIX:-} ]]; then
-	JSONNET_ARGS+=("--tla-str" "radxa_repo_postfix=$REPO_PREFIX")
+if [[ -n ${RSDK_OPTION_REPO_SUFFIX} ]]; then
+	JSONNET_ARGS+=("--tla-str" "radxa_repo_suffix=$RSDK_OPTION_REPO_SUFFIX")
 fi
 
 # Prepare keyrings
 rsdk prepare-keyrings "$TEMP/keyrings/"
 
 jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/rootfs.jsonnet" -o "$TEMP/rootfs.json"
-if [[ $DEBUG == "true" ]]; then
+if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	cat "$TEMP/rootfs.json"
 fi
 sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/rootfs.json" --name "$OUTPUT" --force

@@ -6,9 +6,8 @@
 {
   # Override rsdk defaults here
   env  =  {
-    CONTAINER_BACKEND = "podman";
-    REPO_PREFIX = "-test";
-    RBUILD_DISTRO_MIRROR = "http://apt.vamrs.com";
-    RBUILD_RADXA_MIRROR = "http://apt.vamrs.com/rbuild-";
+    RSDK_OPTION_REPO_SUFFIX = "-test";
+    RSDK_OPTION_DISTRO_MIRROR = "http://apt.vamrs.com";
+    RSDK_OPTION_RADXA_MIRROR = "http://apt.vamrs.com/rbuild-";
   };
 }

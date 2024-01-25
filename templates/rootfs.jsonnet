@@ -16,14 +16,14 @@ function(
     distro_mirror = "",
 
     radxa_mirror = "",
-    radxa_repo_postfix = "",
+    radxa_repo_suffix = "",
 
     product,
     suite,
     edition,
     build_date,
 ) distro(suite, distro_mirror, architecture)
-+ additional_repos(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir)
++ additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir)
 + packages(suite, edition, product, temp_dir)
 + cleanup()
 + {

@@ -9,12 +9,12 @@ SUITE="${2:-bullseye}"
 EDITION="${3:-cli}"
 OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
-DEBUG="${DEBUG:-false}"
+RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
 
 JSONNET_ARGS=(
 	"-S"
 	"--tla-str" "product=$PRODUCT"
-	"--tla-code" "efi=true"
+	"--tla-code" "efi=$RSDK_OPTION_EFI"
 )
 
 jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$OUTPUT/build-image"

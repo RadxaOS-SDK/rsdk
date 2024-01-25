@@ -10,15 +10,15 @@ local vscodium_url(radxa_mirror) = (
         radxa_mirror
 ) + "debs";
 
-local radxa_url(suite, radxa_mirror, radxa_repo_postfix) = (
+local radxa_url(suite, radxa_mirror, radxa_repo_suffix) = (
     if radxa_mirror == ""
     then
         "https://radxa-repo.github.io/"
     else
         radxa_mirror
-) + suite + radxa_repo_postfix;
+) + suite + radxa_repo_suffix;
 
-function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
+function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
     mmdebstrap+: {
         packages+: [
             "radxa-archive-keyring",
@@ -28,11 +28,11 @@ function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
             'echo deb %s vscodium main > "$1/etc/apt/sources.list.d/vscodium.list"'
                 % [vscodium_url(radxa_mirror)],
             'echo deb %s %s main > "$1/etc/apt/sources.list.d/radxa.list"'
-                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix), suite + radxa_repo_postfix],
+                % [radxa_url(suite, radxa_mirror, radxa_repo_suffix), suite + radxa_repo_suffix],
             'echo deb %s %s main > "$1/etc/apt/sources.list.d/radxa-%s.list"'
-                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix), product_soc_family(product) + "-" + suite + radxa_repo_postfix, product_soc_family(product)],
+                % [radxa_url(suite, radxa_mirror, radxa_repo_suffix), product_soc_family(product) + "-" + suite + radxa_repo_suffix, product_soc_family(product)],
             'curl -L -o "$1/etc/radxa_apt_snapshot" %s/pkgs.json'
-                % [radxa_url(suite, radxa_mirror, radxa_repo_postfix)],
+                % [radxa_url(suite, radxa_mirror, radxa_repo_suffix)],
         ],
         "customize-hooks"+: [
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/vscodium.list',

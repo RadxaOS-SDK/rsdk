@@ -1,20 +1,71 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-# shellcheck source=bin/lib/utils.sh
-source "$SCRIPT_DIR/../lib/utils.sh"
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=bin/lib/utils.sh
+	source "$SCRIPT_DIR/../lib/utils.sh"
 
-PRODUCT="${1}"
-SUITE="${2:-bullseye}"
-EDITION="${3:-cli}"
-OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
+	local TEMP
+	if ! TEMP="$(getopt -o "hdTm:M:" -l "no-efi,help,debug,test-repo,mirror:" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
 
-if [[ -f "$OUTPUT/rootfs.tar" ]] && (($(du -b "$OUTPUT/rootfs.tar" | cut -f 1) == 0)); then
-	sudo rm "$OUTPUT/rootfs.tar"
-fi
+	export RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
+	export RSDK_OPTION_DEBUG="${RSDK_OPTION_DEBUG:-false}"
+	export RSDK_OPTION_REPO_SUFFIX="${RSDK_OPTION_REPO_SUFFIX:-}"
+	export RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
+	export RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 
-if [[ ! -f "$OUTPUT/rootfs.tar" ]]; then
-	rsdk build-rootfs "$PRODUCT" "$SUITE" "$EDITION"
-fi
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		--no-efi)
+			RSDK_OPTION_EFI="false"
+			;;
+		-d | --debug)
+			RSDK_OPTION_DEBUG="true"
+			;;
+		-T | --test-repo)
+			RSDK_OPTION_REPO_SUFFIX="-test"
+			;;
+		-m | --mirror)
+			RSDK_OPTION_DISTRO_MIRROR="$1"
+			shift
+			;;
+		-M)
+			RSDK_OPTION_RADXA_MIRROR="$1"
+			shift
+			;;
+		-h | --help)
+			rsdk help
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error $EXIT_UNKNOWN_OPTION "$TEMP"
+			;;
+		esac
+	done
 
-rsdk build-image "$PRODUCT" "$SUITE" "$EDITION"
+	PRODUCT="${1}"
+	SUITE="${2:-bullseye}"
+	EDITION="${3:-cli}"
+	OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
+
+	if [[ -f "$OUTPUT/rootfs.tar" ]] && (($(du -b "$OUTPUT/rootfs.tar" | cut -f 1) == 0)); then
+		sudo rm "$OUTPUT/rootfs.tar"
+	fi
+
+	if [[ ! -f "$OUTPUT/rootfs.tar" ]]; then
+		rsdk build-rootfs "$PRODUCT" "$SUITE" "$EDITION"
+	fi
+
+	rsdk build-image "$PRODUCT" "$SUITE" "$EDITION"
+}
+
+main "$@"
