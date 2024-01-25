@@ -29,7 +29,6 @@ else
         [
             // System utils
             "cloud-initramfs-growroot",
-            "python-is-python3",
             "ssh",
             "systemd-timesyncd",
         ] +
@@ -57,7 +56,8 @@ else
                 chroot "$1" \
                 bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
                 apt-get install -y \
-                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s"
+                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s \
+                python-is-python3"
             ||| % {
                 product: product
             },
