@@ -69,9 +69,6 @@ else
         ],
 
         "customize-hooks"+:
-        [
-            '$BDEBSTRAP_HOOKS/enable-units "$1" haveged',
-        ] +
 (if suite == "bookworm"
 then
         // Install Debian 12 packages
