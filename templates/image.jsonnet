@@ -71,7 +71,7 @@ else
 |||
     
     echo "Deploying rootfs..."
-    %(copy_method)s %(rootfs)s /
+    %(deploy_method)s /
 
     echo "Copying content from rootfs..."
     !mkdir -p "%(temp_dir)s/u-boot"
@@ -81,12 +81,11 @@ else
     echo "Updating files with disk info..."
     blkid /dev/sda1 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /config vfat defaults,x-systemd.automount 0 2\n" > "%(temp_dir)s/fstab"
 ||| % {
-    rootfs: rootfs,
-    copy_method: (if std.endsWith(rootfs, ".tar")
+    deploy_method: (if std.endsWith(rootfs, ".tar")
     then
-        "tar-in"
+        "tar-in %(rootfs)s" % { rootfs: rootfs }
     else
-        "copy-in"
+        "copy-in %(rootfs)s/." % { rootfs: rootfs }
     ),
     temp_dir: temp_dir,
 } +
