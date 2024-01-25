@@ -61,5 +61,11 @@ if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	cat "$TEMP/rootfs.json"
 fi
 sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/rootfs.json" --name "$OUTPUT" --force
-sudo chown -R "$UID:${GID:-$UID}" "$OUTPUT"
+
+for i in "$OUTPUT"/*; do
+	if [[ $i != "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] || [[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]]; then
+		sudo chown -R "$UID:${GID:-$UID}" "$i"
+	fi
+done
+
 rm -rf "$TEMP"
