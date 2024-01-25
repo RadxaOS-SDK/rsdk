@@ -34,5 +34,12 @@ function(suite, radxa_mirror, radxa_repo_postfix, product, temp_dir) {
             'curl -L -o "$1/etc/radxa_apt_snapshot" %s/pkgs.json'
                 % [radxa_url(suite, radxa_mirror, radxa_repo_postfix)],
         ],
+        "customize-hooks"+: [
+            'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/vscodium.list',
+            'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/radxa*.list',
+            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get update"',
+            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade -y --allow-downgrades"',
+            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -y --purge"',
+        ],
     }
 }
