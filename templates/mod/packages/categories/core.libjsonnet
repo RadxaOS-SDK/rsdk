@@ -49,9 +49,6 @@ else
             "radxa-udev",
             "rsetup",
             "rsetup-config-first-boot",
-            "u-boot-%s" % [product],
-            "linux-headers-%s" % [product],
-            "linux-image-%s" % [product],
         ],
 
         "essential-hooks"+:
@@ -59,14 +56,25 @@ else
             |||
                 chroot "$1" \
                 bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
-                apt-get install -y %s task-%s \
+                apt-get install -y \
+                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s"
+            ||| % {
+                product: product
+            },
+            |||
+                chroot "$1" \
+                bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
+                apt-get install -y %(recommends)s task-%(product)s \
                 -o 'Dpkg::Options::=--force-confnew'"
-            ||| % [(if distro_check(suite) == "debian" && vendor_packages
+            ||| % {
+                recommends: (if distro_check(suite) == "debian" && vendor_packages
                     then
                         "--install-recommends"
                     else
                         "--no-install-recommends"
-                    ), product],
+                    ),
+                product: product
+            },
         ],
 
         "customize-hooks"+:
