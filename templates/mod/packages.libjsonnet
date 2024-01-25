@@ -3,6 +3,7 @@ local sway_packages = import "packages/sway.libjsonnet";
 local kde_packages = import "packages/kde.libjsonnet";
 local xfce_packages = import "packages/xfce.libjsonnet";
 local core_packages = import "packages/core.libjsonnet";
+local i3_packages = import "packages/i3.libjsonnet";
 
 function(suite, edition, product, temp_dir) (
 if edition == "cli"
@@ -17,6 +18,9 @@ then
 else if edition == "sway"
 then
     sway_packages(suite, product, temp_dir)
+else if edition == "i3"
+then
+    i3_packages(suite, product, temp_dir)
 else if edition == "core"
 then
     core_packages(suite, product, temp_dir)

@@ -1,0 +1,29 @@
+local desktop_packages = import "categories/desktop.libjsonnet";
+
+function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + {
+    mmdebstrap+: {
+        packages+:
+        [
+            "i3",
+            "kitty",
+            "suckless-tools",
+            "xinit",
+        ] +
+
+(if suite == "bookworm"
+then
+        // Install Debian 12 packages
+        [
+            "greetd",
+        ]
+else
+        []
+),
+        "customize-hooks"+:
+        [
+            'mkdir -p "$1/etc/skel/.config/i3"',
+            'cp "$1/etc/i3/config" "$1/etc/skel/.config/i3/config"',
+            'chroot "$1" update-alternatives --set x-terminal-emulator /usr/bin/kitty',
+        ]
+    },
+}
