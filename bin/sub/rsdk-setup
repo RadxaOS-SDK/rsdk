@@ -56,7 +56,7 @@ EOF
 		;;
 	esac
 
-	export DEBIAN_FRONTEND=noninteractive
+	export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
 	PACKAGES=(
 		bash-completion
 		bdebstrap

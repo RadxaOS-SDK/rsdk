@@ -34,7 +34,7 @@ else
 ),
         "customize-hooks"+: [
             // Remove light-locker in favor of xfce4-screensaver
-            'chroot "$1" apt-get remove -y light-locker',
+            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get remove -y light-locker"',
         ]
     },
 }
