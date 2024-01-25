@@ -6,7 +6,7 @@ local cleanup = import "mod/cleanup.libjsonnet";
 function(
     architecture = "arm64",
     mode = "root",
-    target = "rootfs.tar",
+    rootfs = "rootfs.tar",
     variant = "apt",
 
     temp_dir,
@@ -35,7 +35,7 @@ function(
             "%s/keyrings/" % [temp_dir]
         ],
         mode: mode,
-        target: target,
+        target: rootfs,
         variant: variant,
         hostname: product,
         "customize-hooks"+:

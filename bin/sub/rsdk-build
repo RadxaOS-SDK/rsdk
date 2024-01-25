@@ -17,6 +17,7 @@ main() {
 	export RSDK_OPTION_REPO_SUFFIX="${RSDK_OPTION_REPO_SUFFIX:-}"
 	export RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
 	export RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
+	export RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 
 	while true; do
 		TEMP="$1"
@@ -27,6 +28,7 @@ main() {
 			;;
 		-d | --debug)
 			RSDK_OPTION_DEBUG="true"
+			RSDK_OPTION_ROOTFS="rootfs"
 			;;
 		-T | --test-repo)
 			RSDK_OPTION_REPO_SUFFIX="-test"
@@ -57,11 +59,11 @@ main() {
 	EDITION="${3:-cli}"
 	OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
-	if [[ -f "$OUTPUT/rootfs.tar" ]] && (($(du -b "$OUTPUT/rootfs.tar" | cut -f 1) == 0)); then
-		sudo rm "$OUTPUT/rootfs.tar"
+	if [[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] && (($(du -b "$OUTPUT/$RSDK_OPTION_ROOTFS" | cut -f 1) == 0)); then
+		sudo rm "$OUTPUT/$RSDK_OPTION_ROOTFS"
 	fi
 
-	if [[ ! -f "$OUTPUT/rootfs.tar" ]]; then
+	if [[ ! -e "$OUTPUT/$RSDK_OPTION_ROOTFS" ]]; then
 		rsdk build-rootfs "$PRODUCT" "$SUITE" "$EDITION"
 	fi
 

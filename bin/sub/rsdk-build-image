@@ -10,12 +10,20 @@ EDITION="${3:-cli}"
 OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
 RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
+RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 
 JSONNET_ARGS=(
 	"-S"
 	"--tla-str" "product=$PRODUCT"
-	"--tla-code" "efi=$RSDK_OPTION_EFI"
 )
+
+if [[ -n ${RSDK_OPTION_EFI} ]]; then
+	JSONNET_ARGS+=("--tla-code" "efi=$RSDK_OPTION_EFI")
+fi
+
+if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
+	JSONNET_ARGS+=("--tla-str" "rootfs=rootfs")
+fi
 
 jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$OUTPUT/build-image"
 chmod +x "$OUTPUT/build-image"

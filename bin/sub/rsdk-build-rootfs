@@ -14,6 +14,7 @@ RSDK_OPTION_DEBUG="${RSDK_OPTION_DEBUG:-false}"
 RSDK_OPTION_REPO_SUFFIX="${RSDK_OPTION_REPO_SUFFIX:-}"
 RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
 RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
+RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 
 TEMP="$(mktemp -d)"
 # Need the temp folder to be viewable for apt-key to access
@@ -34,6 +35,10 @@ BDEBSTRAP_ARGS=()
 
 if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	BDEBSTRAP_ARGS+=("--debug")
+fi
+
+if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
+	JSONNET_ARGS+=("--tla-str" "rootfs=rootfs")
 fi
 
 if [[ -n ${RSDK_OPTION_DISTRO_MIRROR} ]]; then
