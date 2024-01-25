@@ -29,6 +29,7 @@ else
         [
             // System utils
             "cloud-initramfs-growroot",
+            "python-is-python3",
             "ssh",
             "systemd-timesyncd",
         ] +
