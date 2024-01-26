@@ -38,7 +38,7 @@ if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 fi
 
 if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
-	JSONNET_ARGS+=("--tla-str" "rootfs=rootfs")
+	JSONNET_ARGS+=("--tla-str" "rootfs=$RSDK_OPTION_ROOTFS")
 fi
 
 if [[ -n ${RSDK_OPTION_DISTRO_MIRROR} ]]; then
