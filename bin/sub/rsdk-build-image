@@ -34,5 +34,14 @@ jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$OU
 chmod +x "$OUTPUT/build-image"
 
 pushd "$OUTPUT"
-./build-image
+if [[ -f $RSDK_OPTION_ROOTFS ]]; then
+	./build-image
+elif [[ -d $RSDK_OPTION_ROOTFS ]]; then
+	sudo --preserve-env=PATH ./build-image
+	sudo chown "$UID:${GID:-$UID}" "$RSDK_OPTION_IMAGE_NAME"
+else
+	echo "Unrecognized rootfs type for '$RSDK_OPTION_ROOTFS'." >&2
+	popd
+	exit 1
+fi
 popd
