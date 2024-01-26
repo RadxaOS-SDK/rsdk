@@ -11,6 +11,7 @@ OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
 RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
 RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
+RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-output.img}"
 
 JSONNET_ARGS=(
 	"-S"
@@ -23,6 +24,10 @@ fi
 
 if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
 	JSONNET_ARGS+=("--tla-str" "rootfs=$RSDK_OPTION_ROOTFS")
+fi
+
+if [[ -n ${RSDK_OPTION_IMAGE_NAME} ]]; then
+	JSONNET_ARGS+=("--tla-str" "output=$RSDK_OPTION_IMAGE_NAME")
 fi
 
 jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/image.jsonnet" -o "$OUTPUT/build-image"

@@ -7,7 +7,7 @@ main() {
 	source "$SCRIPT_DIR/../lib/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:" -l "no-efi,help,debug,test-repo,mirror:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:" -l "no-efi,help,debug,test-repo,mirror:,image-name" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -18,6 +18,7 @@ main() {
 	export RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
 	export RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 	export RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
+	export RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-output.img}"
 
 	while true; do
 		TEMP="$1"
@@ -39,6 +40,10 @@ main() {
 			;;
 		-M)
 			RSDK_OPTION_RADXA_MIRROR="$1"
+			shift
+			;;
+		-i | --image-name)
+			RSDK_OPTION_IMAGE_NAME="$1"
 			shift
 			;;
 		-h | --help)
