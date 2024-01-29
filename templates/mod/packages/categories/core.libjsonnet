@@ -43,7 +43,6 @@ else
 
         [
             // Radxa
-            "radxa-bootutils",
             "radxa-firmware",
             "radxa-udev",
             "rsetup",
@@ -56,8 +55,13 @@ else
                 chroot "$1" \
                 bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
                 apt-get install -y \
-                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s \
-                python-is-python3"
+                radxa-bootutils python-is-python3"
+            |||,
+            |||
+                chroot "$1" \
+                bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
+                apt-get install -y \
+                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s"
             ||| % {
                 product: product
             },
