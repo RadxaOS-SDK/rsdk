@@ -5,9 +5,11 @@ function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + 
         packages+:
         [
             "i3",
+            "i3status",
             "kitty",
             "suckless-tools",
             "xinit",
+            "xserver-xorg-input-libinput",
         ] +
 
 (if suite == "bookworm"
