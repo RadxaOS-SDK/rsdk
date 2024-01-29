@@ -32,7 +32,7 @@ function(
             architecture
         ],
         keyrings: [
-            "%s/keyrings/" % [temp_dir]
+            "%(temp_dir)s/keyrings/" % { temp_dir: temp_dir },
         ],
         mode: mode,
         target: rootfs,
@@ -41,10 +41,10 @@ function(
         "customize-hooks"+:
         [
             'mkdir "$1/etc/rsdk/"',
-            'cp "%s/config.yaml" "$1/etc/rsdk/"' % [output_dir],
+            'cp "%(output_dir)s/config.yaml" "$1/etc/rsdk/"' % { output_dir: output_dir },
             'echo "FINGERPRINT_VERSION=\'2\'" > "$1/etc/radxa_image_fingerprint"',
             'echo "RSDK_BUILD_DATE=\'$(date -R)\'" >> "$1/etc/radxa_image_fingerprint"',
-            'echo "RSDK_REVISION=\'%s\'" >> "$1/etc/radxa_image_fingerprint"' % [rsdk_rev],
+            'echo "RSDK_REVISION=\'%(rsdk_rev)s\'" >> "$1/etc/radxa_image_fingerprint"' % { rsdk_rev: rsdk_rev },
             'echo "RSDK_CONFIG=\'/etc/rsdk/config.yaml\'" >> "$1/etc/radxa_image_fingerprint"',
             'chroot "$1" update-initramfs -cvk all',
             'chroot "$1" u-boot-update',

@@ -21,11 +21,17 @@ local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_defa
         ],
         "setup-hooks"+: [
             // updates archive
-            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-updates/" > "$1/etc/apt/sources.list.d/%s-updates.list"' % [suite, suite],
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-updates/" > "$1/etc/apt/sources.list.d/%(suite)s-updates.list"' % {
+                suite: suite
+            },
             // backports archive
-            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-backports/" > "$1/etc/apt/sources.list.d/%s-backports.list"' % [suite, suite],
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-backports/" > "$1/etc/apt/sources.list.d/%(suite)s-backports.list"' % {
+                suite: suite
+            },
             // security archive
-            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%s)/\\1-security/" -e "s|/debian |/debian-security |" > "$1/etc/apt/sources.list.d/%s-security.list"' % [suite, suite],
+            'head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-security/" -e "s|/debian |/debian-security |" > "$1/etc/apt/sources.list.d/%(suite)s-security.list"' % {
+                suite: suite
+            },
         ],
         suite+: suite,
     }
