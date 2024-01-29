@@ -6,8 +6,8 @@ function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + 
         [
             "i3",
             "i3status",
-            "kitty",
             "suckless-tools",
+            "stterm",
             "xinit",
             "xserver-xorg-input-libinput",
         ] +
@@ -25,7 +25,7 @@ else
         [
             'mkdir -p "$1/etc/skel/.config/i3"',
             'cp "$1/etc/i3/config" "$1/etc/skel/.config/i3/config"',
-            'chroot "$1" update-alternatives --set x-terminal-emulator /usr/bin/kitty',
+            'chroot "$1" update-alternatives --set x-terminal-emulator /usr/bin/st',
         ]
     },
 }
