@@ -34,7 +34,9 @@ then
     part-add /dev/sda primary 679936 -34
 |||
 else
-    "part-add /dev/sda primary 65536 -34"
+|||
+    part-add /dev/sda primary 65536 -34
+|||
 ) +
 |||
 
@@ -43,12 +45,13 @@ else
 ||| +
 (if efi
 then
-    "mkfs vfat /dev/sda2 label:efi"
+|||
+    mkfs vfat /dev/sda2 label:efi
+|||
 else
     ""
 ) +
 |||
-
     mkfs ext4 /dev/sda%(rootdev)d label:rootfs
 
     echo "Mounting partitions..."
@@ -149,8 +152,8 @@ else
     !rm -rf "%(temp_dir)s"
     !sync
 
-    echo "Deploy succeed!"
 ||| % {
     output: output,
     temp_dir: temp_dir,
-}
+} +
+'echo "Deploy succeed!"'
