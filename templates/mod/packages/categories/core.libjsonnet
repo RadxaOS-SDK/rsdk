@@ -52,24 +52,18 @@ else
         "essential-hooks"+:
         [
             |||
-                chroot "$1" \
-                bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
-                apt-get install -y \
-                radxa-bootutils python-is-python3"
-            |||,
-            |||
-                chroot "$1" \
-                bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
-                apt-get install -y \
-                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s"
-            ||| % {
-                product: product
-            },
-            |||
-                chroot "$1" \
-                bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 \
-                apt-get install -y %(recommends)s task-%(product)s \
-                -o 'Dpkg::Options::=--force-confnew'"
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                radxa-bootutils python-is-python3
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                u-boot-%(product)s linux-headers-%(product)s linux-image-%(product)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                -oDpkg::Options::=--force-confnew %(recommends)s \
+                task-%(product)s
             ||| % {
                 recommends: (if distro_check(suite) == "debian" && vendor_packages
                     then

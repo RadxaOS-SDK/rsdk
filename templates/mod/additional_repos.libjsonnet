@@ -47,11 +47,11 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
                 },
         ],
         "customize-hooks"+: [
+            'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" apt-get update -oDPkg::Chroot-Directory="$1"',
+            'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y --allow-downgrades',
+            'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -oDPkg::Chroot-Directory="$1" -y --purge',
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/vscodium.list',
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/radxa*.list',
-            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get update"',
-            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade -y --allow-downgrades"',
-            'chroot "$1" bash -c "DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -y --purge"',
         ],
     }
 }
