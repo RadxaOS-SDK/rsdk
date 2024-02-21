@@ -1,122 +1,242 @@
 [
     {
         "product": "radxa-zero-2pro",
-        "soc": "a311d"
+        "product_name": "Radxa ZERO 2PRO",
+        "product_full_name": "Radxa ZERO 2 PRO",
+        "soc": "a311d",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-zero",
-        "soc": "s905y2"
+        "product_name": "Radxa ZERO",
+        "product_full_name": "Radxa ZERO",
+        "soc": "s905y2",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-s",
-        "soc": "rk3308"
+        "product_name": "ROCK Pi S",
+        "product_full_name": "ROCK Pi S",
+        "soc": "rk3308",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
     },
     {
         "product": "rock-s0",
-        "soc": "rk3308"
+        "product_name": "ROCK S0",
+        "product_full_name": "ROCK S0",
+        "soc": "rk3308",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
     },
     {
         "product": "rock-pi-e",
-        "soc": "rk3328"
+        "product_name": "ROCK Pi E",
+        "product_full_name": "ROCK Pi E",
+        "soc": "rk3328",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
     },
     {
         "product": "rock-4c-plus",
-        "soc": "rk3399t"
+        "product_name": "ROCK 4C+",
+        "product_full_name": "ROCK 4C+",
+        "soc": "rk3399t",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-4se",
-        "soc": "rk3399t"
+        "product_name": "ROCK 4SE",
+        "product_full_name": "ROCK 4SE",
+        "soc": "rk3399t",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-4a",
-        "soc": "rk3399"
+        "product_name": "ROCK Pi 4A",
+        "product_full_name": "ROCK Pi 4A",
+        "soc": "rk3399",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-4b",
-        "soc": "rk3399"
+        "product_name": "ROCK Pi 4B",
+        "product_full_name": "ROCK Pi 4B",
+        "soc": "rk3399",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-4c",
-        "soc": "rk3399"
+        "product_name": "ROCK Pi 4C",
+        "product_full_name": "ROCK Pi 4C",
+        "soc": "rk3399",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-4a-plus",
-        "soc": "op1"
+        "product_name": "ROCK Pi 4A+",
+        "product_full_name": "ROCK Pi 4A+",
+        "soc": "op1",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-4b-plus",
-        "soc": "op1"
+        "product_name": "ROCK Pi 4B+",
+        "product_full_name": "ROCK Pi 4B+",
+        "soc": "op1",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-pi-n10",
-        "soc": "rk3399pro"
+        "product_name": "ROCK Pi N10",
+        "product_full_name": "ROCK Pi N10",
+        "soc": "rk3399pro",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-cm3-io",
-        "soc": "rk3566"
+        "product_name": "Radxa CM3 IO",
+        "product_full_name": "Radxa ROCK 3 Compute Module IO Board",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-cm3-rpi-cm4-io",
-        "soc": "rk3566"
+        "product_name": "Radxa CM3 RPI CM4 IO",
+        "product_full_name": "Radxa ROCK 3 Compute Module with Raspberry Pi Compute Module 4 IO Board",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
-        "product": "radxa-cm3-sodimm-io",
-        "soc": "rk3566"
+        "product": "radxa-cm3s-io",
+        "product_name": "Radxa CM3S IO",
+        "product_full_name": "Radxa CM3S IO Board",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-e23",
-        "soc": "rk3566"
+        "product_name": "Radxa E23",
+        "product_full_name": "Radxa E23 Dual Ethernet Carrier Board",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-zero3",
-        "soc": "rk3566"
+        "product_name": "Radxa ZERO 3",
+        "product_full_name": "Radxa ZERO 3",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "rock-3c",
-        "soc": "rk3566"
+        "product_name": "ROCK 3C",
+        "product_full_name": "ROCK 3C",
+        "soc": "rk3566",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-cm3i-io",
-        "soc": "rk3568"
+        "product_name": "Radxa CM3I IO",
+        "product_full_name": "Radxa CM3I IO Board",
+        "soc": "rk3568",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-e25",
-        "soc": "rk3568"
+        "product_name": "Radxa E25",
+        "product_full_name": "Radxa E25 Dual 2.5Gb Ethernet Carrier Board",
+        "soc": "rk3568",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "rock-3a",
-        "soc": "rk3568"
+        "product_name": "ROCK 3A",
+        "product_full_name": "ROCK 3A",
+        "soc": "rk3568",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "rock-3b",
-        "soc": "rk3568"
+        "product_name": "ROCK 3B",
+        "product_full_name": "ROCK 3B",
+        "soc": "rk3568",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
     },
     {
         "product": "radxa-cm5-io",
-        "soc": "rk3588s"
+        "product_name": "Radxa CM5 IO",
+        "product_full_name": "Radxa CM5 IO Board",
+        "soc": "rk3588s",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-cm5-rpi-cm4-io",
-        "soc": "rk3588s"
+        "product_name": "Radxa CM5 RPI CM4 IO",
+        "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board",
+        "soc": "rk3588s",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-nx5-io",
-        "soc": "rk3588s"
+        "product_name": "Radxa NX5 IO",
+        "product_full_name": "Radxa NX5 IO Board",
+        "soc": "rk3588s",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-5a",
-        "soc": "rk3588s"
+        "product_name": "ROCK 5A",
+        "product_full_name": "ROCK 5A",
+        "soc": "rk3588s",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-5b-plus",
-        "soc": "rk3588"
+        "product_name": "ROCK 5B+",
+        "product_full_name": "ROCK 5B+",
+        "soc": "rk3588",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-5b",
-        "soc": "rk3588"
+        "product_name": "ROCK 5B",
+        "product_full_name": "ROCK 5B",
+        "soc": "rk3588",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-5-itx",
-        "soc": "rk3588"
+        "product_name": "ROCK 5 ITX",
+        "product_full_name": "ROCK 5 ITX",
+        "soc": "rk3588",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     }
 ]
