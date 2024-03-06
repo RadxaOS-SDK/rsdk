@@ -15,6 +15,7 @@ function(
 ) |||
     #!/usr/bin/env -S guestfish -f
 
+    !echo "Image generation started at $(date)."
     echo "Allocating image file..."
     !rm -f "%(output)s"
     sparse "%(output)s" 6G
@@ -152,8 +153,9 @@ else
     !rm -rf "%(temp_dir)s"
     !sync
 
+    echo "Deploy succeed!"
 ||| % {
     output: output,
     temp_dir: temp_dir,
 } +
-'echo "Deploy succeed!"'
+'!echo "Image generation finished at $(date)."'
