@@ -64,6 +64,10 @@ else
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew %(recommends)s \
                 task-%(product)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
+                -oDpkg::Options::=--force-confnew --allow-downgrades
             ||| % {
                 recommends: (if distro_check(suite) == "debian" && vendor_packages
                     then
