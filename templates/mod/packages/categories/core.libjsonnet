@@ -52,6 +52,8 @@ else
         "essential-hooks"+:
         [
             |||
+                set -e
+
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 radxa-bootutils python-is-python3
