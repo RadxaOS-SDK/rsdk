@@ -5,23 +5,23 @@ local xfce_packages = import "packages/xfce.libjsonnet";
 local core_packages = import "packages/core.libjsonnet";
 local i3_packages = import "packages/i3.libjsonnet";
 
-function(suite, edition, product, temp_dir) (
+function(suite, edition, product, temp_dir, vendor_packages, linux_override, u_boot_override,) (
 if edition == "cli"
 then
-    cli_packages(suite, product, temp_dir)
+    cli_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 else if edition == "kde"
 then
-    kde_packages(suite, product, temp_dir)
+    kde_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 else if edition == "xfce"
 then
-    xfce_packages(suite, product, temp_dir)
+    xfce_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 else if edition == "sway"
 then
-    sway_packages(suite, product, temp_dir)
+    sway_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 else if edition == "i3"
 then
-    i3_packages(suite, product, temp_dir)
+    i3_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 else if edition == "core"
 then
-    core_packages(suite, product, temp_dir)
+    core_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
 )

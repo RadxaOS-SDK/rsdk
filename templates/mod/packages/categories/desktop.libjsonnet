@@ -1,7 +1,19 @@
 local base_packages = import "base.libjsonnet";
 local distro_check = import "../../../lib/distro_check.libjsonnet";
 
-function(suite, product, temp_dir) base_packages(suite, product, temp_dir, vendor_packages=true) + {
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         u_boot_override,
+) base_packages(suite,
+                product,
+                temp_dir,
+                vendor_packages,
+                linux_override,
+                u_boot_override,
+) + {
     mmdebstrap+: {
         packages+:
         [

@@ -22,9 +22,13 @@ function(
     suite,
     edition,
     build_date,
+
+    vendor_packages = true,
+    linux_override = "",
+    u_boot_override = "",
 ) distro(suite, distro_mirror, architecture)
 + additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir)
-+ packages(suite, edition, product, temp_dir)
++ packages(suite, edition, product, temp_dir, vendor_packages, linux_override, u_boot_override)
 + cleanup()
 + {
     mmdebstrap+: {

@@ -1,6 +1,18 @@
 local desktop_packages = import "categories/desktop.libjsonnet";
 
-function(suite, product, temp_dir) desktop_packages(suite, product, temp_dir) + {
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         u_boot_override,
+) desktop_packages(suite,
+                product,
+                temp_dir,
+                vendor_packages,
+                linux_override,
+                u_boot_override,
+) + {
     mmdebstrap+: {
         packages+:
         [

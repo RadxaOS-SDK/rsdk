@@ -1,3 +1,15 @@
 local base_packages = import "categories/base.libjsonnet";
 
-function(suite, product, temp_dir) base_packages(suite, product, temp_dir)
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         u_boot_override,
+) base_packages(suite,
+                product,
+                temp_dir,
+                vendor_packages,
+                linux_override,
+                u_boot_override,
+)

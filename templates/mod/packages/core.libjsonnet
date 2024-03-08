@@ -1,3 +1,15 @@
 local core_packages = import "categories/core.libjsonnet";
 
-function(suite, product, temp_dir) core_packages(suite, product, temp_dir)
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         u_boot_override,
+) core_packages(suite,
+                product,
+                temp_dir,
+                vendor_packages,
+                linux_override,
+                u_boot_override,
+)
