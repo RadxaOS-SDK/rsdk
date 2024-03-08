@@ -7,7 +7,7 @@ main() {
 	source "$SCRIPT_DIR/../lib/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:" -l "no-efi,help,debug,test-repo,mirror:,image-name" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -19,11 +19,15 @@ main() {
 	export RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 	export RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 	export RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-output.img}"
+	export RSDK_OPTION_CACHE="${RSDK_OPTION_CACHE:-true}"
 
 	while true; do
 		TEMP="$1"
 		shift
 		case "$TEMP" in
+		--no-cache)
+			RSDK_OPTION_CACHE="false"
+			;;
 		--no-efi)
 			RSDK_OPTION_EFI="false"
 			;;
@@ -64,8 +68,8 @@ main() {
 	EDITION="${3:-cli}"
 	OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
-	if [[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] && (($(du -b "$OUTPUT/$RSDK_OPTION_ROOTFS" | cut -f 1) == 0)); then
-		sudo rm "$OUTPUT/$RSDK_OPTION_ROOTFS"
+	if [[ $RSDK_OPTION_CACHE == "false" ]] || ([[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] && (($(du -b "$OUTPUT/$RSDK_OPTION_ROOTFS" | cut -f 1) == 0))); then
+		sudo rm -rf "$OUTPUT/$RSDK_OPTION_ROOTFS"
 	fi
 
 	if [[ ! -e "$OUTPUT/$RSDK_OPTION_ROOTFS" ]]; then
