@@ -104,6 +104,14 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "rock-2a",
+        "product_name": "ROCK 2A",
+        "product_full_name": "ROCK 2A",
+        "soc": "rk3528",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
+    },
+    {
         "product": "radxa-cm3-io",
         "product_name": "Radxa CM3 IO",
         "product_full_name": "Radxa ROCK 3 Compute Module IO Board",
