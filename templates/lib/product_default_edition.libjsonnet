@@ -1,0 +1,5 @@
+local product_list = std.set(import "../../configs/products.json", function(x) x.product);
+
+function(product)
+    std.filter(function(x) x.product == product,
+               product_list)[0].supported_edition[0]
