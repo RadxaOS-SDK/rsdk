@@ -14,7 +14,7 @@ EXIT_UNSUPPORTED_OPTION=3
 EXIT_SUDO_PERMISSION=4
 EXIT_SHRINK_NO_ROOTDEV=5
 EXIT_DEV_SHM_TOO_SMALL=6
-EXIT_RBUILD_AS_ROOT=7
+EXIT_RUNNING_AS_ROOT=7
 EXIT_MISSING_SUBCOMMAND=8
 
 error() {
@@ -38,7 +38,7 @@ error() {
 	"$EXIT_DEV_SHM_TOO_SMALL")
 		echo "Your /dev/shm is too small. Current '$2', require '$3'." >&2
 		;;
-	"$EXIT_RBUILD_AS_ROOT")
+	"$EXIT_RUNNING_AS_ROOT")
 		cat <<EOF >&2
 You are running $(basename "$0") with root permission, which is not recommended for normal development.
 If you need root permission to run docker, please add your account to docker group, reboot, and try again.
