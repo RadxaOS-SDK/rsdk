@@ -4,6 +4,7 @@
       "extensions": [
         "mkhl.direnv",
         "grafana.vscode-jsonnet",
+        "vivaxy.vscode-conventional-commits"
       ]
     }
   },

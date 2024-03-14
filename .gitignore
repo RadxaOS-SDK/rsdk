@@ -13,3 +13,6 @@
 
 # Build output
 /out
+
+# Local VS Code configuration
+/.vscode*
