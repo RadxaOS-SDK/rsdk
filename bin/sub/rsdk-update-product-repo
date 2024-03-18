@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+PRODUCT="${1}"
+RSDK_BUILD_ORG="radxa-build"
+OUTPUT_ROOT="$PWD/out"
+OUTPUT="$OUTPUT_ROOT/$RSDK_BUILD_ORG/${PRODUCT}"
+TEMPLATE="$SCRIPT_DIR/../../templates/build-image"
+DRY_RUN="${DRY_RUN:-false}"
+
+if [[ $DRY_RUN == "false" ]] && ! gh auth status &>/dev/null; then
+	echo "This operation requires GitHub authentication:"
+	if ! gh auth login; then
+		error "$EXIT_AUTHENTICATION_FAILED" "github"
+	fi
+fi
+
+if [[ $DRY_RUN == "true" ]]; then
+	echo "Dry run. Will only update local repo."
+	mkdir -p "$OUTPUT"
+	pushd "$OUTPUT"
+	git init
+	popd
+elif [[ -e "$OUTPUT/.git" ]]; then
+	echo "Found existing repository. Updating..."
+	pushd "$OUTPUT"
+	git fetch --all
+	git pull
+	popd
+else
+	mkdir -p "$OUTPUT_ROOT/$RSDK_BUILD_ORG"
+	echo "Trying to clone existing repository first..."
+	if ! gh repo clone "$RSDK_BUILD_ORG/$PRODUCT" "$OUTPUT"; then
+		echo "Target repository does not exist. New repository will be created."
+		pushd "$OUTPUT_ROOT/$RSDK_BUILD_ORG"
+		gh repo create "$RSDK_BUILD_ORG/$PRODUCT" --clone --public
+		popd
+	fi
+fi
+
+echo "Remove existing content..."
+find "$OUTPUT" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+
+echo "Prepare folder structure..."
+pushd "$TEMPLATE"
+find . -mindepth 1 -type d -exec mkdir -p "$OUTPUT/{}" \;
+popd
+
+echo "Populate content..."
+JSONNET_ARGS=(
+	"-S"
+	"--tla-str" "product=$PRODUCT"
+	"--tla-str" "build_org=$RSDK_BUILD_ORG"
+	"--multi" "$OUTPUT"
+)
+
+jsonnet "${JSONNET_ARGS[@]}" "$TEMPLATE/template.jsonnet"
+
+pushd "$OUTPUT"
+if [[ -n "$(git status --porcelain)" ]]; then
+	git config --local user.name "github-actions[bot]"
+	git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+	git add .
+	git commit -m "chore: templates updated by rsdk"
+fi
+
+if [[ $DRY_RUN == "false" ]]; then
+	git push --set-upstream origin main
+fi
+popd
