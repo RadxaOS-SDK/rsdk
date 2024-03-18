@@ -16,6 +16,7 @@ EXIT_SHRINK_NO_ROOTDEV=5
 EXIT_DEV_SHM_TOO_SMALL=6
 EXIT_RUNNING_AS_ROOT=7
 EXIT_MISSING_SUBCOMMAND=8
+EXIT_FILE_NOT_EXIST=9
 
 error() {
 	case "$1" in
@@ -46,6 +47,9 @@ EOF
 		;;
 	"$EXIT_MISSING_SUBCOMMAND")
 		echo "'$2' is not a valid subcommand." >&2
+		;;
+	"$EXIT_FILE_NOT_EXIST")
+		echo "File '$2' does not exist." >&2
 		;;
 	*)
 		echo "Unknown error code $1." >&2

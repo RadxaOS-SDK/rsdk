@@ -3,6 +3,7 @@
 {
   # https://devenv.sh/packages/
   packages = with pkgs; [
+    aptly
     bash-completion
     commitizen
     curl

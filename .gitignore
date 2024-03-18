@@ -16,3 +16,6 @@
 
 # Local VS Code configuration
 /.vscode*
+
+# Local Debian packages
+/debs
