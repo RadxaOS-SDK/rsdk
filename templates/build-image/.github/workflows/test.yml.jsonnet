@@ -30,7 +30,7 @@ function(
                     {
                         name: "Create empty release",
                         id: "release",
-                        uses: "softprops/action-gh-release@v1",
+                        uses: "softprops/action-gh-release@v2",
                         with: {
                             tag_name: "test-build-${{ github.run_number }}",
                             body: "This is a test build for internal development.\nOnly use when specifically instructed by Radxa support.\n",

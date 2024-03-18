@@ -30,7 +30,7 @@ function(
                     {
                         name: "Create empty release",
                         id: "release",
-                        uses: "softprops/action-gh-release@v1",
+                        uses: "softprops/action-gh-release@v2",
                         with: {
                             tag_name: "b${{ github.run_number }}",
                             body_path: "README.md",
