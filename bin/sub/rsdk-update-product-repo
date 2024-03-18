@@ -8,7 +8,8 @@ PRODUCT="${1}"
 RSDK_BUILD_ORG="radxa-build"
 OUTPUT_ROOT="$PWD/out"
 OUTPUT="$OUTPUT_ROOT/$RSDK_BUILD_ORG/${PRODUCT}"
-TEMPLATE="$SCRIPT_DIR/../../templates/build-image"
+TEMPLATE_DIR="$SCRIPT_DIR/../../templates"
+TEMPLATE="$TEMPLATE_DIR/build-image"
 DRY_RUN="${DRY_RUN:-false}"
 
 if [[ $DRY_RUN == "false" ]] && ! gh auth status &>/dev/null; then
@@ -69,5 +70,6 @@ fi
 
 if [[ $DRY_RUN == "false" ]]; then
 	git push --set-upstream origin main
+	gh repo edit --description "$(jsonnet -S --tla-str "product=$PRODUCT" "$TEMPLATE_DIR/lib/product_data_product_full_name.libjsonnet")"
 fi
 popd
