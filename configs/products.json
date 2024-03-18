@@ -240,6 +240,14 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "rock-5c",
+        "product_name": "ROCK 5C",
+        "product_full_name": "ROCK 5C",
+        "soc": "rk3588",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "rock-5-itx",
         "product_name": "ROCK 5 ITX",
         "product_full_name": "ROCK 5 ITX",
