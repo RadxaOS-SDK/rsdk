@@ -1,12 +1,13 @@
 local product_data = import "../../../lib/product_data.libjsonnet";
 
 function(
-    product
+    product,
+    build_org
 ) std.manifestYamlDoc(
     {
         name: "Build image for Test channel",
         on: {
-            "workflow_dispatch": {}
+            workflow_dispatch: {}
         },
         env: {
             GH_TOKEN: "${{ github.token }}"
@@ -70,7 +71,7 @@ function(
                             "release-id": "${{ needs.prepare_release.outputs.release_id }}",
                             "github-token": "${{ secrets.GITHUB_TOKEN }}",
                             "test-repo": true,
-                            timestamp: "t${{ github.run_number }}"
+                            timestamp: "t${{ github.run_number }}",
                         }
                     }
                 ]

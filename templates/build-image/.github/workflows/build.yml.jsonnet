@@ -1,7 +1,8 @@
 local product_data = import "../../../lib/product_data.libjsonnet";
 
 function(
-    product
+    product,
+    build_org
 ) std.manifestYamlDoc(
     {
         name: "Build image for Release channel",
@@ -68,7 +69,7 @@ function(
                             suite: "${{ matrix.suites }}",
                             flavor: "${{ matrix.flavors }}",
                             "release-id": "${{ needs.prepare_release.outputs.release_id }}",
-                            "github-token": "${{ secrets.GITHUB_TOKEN }}"
+                            "github-token": "${{ secrets.GITHUB_TOKEN }}",
                         }
                     }
                 ]

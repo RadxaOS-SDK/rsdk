@@ -1,4 +1,7 @@
-std.manifestYamlDoc(
+function(
+    product,
+    build_org
+) std.manifestYamlDoc(
     {
         version: 2,
         updates: [{
