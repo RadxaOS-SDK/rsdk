@@ -29,7 +29,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
                 % {
                     vscodium_url: vscodium_url(radxa_mirror)
                 },
-            'echo deb %(radxa_url)s%(suite)s %(suite)s main > "$1/etc/apt/sources.list.d/10-radxa.list"'
+            'echo deb %(radxa_url)s%(suite)s %(suite)s main > "$1/etc/apt/sources.list.d/20-radxa.list"'
                 % {
                     radxa_url: radxa_url(radxa_mirror),
                     suite: suite + radxa_repo_suffix,
@@ -51,7 +51,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
             'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y --allow-downgrades',
             'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -oDPkg::Chroot-Directory="$1" -y --purge',
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/90-vscodium.list',
-            'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/10-radxa*.list',
+            'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/*-radxa*.list',
         ],
     }
 }
