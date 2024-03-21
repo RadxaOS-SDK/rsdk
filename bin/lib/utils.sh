@@ -3,7 +3,7 @@
 set -euo pipefail
 shopt -s nullglob
 
-LC_ALL="C.UTF-8"
+LC_ALL="C"
 LANG="C.UTF-8"
 LANGUAGE="C.UTF-8"
 
