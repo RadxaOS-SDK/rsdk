@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+if (($# < 2)); then
+	error "$EXIT_TOO_FEW_ARGUMENTS"
+fi
+
+IMAGE="$1"
+BLOCKDEV="$2"
+
+if [[ ! -f $IMAGE ]]; then
+	error "$EXIT_FILE_NOT_EXIST" "$IMAGE"
+elif [[ ! -b $BLOCKDEV ]]; then
+	echo "$EXIT_NOT_BLOCK_DEVICE" "$BLOCKDEV"
+fi
+
+if file "$IMAGE" | grep -q "XZ compressed"; then
+	echo "Writing xz image..."
+	xzcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+elif file "$IMAGE" | grep -q "gzip compressed data"; then
+	echo "Writing gz image..."
+	zcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+elif file "$IMAGE" | grep -q "Zip archive"; then
+	echo "Writing zip image..."
+	unzip -p "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+elif file "$IMAGE" | grep -q "7-zip archive data"; then
+	echo "Writing 7-zip image..."
+	7z e -so "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+elif file "$IMAGE" | grep -q "Zstandard compressed data"; then
+	echo "Writing Zstd image..."
+	zstdcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+else
+	echo "Writing raw image..."
+	sudo dd "if=$IMAGE" "of=$BLOCKDEV" bs=16M conv=fsync status=progress
+fi
+echo "Syncing block device..."
+sudo sync "$BLOCKDEV"

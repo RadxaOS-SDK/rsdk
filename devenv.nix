@@ -8,6 +8,7 @@
     commitizen
     curl
     dosfstools
+    file
     git
     gh
     gptfdisk

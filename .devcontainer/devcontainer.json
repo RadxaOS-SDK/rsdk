@@ -48,7 +48,9 @@
     // Require /dev mapped inside for accessing newly created loop devices
     // Only enable this if you need to work with loop devices, as disk images
     // are not created with kpartx anymore.
-    // "--privileged",
+    // Alternatively, if you want to use rsdk write-image, you also need this to
+    // be enabled.
+    "--privileged",
     // Needed for guestfish to accelerate VM for disk operation
     // Usually covered by /dev mapping.
     // "--device", "/dev/kvm",

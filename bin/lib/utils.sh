@@ -18,6 +18,7 @@ EXIT_RUNNING_AS_ROOT=7
 EXIT_MISSING_SUBCOMMAND=8
 EXIT_FILE_NOT_EXIST=9
 EXIT_AUTHENTICATION_FAILED=10
+EXIT_NOT_BLOCK_DEVICE=11
 
 error() {
 	case "$1" in
@@ -54,6 +55,9 @@ EOF
 		;;
 	"$EXIT_AUTHENTICATION_FAILED")
 		echo "Failed to complete authentication to '$2'." >&2
+		;;
+	"$EXIT_NOT_BLOCK_DEVICE")
+		echo "'$2' is not a block device." >&2
 		;;
 	*)
 		echo "Unknown error code $1." >&2
