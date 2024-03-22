@@ -53,7 +53,7 @@ main() {
 			shift
 			;;
 		-h | --help)
-			rsdk help
+			rsdk help build
 			return
 			;;
 		--)

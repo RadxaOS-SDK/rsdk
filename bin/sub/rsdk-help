@@ -1,5 +1,60 @@
 #!/usr/bin/env bash
 
-cat >&2 <<EOF
-TBD
+rsdk-help-rsdk() {
+	cat <<EOF
+rsdk
+====
+
+Supported subcommands: ${RSDK_SUPPORTED_SUBCOMMANDS[*]}
 EOF
+}
+
+rsdk-help-build() {
+	cat <<EOF
+rsdk-${FUNCNAME[0]##rsdk-help-}
+====
+
+## Command usage
+
+$ rsdk build <options> [product] <suite> <edition>
+
+## Options
+
+--no-cache
+    Do not use cached build artifacts. This will result in rootfs rebuild.
+--no-efi
+    Do not create EFI partition in the generated image.
+-d | --debug
+    Enable debug output. This will also build rootfs into a folder for easier
+    examination.
+-T | --test-repo
+    Build using Radxa APT test archives.
+-m | --mirror [mirror_url]
+    Specify custom Debian / Ubuntu archive mirror URL.
+-M [mirror_url]
+    Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
+    serve both Radxa archives as well as any other 3rd party archives.
+
+    The following archives will use this mirror:
+$(find "$SCRIPT_DIR/../../keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "        %f\n")
+-i | --image-name [image_name]
+    Set the system image name. (Default: $RSDK_DEFAULT_IMAGE_NAME)
+-h | --help
+    Show this message.
+EOF
+}
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=bin/lib/utils.sh
+	source "$SCRIPT_DIR/../lib/utils.sh"
+	# shellcheck source=bin/lib/rsdk_configs.sh
+	source "$SCRIPT_DIR/../lib/rsdk_configs.sh"
+
+	local subcommand="${1:-rsdk}"
+	shift || true
+	"rsdk-help-$subcommand" "$@"
+}
+
+main "$@"
