@@ -16,7 +16,8 @@ disk="$1"
 shift
 
 if [[ -f $disk ]]; then
-	trap 'set +e; sudo -n true && (sudo umount -R /mnt; sudo kpartx -d "$disk"; sync)' SIGINT SIGQUIT SIGTSTP EXIT
+	disk_file="$disk"
+	trap 'set +e; sudo -n true && (sudo umount -R /mnt; sudo kpartx -d "$disk_file"; sync)' SIGINT SIGQUIT SIGTSTP EXIT
 	sudo kpartx -a "$disk"
 	echo "Target is a file. Trying to find rootfs partition..."
 	if ! disk="$(sudo blkid -t LABEL=rootfs -o device | grep /dev/mapper/loop | tail -n 1)"; then
