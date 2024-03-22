@@ -3,6 +3,8 @@
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
+# shellcheck source=bin/lib/rsdk_configs.sh
+source "$SCRIPT_DIR/../lib/rsdk_configs.sh"
 
 PRODUCT="${1}"
 SUITE="${2:-bullseye}"
@@ -11,7 +13,7 @@ OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
 RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
 RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
-RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-output.img}"
+RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-$RSDK_DEFAULT_IMAGE_NAME}"
 
 JSONNET_ARGS=(
 	"-S"
