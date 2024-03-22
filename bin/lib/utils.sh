@@ -12,13 +12,14 @@ EXIT_UNKNOWN_OPTION=1
 EXIT_TOO_FEW_ARGUMENTS=2
 EXIT_UNSUPPORTED_OPTION=3
 EXIT_SUDO_PERMISSION=4
-EXIT_SHRINK_NO_ROOTDEV=5
+EXIT_BLKDEV_NO_ROOTDEV=5
 EXIT_DEV_SHM_TOO_SMALL=6
 EXIT_RUNNING_AS_ROOT=7
 EXIT_MISSING_SUBCOMMAND=8
 EXIT_FILE_NOT_EXIST=9
 EXIT_AUTHENTICATION_FAILED=10
 EXIT_NOT_BLOCK_DEVICE=11
+EXIT_RUNNING_IN_CONTAINER=12
 
 error() {
 	case "$1" in
@@ -35,8 +36,8 @@ error() {
 	"$EXIT_SUDO_PERMISSION")
 		echo "'$2' requires either passwordless sudo, or running in an interactive shell." >&2
 		;;
-	"$EXIT_SHRINK_NO_ROOTDEV")
-		echo "Unable to access loop device '$2' for shrinking." >&2
+	"$EXIT_BLKDEV_NO_ROOTDEV")
+		echo "Unable to find root partition for '$2'." >&2
 		;;
 	"$EXIT_DEV_SHM_TOO_SMALL")
 		echo "Your /dev/shm is too small. Current '$2', require '$3'." >&2
@@ -58,6 +59,9 @@ EOF
 		;;
 	"$EXIT_NOT_BLOCK_DEVICE")
 		echo "'$2' is not a block device." >&2
+		;;
+	"$EXIT_RUNNING_IN_CONTAINER")
+		echo "'$(basename "$0")' cannot be run in the container. Please try again in a native shell." >&2
 		;;
 	*)
 		echo "Unknown error code $1." >&2

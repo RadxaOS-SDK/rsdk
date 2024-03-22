@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=bin/lib/utils.sh
+source "$SCRIPT_DIR/../lib/utils.sh"
+
+if [[ -f "/.dockerenv" ]]; then
+	error "$EXIT_RUNNING_IN_CONTAINER"
+fi
+
+if (($# < 1)); then
+	error "$EXIT_TOO_FEW_ARGUMENTS"
+fi
+
+disk="$1"
+shift
+
+if [[ -f $disk ]]; then
+	trap 'set +e; sudo -n true && (sudo umount -R /mnt; sudo kpartx -d "$disk"; sync)' SIGINT SIGQUIT SIGTSTP EXIT
+	sudo kpartx -a "$disk"
+	echo "Target is a file. Trying to find rootfs partition..."
+	if ! disk="$(sudo blkid -t LABEL=rootfs -o device | grep /dev/mapper/loop | tail -n 1)"; then
+		error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
+	fi
+	disk="${disk%p*}p"
+fi
+
+if [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
+	error "$EXIT_NOT_BLOCK_DEVICE" "$disk"
+fi
+
+sudo umount -R /mnt || true
+
+if [[ -b "$disk"3 ]]; then
+	# latest rbuild/rsdk image
+	sudo mount "$disk"3 /mnt
+	sudo mount "$disk"2 /mnt/boot/efi
+	sudo mount "$disk"1 /mnt/config
+elif [[ -b "$disk"2 ]]; then
+	sudo mount "$disk"2 /mnt
+	case "$(sudo blkid "$disk"1 -s LABEL -o value)" in
+	"armbi_boot")
+		# new armbian image
+		sudo mount "$disk"1 /mnt/boot
+		;;
+	*)
+		# old rbuild image
+		sudo mount "$disk"1 /mnt/config
+		;;
+	esac
+elif [[ -b "$disk"1 ]]; then
+	# old armbian image
+	sudo mount "$disk"1 /mnt
+else
+	error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
+fi
+
+sudo systemd-nspawn -D /mnt "$@"
+
+sudo umount -R /mnt
+
+sync
