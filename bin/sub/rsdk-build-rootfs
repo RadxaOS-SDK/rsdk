@@ -60,7 +60,7 @@ jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/rootfs.jsonnet" -o "$T
 if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 	cat "$TEMP/rootfs.json"
 fi
-sudo "$(command -v bdebstrap)" "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/rootfs.json" --name "$OUTPUT" --force
+sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/rootfs.json" --name "$OUTPUT" --force
 
 sudo chown "$UID:${GID:-$UID}" "$OUTPUT"
 for i in "$OUTPUT"/*; do

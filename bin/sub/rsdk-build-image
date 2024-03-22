@@ -37,7 +37,7 @@ pushd "$OUTPUT"
 if [[ -f $RSDK_OPTION_ROOTFS ]]; then
 	./build-image
 elif [[ -d $RSDK_OPTION_ROOTFS ]]; then
-	sudo --preserve-env=PATH ./build-image
+	sudo ./build-image
 	sudo chown "$UID:${GID:-$UID}" "$RSDK_OPTION_IMAGE_NAME"
 else
 	echo "Unrecognized rootfs type for '$RSDK_OPTION_ROOTFS'." >&2

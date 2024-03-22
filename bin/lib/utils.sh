@@ -87,3 +87,8 @@ in_array() {
 	shift
 	[[ $* =~ $item ]]
 }
+
+# Workaround normal sudo can't access nix programs
+sudo() {
+	/usr/bin/env sudo --preserve-env=PATH -s "$@"
+}
