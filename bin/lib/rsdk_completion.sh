@@ -65,12 +65,15 @@ _rsdk_completions() {
 	1)
 		local subcommands=(
 			"build"
-			"chroot"
 			"devcon"
 			"help"
 			"setup"
 			"write-image"
 		)
+
+		if [[ ! -f "/.dockerenv" ]]; then
+			subcommands+=("chroot")
+		fi
 
 		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" "${COMP_WORDS[COMP_CWORD]}")
 		;;
