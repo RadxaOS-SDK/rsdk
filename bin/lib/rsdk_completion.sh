@@ -83,14 +83,12 @@ _rsdk_write-image_completions() {
 		;;
 	3)
 		local i suggestions=()
-		for i in /dev/sd*; do
-			if [[ -b $i ]] && [[ ! $i =~ .*[0-9] ]]; then
-				suggestions+=("$i")
+		for i in /dev/disk/by-path/*usb*; do
+			if [[ $i == *-part* ]]; then
+				continue
 			fi
-		done
-
-		for i in /dev/nvme*n* /dev/mmcblk* /dev/mapper/loop*; do
-			if [[ -b $i ]] && [[ ! $i =~ .*p[0-9] ]]; then
+			i="$(realpath "$i")"
+			if [[ -b $i ]]; then
 				suggestions+=("$i")
 			fi
 		done
