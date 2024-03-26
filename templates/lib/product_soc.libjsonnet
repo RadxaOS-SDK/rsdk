@@ -1,5 +1,4 @@
-local product_list = std.set(import "../../configs/products.json", function(x) x.product);
+local product_data = import "product_data.libjsonnet";
 
 function(product)
-    std.filter(function(x) x.product == product,
-               product_list)[0].soc
+    product_data(product).soc
