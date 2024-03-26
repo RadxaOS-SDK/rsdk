@@ -16,18 +16,18 @@ RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
 RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 
-TEMP="$(mktemp -d)"
+RSDK_TEMP="$(mktemp -d "/tmp/rsdk.${PRODUCT}_${SUITE}_${EDITION}.XXXXXXXX")"
 # Need the temp folder to be viewable for apt-key to access
-chmod 0755 "$TEMP"
+chmod 0755 "$RSDK_TEMP"
 if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
-	echo "rsdk temp dir: $TEMP"
+	echo "rsdk temp dir: $RSDK_TEMP"
 fi
 
 JSONNET_ARGS=(
 	"--tla-str" "product=$PRODUCT"
 	"--tla-str" "suite=$SUITE"
 	"--tla-str" "edition=$EDITION"
-	"--tla-str" "temp_dir=$TEMP"
+	"--tla-str" "temp_dir=$RSDK_TEMP"
 	"--tla-str" "output_dir=$OUTPUT"
 	"--tla-str" "build_date=$(date --iso-8601=s)"
 )
@@ -54,13 +54,13 @@ if [[ -n ${RSDK_OPTION_REPO_SUFFIX} ]]; then
 fi
 
 # Prepare keyrings
-rsdk prepare-keyrings "$TEMP/keyrings/"
+rsdk prepare-keyrings "$RSDK_TEMP/keyrings/"
 
-jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/rootfs.jsonnet" -o "$TEMP/rootfs.json"
+jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../templates/rootfs.jsonnet" -o "$RSDK_TEMP/rootfs.json"
 if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
-	cat "$TEMP/rootfs.json"
+	cat "$RSDK_TEMP/rootfs.json"
 fi
-sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$TEMP/rootfs.json" --name "$OUTPUT" --force
+sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$RSDK_TEMP/rootfs.json" --name "$OUTPUT" --force
 
 sudo chown "$UID:${GID:-$UID}" "$OUTPUT"
 for i in "$OUTPUT"/*; do
@@ -69,4 +69,4 @@ for i in "$OUTPUT"/*; do
 	fi
 done
 
-rm -rf "$TEMP"
+rm -rf "$RSDK_TEMP"
