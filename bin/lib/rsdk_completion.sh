@@ -1,5 +1,45 @@
 #!/usr/bin/env bash
 
+_rsdk_build_completions() {
+	# shellcheck source=bin/lib/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"
+
+	local suggestions=(
+		"--no-cache"
+		"--no-efi"
+		"-d"
+		"--debug"
+		"-T"
+		"--test-repo"
+		"-m"
+		"--mirror"
+		"-M"
+		"-i"
+		"--image-name"
+		"-h"
+		"--help"
+	)
+
+	local products=() product_provided="false"
+	mapfile -t products < <(jsonnet -S "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../templates/lib/product_list.libjsonnet")
+	# Trim empty elements
+	array_remove "products" ""
+
+	for i in "${products[@]}"; do
+		if in_array "$i" "${COMP_WORDS[@]}"; then
+			echo "$i found in ${COMP_WORDS[*]}"
+			product_provided="true"
+			break
+		fi
+	done
+
+	if [[ $product_provided == "false" ]]; then
+		suggestions+=("${products[@]}")
+	fi
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" "${COMP_WORDS[COMP_CWORD]}")
+}
+
 _rsdk_chroot_completions() {
 	case "$COMP_CWORD" in
 	2)

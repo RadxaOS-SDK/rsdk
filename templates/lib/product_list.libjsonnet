@@ -1,0 +1,3 @@
+local product_list = import "../../configs/products.json";
+
+std.lines(std.map(function(x) x.product, product_list))
