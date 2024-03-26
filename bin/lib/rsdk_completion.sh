@@ -37,7 +37,7 @@ _rsdk_build_completions() {
 		suggestions+=("${products[@]}")
 	fi
 
-	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" "${COMP_WORDS[COMP_CWORD]}")
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 }
 
 _rsdk_chroot_completions() {
@@ -62,7 +62,7 @@ _rsdk_chroot_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	esac
 }
@@ -79,7 +79,7 @@ _rsdk_write-image_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	3)
 		local i suggestions=()
@@ -92,7 +92,7 @@ _rsdk_write-image_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	esac
 }
@@ -114,7 +114,7 @@ _rsdk_completions() {
 			array_remove "subcommands" "chroot"
 		fi
 
-		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	*)
 		if [[ "$(type -t "_rsdk_${COMP_WORDS[1]}_completions")" == "function" ]]; then
