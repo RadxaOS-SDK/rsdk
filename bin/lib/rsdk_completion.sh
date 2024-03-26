@@ -60,19 +60,20 @@ _rsdk_write-image_completions() {
 }
 
 _rsdk_completions() {
+	# shellcheck source=bin/lib/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"
+	# shellcheck source=bin/lib/rsdk_configs.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/rsdk_configs.sh"
+
 	case "$COMP_CWORD" in
 	0) : ;;
 	1)
 		local subcommands=(
-			"build"
-			"devcon"
-			"help"
-			"setup"
-			"write-image"
+			"${RSDK_SUPPORTED_SUBCOMMANDS[@]}"
 		)
 
-		if [[ ! -f "/.dockerenv" ]]; then
-			subcommands+=("chroot")
+		if [[ -f "/.dockerenv" ]]; then
+			array_remove "subcommands" "chroot"
 		fi
 
 		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" "${COMP_WORDS[COMP_CWORD]}")
