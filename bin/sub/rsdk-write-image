@@ -17,24 +17,34 @@ elif [[ ! -b $BLOCKDEV ]]; then
 	echo "$EXIT_NOT_BLOCK_DEVICE" "$BLOCKDEV"
 fi
 
-if file "$IMAGE" | grep -q "XZ compressed"; then
-	echo "Writing xz image..."
-	xzcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-elif file "$IMAGE" | grep -q "gzip compressed data"; then
-	echo "Writing gz image..."
-	zcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-elif file "$IMAGE" | grep -q "Zip archive"; then
-	echo "Writing zip image..."
-	unzip -p "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-elif file "$IMAGE" | grep -q "7-zip archive data"; then
-	echo "Writing 7-zip image..."
-	7z e -so "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-elif file "$IMAGE" | grep -q "Zstandard compressed data"; then
-	echo "Writing Zstd image..."
-	zstdcat "$IMAGE" | sudo dd "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-else
-	echo "Writing raw image..."
-	sudo dd "if=$IMAGE" "of=$BLOCKDEV" bs=16M conv=fsync status=progress
-fi
+(
+	case "$(file "$IMAGE")" in
+	*"XZ compressed"*)
+		echo "Writing xz image..." >&2
+		xzcat "$IMAGE"
+		;;
+	*"gzip compressed data"*)
+		echo "Writing gz image..." >&2
+		zcat "$IMAGE"
+		;;
+	*"Zip archive"*)
+		echo "Writing zip image..." >&2
+		unzip -p "$IMAGE"
+		;;
+	*"7-zip archive data"*)
+		echo "Writing 7-zip image..." >&2
+		7z e -so "$IMAGE"
+		;;
+	*"Zstandard compressed data"*)
+		echo "Writing Zstd image..." >&2
+		zstdcat "$IMAGE"
+		;;
+	*)
+		echo "Writing raw image..." >&2
+		cat "$IMAGE"
+		;;
+	esac
+) | sudo dd "of=$BLOCKDEV" bs=16M status=progress
 echo "Syncing block device..."
 sudo sync "$BLOCKDEV"
+echo "$IMAGE has been written to $BLOCKDEV."
