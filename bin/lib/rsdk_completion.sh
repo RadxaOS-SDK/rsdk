@@ -27,7 +27,6 @@ _rsdk_build_completions() {
 
 	for i in "${products[@]}"; do
 		if in_array "$i" "${COMP_WORDS[@]}"; then
-			echo "$i found in ${COMP_WORDS[*]}"
 			product_provided="true"
 			break
 		fi
