@@ -71,27 +71,6 @@ EOF
 	exit "$1"
 }
 
-printf_array() {
-	local FORMAT="$1"
-	shift
-	local ARRAY=("$@")
-
-	if [[ $FORMAT == "json" ]]; then
-		jq --compact-output --null-input '$ARGS.positional' --args -- "${ARRAY[@]}"
-	else
-		for i in "${ARRAY[@]}"; do
-			# shellcheck disable=SC2059
-			printf "$FORMAT" "$i"
-		done
-	fi
-}
-
-in_array() {
-	local item="$1"
-	shift
-	[[ $* =~ $item ]]
-}
-
 # Workaround normal sudo can't access nix programs
 sudo() {
 	/usr/bin/env sudo --preserve-env=PATH -s "$@"
