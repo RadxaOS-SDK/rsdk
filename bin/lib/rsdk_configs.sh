@@ -8,5 +8,6 @@ export RSDK_SUPPORTED_SUBCOMMANDS=(
 	"devcon"
 	"help"
 	"setup"
+	"shell"
 	"write-image"
 )

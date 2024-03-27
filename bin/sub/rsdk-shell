@@ -4,6 +4,11 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 PROJECT_DIR="$(realpath "$SCRIPT_DIR"/../../)"
 OLD_DIR="$PWD"
 
+if [[ -n $DEVENV_NIX ]]; then
+	echo "Already inside of rsdk shell." >&2
+	exit 1
+fi
+
 pushd "$PROJECT_DIR" || (
 	echo "Unable to switch to project folder $PROJECT_DIR."
 	exit 1

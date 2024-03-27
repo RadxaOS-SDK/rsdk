@@ -114,6 +114,10 @@ _rsdk_completions() {
 			array_remove "subcommands" "devcon"
 		fi
 
+		if [[ -n $DEVENV_NIX ]]; then
+			array_remove "subcommands" "shell"
+		fi
+
 		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	*)
