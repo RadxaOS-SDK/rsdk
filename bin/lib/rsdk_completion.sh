@@ -66,6 +66,36 @@ _rsdk_chroot_completions() {
 	esac
 }
 
+_rsdk_update-product-repo_completions() {
+	# shellcheck source=bin/lib/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"
+
+	local suggestions=(
+		"-d"
+		"--dry-run"
+		"-h"
+		"--help"
+	)
+
+	local products=() product_provided="false"
+	mapfile -t products < <(jq -r ".[].product" "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
+	# Trim empty elements
+	array_remove "products" ""
+
+	for i in "${products[@]}"; do
+		if in_array "$i" "${COMP_WORDS[@]}"; then
+			product_provided="true"
+			break
+		fi
+	done
+
+	if [[ $product_provided == "false" ]]; then
+		suggestions+=("${products[@]}")
+	fi
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+}
+
 _rsdk_write-image_completions() {
 	case "$COMP_CWORD" in
 	2)
