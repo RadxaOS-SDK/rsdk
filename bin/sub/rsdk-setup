@@ -102,3 +102,5 @@ nix registry add devenv github:cachix/devenv
 
 devenv shell npm install @devcontainers/cli
 trap - EXIT
+
+echo "source '$SCRIPT_DIR/../lib/rsdk_completion.sh'" >>~/.bashrc
