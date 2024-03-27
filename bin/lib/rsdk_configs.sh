@@ -7,8 +7,9 @@ export RSDK_SUPPORTED_SUBCOMMANDS=(
 	"chroot"
 	"devcon"
 	"help"
+	"infra-build"
+	"infra-update"
 	"setup"
 	"shell"
-	"infra-update"
 	"write-image"
 )

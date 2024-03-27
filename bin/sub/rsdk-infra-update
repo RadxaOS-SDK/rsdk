@@ -2,7 +2,6 @@
 
 update_repo() {
 	local PRODUCT="${1}"
-	local RSDK_BUILD_ORG="radxa-build"
 	local OUTPUT_ROOT="$PWD/out"
 	local OUTPUT="$OUTPUT_ROOT/$RSDK_BUILD_ORG/${PRODUCT}"
 	local TEMPLATE_DIR="$SCRIPT_DIR/../../templates"
@@ -85,6 +84,7 @@ main() {
 	eval set -- "$TEMP"
 
 	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
+	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-radxa-build}"
 
 	while true; do
 		TEMP="$1"

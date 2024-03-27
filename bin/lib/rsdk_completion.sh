@@ -71,6 +71,33 @@ _rsdk_chroot_completions() {
 	esac
 }
 
+_rsdk_infra-build_completions() {
+	# shellcheck source=bin/lib/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"
+
+	local suggestions=(
+		"-p"
+		"--production"
+		"-t"
+		"--test"
+		"-h"
+		"--help"
+	)
+
+	local products=()
+	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
+	# Trim empty elements
+	array_remove "products" ""
+	suggestions+=("${products[@]}")
+
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
+	done
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+}
+
 _rsdk_infra-update_completions() {
 	# shellcheck source=bin/lib/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"

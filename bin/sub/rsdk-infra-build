@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=bin/lib/utils.sh
+	source "$SCRIPT_DIR/../lib/utils.sh"
+
+	local TEMP
+	if ! TEMP="$(getopt -o "hpt" -l "help,production,test" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
+	export RSDK_WORKFLOW_FILE="${RSDK_WORKFLOW_FILE:-}"
+	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-radxa-build}"
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-p | --production)
+			RSDK_WORKFLOW_FILE="build.yml"
+			;;
+		-t | --test)
+			RSDK_WORKFLOW_FILE="test.yml"
+			;;
+		-h | --help)
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error $EXIT_UNKNOWN_OPTION "$TEMP"
+			;;
+		esac
+	done
+
+	if [[ -z $RSDK_WORKFLOW_FILE ]]; then
+		echo "Unknown release variant. Please use -p|--production or -t|--test to specify." >&2
+		return 1
+	fi
+
+	if (($# == 0)); then
+		read -rp "No product supplied. Do you want to build ALL supported products? [y/N] "
+		if [[ ${REPLY/Y/y} == "y" ]]; then
+			local products
+			mapfile -t products < <(jq -r '.[].product' "$SCRIPT_DIR/../../configs/products.json")
+			set -- "${products[@]}"
+		else
+			echo "Operation cancelled."
+			return
+		fi
+	fi
+
+	if ! gh auth status &>/dev/null; then
+		echo "This operation requires GitHub authentication:"
+		if ! gh auth login; then
+			error "$EXIT_AUTHENTICATION_FAILED" "github"
+		fi
+	fi
+
+	while (($# != 0)); do
+		gh workflow run ".github/workflows/$RSDK_WORKFLOW_FILE" --repo "$RSDK_BUILD_ORG/$1"
+		shift
+	done
+}
+
+main "$@"
