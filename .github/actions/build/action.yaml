@@ -1,0 +1,81 @@
+name: rsdk-build
+description: rsdk build Action
+inputs:
+  product:
+    required: true
+  suite:
+    required: false
+  edition:
+    required: false
+  artifacts:
+    required: false
+    default: false
+  release-id:
+    required: false
+  github-token:
+    required: false
+  test-repo:
+    required: false
+    default: false
+  timestamp:
+    required: false
+    default: b${{ github.run_number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: RadxaOS-SDK/rsdk
+        submodules: recursive
+    - name: Set suite based on input variables
+      shell: bash
+      run: |
+        options=()
+        if [[ "${{ inputs.test-repo }}" == "true" ]]
+        then
+          options+=("--test-repo")
+        fi
+        echo "options=${options[*]}" >> $GITHUB_ENV
+    - name: Set up QEMU Emulation
+      uses: docker/setup-qemu-action@v3
+    - name: Build within devcontainer
+      uses: devcontainers/ci@v0.3
+      with:
+        runCmd: |
+          bin/rsdk setup
+          bin/rsdk shell rsdk build ${{ env.options }} ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
+    - name: Prepare for release
+      id: prep
+      shell: bash
+      run: |
+        cd out/${{ inputs.product }}*
+        sudo chown -R $USER:$GROUPS .
+        BUILD_TUPLE="$(basename "$(realpath .)")"
+        echo "BUILD_TUPLE=$BUILD_TUPLE" >> $GITHUB_OUTPUT
+        for i in *
+        do
+          mv "$i" "${BUILD_TUPLE}_${{ inputs.timestamp }}.$i"
+        done
+        xz -T 0 *.img *.tar
+    - name: Upload build outputs to Artifacts
+      if: inputs.artifacts == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.prep.outputs.BUILD_TUPLE }}
+        path: out/**/*
+    - name: Upload build outputs to Release
+      if: inputs.release-id != '' && inputs.github-token != ''
+      uses: xresloader/upload-to-github-release@v1
+      env:
+          GITHUB_TOKEN: ${{ inputs.github-token }}
+      with:
+        release_id: ${{ inputs.release-id }}
+        file: out/**/*
+    - name: Rollback release
+      if: failure() && inputs.release-id != '' && inputs.github-token != ''
+      uses: author/action-rollback@stable
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+      with:
+        release_id: ${{ inputs.release-id }}

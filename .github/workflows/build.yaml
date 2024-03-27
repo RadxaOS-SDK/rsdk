@@ -1,0 +1,56 @@
+name: Build images
+on:
+  merge_group:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - .gitignore
+      - 'docs/**'
+      - 'theme/**'
+      - 'po/**'
+      - book.toml
+      - .github/workflows/docs.yaml
+  push:
+    # branches:
+    #   - main
+    paths-ignore:
+      - '**.md'
+      - .gitignore
+      - 'docs/**'
+      - 'theme/**'
+      - 'po/**'
+      - book.toml
+      - .github/workflows/docs.yaml
+  schedule:
+    - cron: '0 0 * * SUN'
+  workflow_dispatch:
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    outputs:
+      products: ${{ steps.query.outputs.products }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Query available board configs
+        id: query
+        run: |
+          echo "products=$(jq -c '. | map(.product)' configs/products.json)" >> $GITHUB_OUTPUT
+  build-images:
+    needs: [ query ]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        products: ${{ fromJSON(needs.query.outputs.products) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build ${{ matrix.products }}
+        uses: ./.github/actions/build
+        with:
+          product: ${{ matrix.products }}
+          test-repo: true
+          artifacts: true

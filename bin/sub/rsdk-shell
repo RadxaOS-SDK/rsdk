@@ -13,8 +13,11 @@ pushd "$PROJECT_DIR" || (
 	echo "Unable to switch to project folder $PROJECT_DIR."
 	exit 1
 )
-devenv shell
+devenv shell -- "$@"
+RET="$?"
 popd || (
 	echo "Unable to return to previous folder $OLD_DIR."
 	exit 1
 )
+
+exit "$RET"

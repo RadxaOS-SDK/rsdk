@@ -41,7 +41,7 @@
 
   languages.javascript = {
     enable = true;
-    npm.install.enable = true;
+    npm.enable = true;
   };
   languages.jsonnet.enable = true;
 
