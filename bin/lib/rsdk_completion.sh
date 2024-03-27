@@ -111,6 +111,7 @@ _rsdk_completions() {
 
 		if [[ -f "/.dockerenv" ]]; then
 			array_remove "subcommands" "chroot"
+			array_remove "subcommands" "devcon"
 		fi
 
 		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
