@@ -70,6 +70,6 @@ fi
 
 if [[ $DRY_RUN == "false" ]]; then
 	git push --set-upstream origin main
-	gh repo edit --description "$(jsonnet -S --tla-str "product=$PRODUCT" "$TEMPLATE_DIR/lib/product_data_product_full_name.libjsonnet")"
+	gh repo edit --description "$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).product_full_name' "$SCRIPT_DIR/../../configs/products.json")"
 fi
 popd

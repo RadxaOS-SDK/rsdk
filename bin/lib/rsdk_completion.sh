@@ -21,7 +21,7 @@ _rsdk_build_completions() {
 	)
 
 	local products=() product_provided="false"
-	mapfile -t products < <(jsonnet -S "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../templates/lib/product_list.libjsonnet")
+	mapfile -t products < <(jq -r ".[].product" "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 

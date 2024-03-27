@@ -1,4 +1,0 @@
-local product_data = import "product_data.libjsonnet";
-
-function(product)
-    product_data(product).product_full_name

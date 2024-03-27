@@ -66,8 +66,8 @@ main() {
 	done
 
 	PRODUCT="${1}"
-	SUITE="${2:-$(jsonnet -S --tla-str "product=$PRODUCT" "$SCRIPT_DIR/../../templates/lib/product_default_suite.libjsonnet")}"
-	EDITION="${3:-$(jsonnet -S --tla-str "product=$PRODUCT" "$SCRIPT_DIR/../../templates/lib/product_default_edition.libjsonnet")}"
+	SUITE="${2:-$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../configs/products.json")}"
+	EDITION="${3:-$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../configs/products.json")}"
 	OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
 	if [[ $RSDK_OPTION_CACHE == "false" ]] || ([[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] && (($(du -b "$OUTPUT/$RSDK_OPTION_ROOTFS" | cut -f 1) == 0))); then
