@@ -9,6 +9,6 @@ export RSDK_SUPPORTED_SUBCOMMANDS=(
 	"help"
 	"setup"
 	"shell"
-	"update-product-repo"
+	"infra-update"
 	"write-image"
 )
