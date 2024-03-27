@@ -3,6 +3,7 @@
     "vscode": {
       "extensions": [
         "mkhl.direnv",
+        "github.vscode-github-actions",
         "grafana.vscode-jsonnet",
         "vivaxy.vscode-conventional-commits"
       ]
