@@ -9,7 +9,7 @@ main() {
 	source "$SCRIPT_DIR/../lib/rsdk_configs.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -22,6 +22,8 @@ main() {
 	export RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
 	export RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-$RSDK_DEFAULT_IMAGE_NAME}"
 	export RSDK_OPTION_CACHE="${RSDK_OPTION_CACHE:-true}"
+	export RSDK_OPTION_KERNEL_OVERRIDE="${RSDK_OPTION_KERNEL_OVERRIDE:-}"
+	export RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-}"
 
 	while true; do
 		TEMP="$1"
@@ -55,6 +57,14 @@ main() {
 		-h | --help)
 			rsdk help build
 			return
+			;;
+		-k | --override-kernel)
+			RSDK_OPTION_KERNEL_OVERRIDE="$1"
+			shift
+			;;
+		-f | --override-firmware)
+			RSDK_OPTION_FIRMWARE_OVERRIDE="$1"
+			shift
 			;;
 		--)
 			break

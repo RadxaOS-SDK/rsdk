@@ -18,6 +18,10 @@ _rsdk_build_completions() {
 		"--image-name"
 		"-h"
 		"--help"
+		"-k"
+		"--override-kernel"
+		"-f"
+		"--override-firmware"
 	)
 
 	local products=() product_provided="false"
