@@ -21,7 +21,7 @@ _rsdk_build_completions() {
 	)
 
 	local products=() product_provided="false"
-	mapfile -t products < <(jq -r ".[].product" "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
+	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 
@@ -35,6 +35,11 @@ _rsdk_build_completions() {
 	if [[ $product_provided == "false" ]]; then
 		suggestions+=("${products[@]}")
 	fi
+
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
+	done
 
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 }
@@ -77,21 +82,16 @@ _rsdk_update-product-repo_completions() {
 		"--help"
 	)
 
-	local products=() product_provided="false"
-	mapfile -t products < <(jq -r ".[].product" "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
+	local products=()
+	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
+	suggestions+=("${products[@]}")
 
-	for i in "${products[@]}"; do
-		if in_array "$i" "${COMP_WORDS[@]}"; then
-			product_provided="true"
-			break
-		fi
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
 	done
-
-	if [[ $product_provided == "false" ]]; then
-		suggestions+=("${products[@]}")
-	fi
 
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 }
