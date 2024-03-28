@@ -58,6 +58,7 @@ runs:
           mv "$i" "${BUILD_TUPLE}_${{ inputs.timestamp }}.$i"
         done
         xz -T 0 *.img *.tar
+        sha512sum * > "${BUILD_TUPLE}.sha512sum"
     - name: Upload build outputs to Artifacts
       if: inputs.artifacts == 'true'
       uses: actions/upload-artifact@v4
@@ -72,6 +73,32 @@ runs:
       with:
         release_id: ${{ inputs.release-id }}
         file: out/**/*
+    - name: Append changelog header
+      if: inputs.release-id != '' && inputs.github-token != ''
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.timestamp }}
+        append_body: true
+        body: |
+          
+          ## SHA-512 Checksum for ${{ inputs.timestamp }}
+
+          ```
+    - name: Append checksum
+      if: inputs.release-id != '' && inputs.github-token != ''
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.timestamp }}
+        append_body: true
+        body_path: out/**/*.sha512sum
+    - name: Append changelog footer
+      if: inputs.release-id != '' && inputs.github-token != ''
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ inputs.timestamp }}
+        append_body: true
+        body: |
+          ```
     - name: Rollback release
       if: failure() && inputs.release-id != '' && inputs.github-token != ''
       uses: author/action-rollback@stable
