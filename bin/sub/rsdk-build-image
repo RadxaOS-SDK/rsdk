@@ -7,8 +7,8 @@ source "$SCRIPT_DIR/../lib/utils.sh"
 source "$SCRIPT_DIR/../lib/rsdk_configs.sh"
 
 PRODUCT="${1}"
-SUITE="${2:-bullseye}"
-EDITION="${3:-cli}"
+SUITE="${2:-$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../configs/products.json")}"
+EDITION="${3:-$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../configs/products.json")}"
 OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 
 RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
