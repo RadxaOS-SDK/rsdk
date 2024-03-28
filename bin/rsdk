@@ -12,7 +12,7 @@ main() {
 	if [[ -e "$SCRIPT_DIR/sub/rsdk-$SUBCOMMAND" ]]; then
 		"$SCRIPT_DIR/sub/rsdk-$SUBCOMMAND" "$@"
 	else
-		error $EXIT_MISSING_SUBCOMMAND "$SUBCOMMAND"
+		error "$EXIT_MISSING_SUBCOMMAND" "$SUBCOMMAND"
 	fi
 }
 

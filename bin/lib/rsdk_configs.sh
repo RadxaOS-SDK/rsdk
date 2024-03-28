@@ -9,6 +9,7 @@ export RSDK_SUPPORTED_SUBCOMMANDS=(
 	"help"
 	"infra-build"
 	"infra-update"
+	"install"
 	"setup"
 	"shell"
 	"write-image"

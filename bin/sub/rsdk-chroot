@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+SCRIPT_NAME="$(basename "$0")"
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=bin/lib/utils.sh
 source "$SCRIPT_DIR/../lib/utils.sh"
@@ -8,7 +9,9 @@ if [[ -f "/.dockerenv" ]]; then
 	error "$EXIT_RUNNING_IN_CONTAINER"
 fi
 
-if (($# < 1)); then
+if [[ $SCRIPT_NAME == "rsdk-chroot" ]] && (($# < 1)); then
+	error "$EXIT_TOO_FEW_ARGUMENTS"
+elif [[ $SCRIPT_NAME == "rsdk-install" ]] && (($# < 2)); then
 	error "$EXIT_TOO_FEW_ARGUMENTS"
 fi
 
@@ -56,7 +59,33 @@ else
 	error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
 fi
 
-sudo systemd-nspawn -D /mnt "$@"
+case "$SCRIPT_NAME" in
+rsdk-chroot)
+	sudo systemd-nspawn -D /mnt "$@"
+	;;
+rsdk-install)
+	file="${1:-}"
+	ext="${file##*.}"
+	case "$ext" in
+	deb)
+		sudo cp "$file" /mnt
+		sudo systemd-nspawn -D /mnt bash -c \
+			"dpkg -i '/$(basename "$file")' && \
+                apt-get install -y --fix-missing  --allow-downgrades"
+		;;
+	dtbo)
+		sudo cp "$file" /mnt/boot/dtbo
+		sudo systemd-nspawn -D /mnt u-boot-update
+		;;
+	dtb)
+		sudo find /mnt/usr/lib/linux-image-*/ -name "$(basename "$file")" -exec mv "{}" "{}.bak" \; -exec cp "$file" "{}" \;
+		;;
+	*)
+		error "$EXIT_UNSUPPORTED_OPTION" "$file"
+		;;
+	esac
+	;;
+esac
 
 sudo umount -R /mnt
 

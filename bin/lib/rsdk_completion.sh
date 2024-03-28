@@ -75,6 +75,10 @@ _rsdk_chroot_completions() {
 	esac
 }
 
+_rsdk_install_completions() {
+	_rsdk_chroot_completions "$@"
+}
+
 _rsdk_infra-build_completions() {
 	# shellcheck source=bin/lib/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/lib/stdlib.sh"
