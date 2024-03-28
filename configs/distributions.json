@@ -1,0 +1,19 @@
+[
+    {
+        "distribution": "debian",
+        "suites": [
+            "buster",
+            "bullseye",
+            "bookworm",
+            "trixie",
+            "sid"
+        ]
+    },
+    {
+        "distribution": "ubuntu",
+        "suites": [
+            "focal",
+            "jammy"
+        ]
+    }
+]
