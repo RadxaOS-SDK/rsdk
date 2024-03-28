@@ -18,9 +18,11 @@ fi
 disk="$1"
 shift
 
+RSDK_TEMP="$(mktemp -d)"
+
 if [[ -f $disk ]]; then
 	disk_file="$disk"
-	trap 'set +e; sudo -n true && (sudo umount -R /mnt; sudo kpartx -d "$disk_file"; sync)' SIGINT SIGQUIT SIGTSTP EXIT
+	trap 'set +e; sudo -n true && (sudo umount -R "$RSDK_TEMP"; sudo kpartx -d "$disk_file"; sync); rm -rf "$RSDK_TEMP"' SIGINT SIGQUIT SIGTSTP EXIT
 	sudo kpartx -a "$disk"
 	echo "Target is a file. Trying to find rootfs partition..."
 	if ! disk="$(sudo blkid -t LABEL=rootfs -o device | grep /dev/mapper/loop | tail -n 1)"; then
@@ -33,52 +35,52 @@ if [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
 	error "$EXIT_NOT_BLOCK_DEVICE" "$disk"
 fi
 
-sudo umount -R /mnt || true
+sudo umount -R "$RSDK_TEMP" || true
 
 if [[ -b "$disk"3 ]]; then
 	# latest rbuild/rsdk image
-	sudo mount "$disk"3 /mnt
-	sudo mount "$disk"2 /mnt/boot/efi
-	sudo mount "$disk"1 /mnt/config
+	sudo mount "$disk"3 "$RSDK_TEMP"
+	sudo mount "$disk"2 "$RSDK_TEMP/boot/efi"
+	sudo mount "$disk"1 "$RSDK_TEMP/config"
 elif [[ -b "$disk"2 ]]; then
-	sudo mount "$disk"2 /mnt
+	sudo mount "$disk"2 "$RSDK_TEMP"
 	case "$(sudo blkid "$disk"1 -s LABEL -o value)" in
 	"armbi_boot")
 		# new armbian image
-		sudo mount "$disk"1 /mnt/boot
+		sudo mount "$disk"1 "$RSDK_TEMP/boot"
 		;;
 	*)
 		# old rbuild image
-		sudo mount "$disk"1 /mnt/config
+		sudo mount "$disk"1 "$RSDK_TEMP/config"
 		;;
 	esac
 elif [[ -b "$disk"1 ]]; then
 	# old armbian image
-	sudo mount "$disk"1 /mnt
+	sudo mount "$disk"1 "$RSDK_TEMP"
 else
 	error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
 fi
 
 case "$SCRIPT_NAME" in
 rsdk-chroot)
-	sudo systemd-nspawn -D /mnt "$@"
+	sudo systemd-nspawn -D "$RSDK_TEMP" "$@"
 	;;
 rsdk-install)
 	file="${1:-}"
 	ext="${file##*.}"
 	case "$ext" in
 	deb)
-		sudo cp "$file" /mnt
-		sudo systemd-nspawn -D /mnt bash -c \
+		sudo cp "$file" "$RSDK_TEMP"
+		sudo systemd-nspawn -D "$RSDK_TEMP" bash -c \
 			"dpkg -i '/$(basename "$file")' && \
                 apt-get install -y --fix-missing  --allow-downgrades"
 		;;
 	dtbo)
-		sudo cp "$file" /mnt/boot/dtbo
-		sudo systemd-nspawn -D /mnt u-boot-update
+		sudo cp "$file" "$RSDK_TEMP/boot/dtbo"
+		sudo systemd-nspawn -D "$RSDK_TEMP" u-boot-update
 		;;
 	dtb)
-		sudo find /mnt/usr/lib/linux-image-*/ -name "$(basename "$file")" -exec mv "{}" "{}.bak" \; -exec cp "$file" "{}" \;
+		sudo find "$RSDK_TEMP/usr/lib/"linux-image-*/ -name "$(basename "$file")" -exec mv "{}" "{}.bak" \; -exec cp "$file" "{}" \;
 		;;
 	*)
 		error "$EXIT_UNSUPPORTED_OPTION" "$file"
@@ -87,6 +89,6 @@ rsdk-install)
 	;;
 esac
 
-sudo umount -R /mnt
-
+sudo umount -R "$RSDK_TEMP"
+rm -rf "$RSDK_TEMP"
 sync
