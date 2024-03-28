@@ -66,7 +66,11 @@ else
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
-                u-boot-%(u_boot_override)s linux-headers-%(linux_override)s linux-image-%(linux_override)s
+                u-boot-%(u_boot_override)s linux-headers-%(linux_override)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                linux-image-%(linux_override)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
