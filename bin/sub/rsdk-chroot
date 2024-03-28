@@ -35,8 +35,6 @@ if [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
 	error "$EXIT_NOT_BLOCK_DEVICE" "$disk"
 fi
 
-sudo umount -R "$RSDK_TEMP" || true
-
 if [[ -b "$disk"3 ]]; then
 	# latest rbuild/rsdk image
 	sudo mount "$disk"3 "$RSDK_TEMP"
