@@ -22,6 +22,8 @@ _rsdk_build_completions() {
 		"--override-kernel"
 		"-f"
 		"--override-firmware"
+		"-p"
+		"--override-product"
 	)
 
 	local products=() product_provided="false"

@@ -30,7 +30,7 @@ generate_rootfs() {
 	fi
 
 	local JSONNET_ARGS=(
-		"--tla-str" "product=$PRODUCT"
+		"--tla-str" "product=${RSDK_OPTION_PRODUCT_OVERRIDE:-$PRODUCT}"
 		"--tla-str" "suite=$SUITE"
 		"--tla-str" "edition=$EDITION"
 		"--tla-str" "temp_dir=$RSDK_TEMP"
@@ -91,7 +91,7 @@ generate_image() {
 	if [[ ! -e "$OUTPUT/build-image" ]]; then
 		local JSONNET_ARGS=(
 			"-S"
-			"--tla-str" "product=$PRODUCT"
+			"--tla-str" "product=${RSDK_OPTION_PRODUCT_OVERRIDE:-$PRODUCT}"
 		)
 
 		if [[ -n ${RSDK_OPTION_EFI} ]]; then
@@ -133,7 +133,7 @@ main() {
 	source "$SCRIPT_DIR/../lib/rsdk_configs.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -148,6 +148,7 @@ main() {
 	local RSDK_OPTION_CACHE="${RSDK_OPTION_CACHE:-true}"
 	local RSDK_OPTION_KERNEL_OVERRIDE="${RSDK_OPTION_KERNEL_OVERRIDE:-}"
 	local RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-}"
+	local RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-}"
 
 	while true; do
 		TEMP="$1"
@@ -190,6 +191,10 @@ main() {
 			RSDK_OPTION_FIRMWARE_OVERRIDE="$1"
 			shift
 			;;
+		-p | --override-product)
+			RSDK_OPTION_PRODUCT_OVERRIDE="$1"
+			shift
+			;;
 		--)
 			break
 			;;
@@ -211,6 +216,9 @@ main() {
 	fi
 	if i="$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).override_firmware' "$SCRIPT_DIR/../../configs/products.json")"; then
 		RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-$i}"
+	fi
+	if i="$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).override_product' "$SCRIPT_DIR/../../configs/products.json")"; then
+		RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-$i}"
 	fi
 
 	if [[ $RSDK_OPTION_CACHE == "false" ]] || ([[ -f "$OUTPUT/$RSDK_OPTION_ROOTFS" ]] && (($(du -b "$OUTPUT/$RSDK_OPTION_ROOTFS" | cut -f 1) == 0))); then
