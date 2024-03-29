@@ -20,6 +20,10 @@ inputs:
   timestamp:
     required: false
     default: b${{ github.run_number }}
+  override-kernel:
+    required: false
+  override-firmware:
+    required: false
 runs:
   using: "composite"
   steps:
@@ -35,6 +39,14 @@ runs:
         if [[ "${{ inputs.test-repo }}" == "true" ]]
         then
           options+=("--test-repo")
+        fi
+        if [[ -n "${{ inputs.override-kernel }}" ]]
+        then
+          options+=("--override-kernel" "${{ inputs.override-kernel }}")
+        fi
+        if [[ -n "${{ inputs.override-firmware }}" ]]
+        then
+          options+=("--override-firmware" "${{ inputs.override-firmware }}")
         fi
         echo "options=${options[*]}" >> $GITHUB_ENV
     - name: Set up QEMU Emulation
