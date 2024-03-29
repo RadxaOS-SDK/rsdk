@@ -192,6 +192,16 @@
         "supported_edition": ["xfce"]
     },
     {
+        "product": "radxa-cm5-io-6_1",
+        "override_product": "radxa-cm5-io",
+        "override_kernel": "rk2312",
+        "product_name": "Radxa CM5 IO",
+        "product_full_name": "Radxa CM5 IO Board Linux 6.1 Development Build",
+        "soc": "rk3588s",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
@@ -229,6 +239,16 @@
         "product_full_name": "ROCK 5B+",
         "soc": "rk3588",
         "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
+    },
+    {
+        "product": "rock-5b-6_1",
+        "override_product": "rock-5b",
+        "override_kernel": "rk2312",
+        "product_name": "ROCK 5B",
+        "product_full_name": "ROCK 5B Linux 6.1 Development Build",
+        "soc": "rk3588",
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
