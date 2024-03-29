@@ -99,8 +99,7 @@ runs:
         tag_name: ${{ inputs.timestamp }}
         append_body: true
         body: |
-          
-          ## SHA-512 Checksum for ${{ inputs.timestamp }}
+          ## SHA-512 Checksum for ${{ inputs.timestamp }} ${{ steps.prep.outputs.BUILD_TUPLE }}
 
           ```
     - name: Append checksum
