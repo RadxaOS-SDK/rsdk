@@ -76,7 +76,7 @@ runs:
           mv "$i" "${BUILD_TUPLE}_${{ inputs.timestamp }}.$i"
         done
         xz -T 0 *.img *.tar
-        sha512sum * > "${BUILD_TUPLE}.sha512sum"
+        sha512sum * > "${BUILD_TUPLE}_${{ inputs.timestamp }}.sha512sum"
     - name: Upload build outputs to Artifacts
       if: inputs.artifacts == 'true'
       uses: actions/upload-artifact@v4
@@ -108,7 +108,7 @@ runs:
       with:
         tag_name: ${{ inputs.timestamp }}
         append_body: true
-        body_path: out/**/*.sha512sum
+        body_path: out/${{ steps.prep.outputs.BUILD_TUPLE }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.sha512sum
     - name: Append changelog footer
       if: inputs.release-id != '' && inputs.github-token != ''
       uses: softprops/action-gh-release@v2
