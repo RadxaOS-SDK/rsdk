@@ -114,7 +114,7 @@ runs:
           ```
     - name: Rollback release
       if: failure() && inputs.release-id != '' && inputs.github-token != ''
-      uses: author/action-rollback@stable
+      uses: author/action-rollback@1.0.4
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
       with:
