@@ -1,4 +1,5 @@
 name: Build images
+
 on:
   merge_group:
   pull_request:
@@ -24,6 +25,10 @@ on:
   schedule:
     - cron: '0 0 * * SUN'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   query:
