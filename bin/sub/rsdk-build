@@ -180,7 +180,8 @@ main() {
 			shift
 			;;
 		-h | --help)
-			rsdk help build
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
 			return
 			;;
 		-k | --override-kernel)
@@ -204,7 +205,18 @@ main() {
 		esac
 	done
 
+	if (($# == 0)); then
+		TEMP="$(basename "$0")"
+		rsdk help "${TEMP#rsdk-}"
+		return
+	fi
+
 	local PRODUCT="${1}" SUITE EDITION
+	if ! jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../configs/products.json"; then
+		echo "'$PRODUCT' is not a supported product." >&2
+		return 1
+	fi
+
 	SUITE="${2:-$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../configs/products.json")}"
 	EDITION="${3:-$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../configs/products.json")}"
 	local OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
