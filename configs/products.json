@@ -128,7 +128,7 @@
         "supported_edition": ["xfce"]
     },
     {
-        "product": "radxa-cm3s-io",
+        "product": "radxa-cm3-sodimm-io",
         "product_name": "Radxa CM3S IO",
         "product_full_name": "Radxa CM3S IO Board",
         "soc": "rk3566",
