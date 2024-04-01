@@ -41,7 +41,7 @@ jobs:
       - name: Query available board configs
         id: query
         run: |
-          echo "products=$(jq -c '. | map(.product)' configs/products.json)" >> $GITHUB_OUTPUT
+          echo "products=$(jq -c '. | map(.product)' src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
   build-images:
     needs: [ query ]
     runs-on: ubuntu-latest
