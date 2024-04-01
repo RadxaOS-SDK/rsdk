@@ -1,0 +1,5 @@
+local soc_list = import "socs.json";
+
+function(soc)
+    std.filter(function(x) std.member(x.soc_list, soc),
+               soc_list)[0].soc_family

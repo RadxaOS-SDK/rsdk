@@ -61,8 +61,8 @@ runs:
       uses: devcontainers/ci@v0.3
       with:
         runCmd: |
-          bin/rsdk setup
-          bin/rsdk shell rsdk build ${{ env.options }} ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
+          src/bin/rsdk setup
+          src/bin/rsdk shell rsdk build ${{ env.options }} ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
     - name: Prepare for release
       id: prep
       shell: bash

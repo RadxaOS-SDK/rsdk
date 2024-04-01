@@ -1,0 +1,5 @@
+local distro_list = import "distributions.json";
+
+function(suite)
+    std.filter(function(x) std.member(x.suites, suite),
+               distro_list)[0].distribution

@@ -1,0 +1,120 @@
+local distro_check = import "../../../../configs/distro_check.libjsonnet";
+
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         u_boot_override,
+) {
+    mmdebstrap+: {
+        packages+:
+        [
+            // Core system package
+            "init",
+            "initramfs-tools",
+            "sudo",
+        ] +
+
+        // Firmware
+(if distro_check(suite) == "debian"
+then
+        [
+            "firmware-brcm80211",
+            "firmware-realtek",
+        ]
+else if distro_check(suite) == "ubuntu"
+then
+        [
+            "linux-firmware",
+        ]
+else
+        []
+) +
+
+        [
+            // System utils
+            "cloud-initramfs-growroot",
+            "ssh",
+            "systemd-timesyncd",
+        ] +
+
+        [
+            // Network
+            "bluetooth",
+            "iw",
+            "network-manager",
+            "wpasupplicant",
+        ] +
+
+        [
+            // Radxa
+            "radxa-firmware",
+            "radxa-udev",
+            "rsetup",
+            "rsetup-config-first-boot",
+        ],
+
+        "essential-hooks"+:
+        [
+            |||
+                set -e
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                radxa-bootutils python-is-python3
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                u-boot-%(u_boot_override)s linux-headers-%(linux_override)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                linux-image-%(linux_override)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                -oDpkg::Options::=--force-confnew %(recommends)s \
+                task-%(product)s
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
+                -oDpkg::Options::=--force-confnew --allow-downgrades
+            ||| % {
+                recommends: (if distro_check(suite) == "debian" && vendor_packages
+                    then
+                        "--install-recommends"
+                    else
+                        "--no-install-recommends"
+                ),
+                product: product,
+                u_boot_override: (if std.isEmpty(u_boot_override)
+                    then
+                        product
+                    else
+                        u_boot_override
+                ),
+                linux_override: (if std.isEmpty(linux_override)
+                    then
+                        product
+                    else
+                        linux_override
+                ),
+            },
+        ],
+
+        "customize-hooks"+:
+(if suite == "bookworm"
+then
+        // Install Debian 12 packages
+        [
+            'echo "copy_exec /usr/bin/grep /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/sed /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/rm /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+            'echo "copy_exec /usr/bin/awk /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
+        ]
+else
+        []
+),
+    },
+}

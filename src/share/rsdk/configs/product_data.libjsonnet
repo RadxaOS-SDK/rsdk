@@ -1,0 +1,5 @@
+local product_list = import "products.json";
+
+function(product)
+    std.filter(function(x) x.product == product,
+               product_list)[0]

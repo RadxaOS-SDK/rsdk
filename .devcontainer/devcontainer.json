@@ -60,7 +60,7 @@
   ],
   "overrideCommand": true,
   "updateContentCommand": "command -v devenv && devenv ci || true",
-  "postCreateCommand": "bin/sub/rsdk-setup"
+  "postCreateCommand": "src/bin/rsdk setup"
 }
 
 

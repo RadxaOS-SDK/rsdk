@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+rate_limited() {
+	echo "You might be rate limited by GitHub."
+	echo "Please request a PAT from GitHub website, and add it to your Dev Container:"
+	echo "mkdir -p ~/.config/nix/ && echo 'access-tokens = github.com=YOUR_GITHUB_PAT' >> ~/.config/nix/nix.conf && src/bin/rsdk setup"
+	read -rp "Press Enter to continue..."
+	exit 0
+}
+
+get_distro_id() {
+	(source /etc/os-release && echo "$ID")
+}
+
+get_distro_version_id() {
+	(source /etc/os-release && echo "$VERSION_ID")
+}
+
+get_distro_version_codename() {
+	(source /etc/os-release && echo "$VERSION_CODENAME")
+}
+
+install_native_dependency() {
+	local riscv_support="true"
+
+	case "$(get_distro_id)" in
+	"ubuntu")
+		cat <<EOF | sudo tee /etc/apt/sources.list
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename) main restricted
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename)-updates main restricted
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename) universe
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename)-updates universe
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename) multiverse
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename)-updates multiverse
+deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename)-backports main restricted universe multiverse
+deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_version_codename)-security main restricted
+deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_version_codename)-security universe
+deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_version_codename)-security multiverse
+EOF
+		cat <<EOF | sudo tee /etc/apt/sources.list.d/ubuntu-ports.list
+deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename) main restricted universe multiverse
+deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename)-updates main restricted universe multiverse
+deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename)-backports main restricted universe multiverse
+deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename)-security main restricted universe multiverse
+EOF
+		;;
+	"debian")
+		if (($(get_distro_version_id) < 13)); then
+			riscv_support="false"
+		fi
+		;;
+	*)
+		echo "Only Debian and Ubuntu are supported for native execution."
+		echo "Skip dependency installation."
+		return
+		;;
+	esac
+
+	export DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1
+	PACKAGES=(
+		bash-completion
+		bdebstrap
+		binfmt-support
+		qemu-user-static
+		debian-archive-keyring
+		debian-ports-archive-keyring
+		libfakechroot:arm64
+		libfakeroot:arm64
+	)
+	sudo dpkg --add-architecture arm64
+
+	if false "$riscv_support"; then
+		PACKAGES+=(
+			libfakechroot:riscv64
+			libfakeroot:riscv64
+		)
+		sudo dpkg --add-architecture riscv64
+	fi
+
+	sudo apt-get update
+	sudo apt-get full-upgrade -y
+	sudo apt-get install -y "${PACKAGES[@]}"
+}
+
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# shellcheck source=src/lib/rsdk/utils.sh
+source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+
+direnv allow
+# shellcheck disable=SC2016
+echo 'eval "$(direnv hook bash)"' >>~/.bashrc
+
+install_native_dependency
+
+trap "rate_limited" EXIT
+if ! nix profile list | grep cachix; then
+	nix profile install nixpkgs#cachix
+fi
+cachix use devenv
+nix registry add devenv github:cachix/devenv
+(yes || true) | nix profile install --accept-flake-config devenv#default
+
+devenv shell npm install @devcontainers/cli
+trap - EXIT
+
+RSDK_COMPLETION_DIR="${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions"
+mkdir -p "$RSDK_COMPLETION_DIR"
+rm -f "$RSDK_COMPLETION_DIR/rsdk"
+ln -s "$SCRIPT_DIR/../../share/bash-completion/completions/rsdk" "$RSDK_COMPLETION_DIR/rsdk"

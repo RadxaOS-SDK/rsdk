@@ -1,0 +1,6 @@
+local product_soc = import "product_soc.libjsonnet";
+local soc_list = import "socs.json";
+
+function(product)
+    std.filter(function(x) std.member(x.soc_list, product_soc(product)),
+               soc_list)[0].partition_table_type

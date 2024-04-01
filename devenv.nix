@@ -25,13 +25,13 @@
   ];
 
   enterShell = ''
-    export PATH=$PWD/bin:$PWD/node_modules/.bin:$PATH
+    export PATH=$PWD/src/bin:$PWD/node_modules/.bin:$PATH
 
     if [[ -n "$DEVENV_NIX" ]]
     then
       # Does not work from direnv
       # https://github.com/direnv/direnv/issues/773#issuecomment-792688396
-      source $PWD/bin/lib/rsdk_completion.sh
+      source $PWD/src/share/bash-completion/completions/rsdk
       rsdk welcome
     else
       rsdk welcome 'Please run `rsdk shell` to enter the full development shell.
