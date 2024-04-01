@@ -4,6 +4,7 @@ rate_limited() {
 	echo "You might be rate limited by GitHub."
 	echo "Please request a PAT from GitHub website, and add it to your Dev Container:"
 	echo "mkdir -p ~/.config/nix/ && echo 'access-tokens = github.com=YOUR_GITHUB_PAT' >> ~/.config/nix/nix.conf && src/bin/rsdk setup"
+	echo "You can run above command in a new terminal once you complete this one."
 	read -rp "Press Enter to continue..."
 	exit 0
 }
