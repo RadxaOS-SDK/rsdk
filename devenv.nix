@@ -15,6 +15,9 @@
     guestfs-tools
     jq
     libguestfs-with-appliance
+    mdbook
+    mdbook-admonish
+    mdbook-i18n-helpers
     multipath-tools
     parted
     util-linux
@@ -45,15 +48,22 @@
   };
   languages.jsonnet.enable = true;
 
-  pre-commit.hooks = {
-    commitizen.enable = true;
-    shellcheck = {
-      enable = true;
-      entry = lib.mkForce "${pkgs.shellcheck}/bin/shellcheck -x";
+  pre-commit = {
+    hooks = {
+      commitizen.enable = true;
+      shellcheck = {
+        enable = true;
+        entry = lib.mkForce "${pkgs.shellcheck}/bin/shellcheck -x";
+      };
+      shfmt.enable = true;
+      statix.enable = true;
+      typos = {
+        enable = true;
+        excludes = [
+          "theme/highlight.js"
+        ];
+      };
     };
-    shfmt.enable = true;
-    statix.enable = true;
-    typos.enable = true;
   };
 
   starship.enable = true;

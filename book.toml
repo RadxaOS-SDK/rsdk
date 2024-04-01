@@ -1,0 +1,26 @@
+[book]
+authors = ["Radxa Limited"]
+language = "en"
+multilingual = true
+src = "docs"
+title = "rsdk"
+
+[build]
+extra-watch-dirs = ["po"]
+
+[output.html]
+git-repository-url = "https://github.com/radxa-repo/rsdk/tree/main"
+edit-url-template = "https://github.com/radxa-repo/rsdk/edit/main/{path}"
+additional-css = [
+    "./theme/css/mdbook-admonish.css",
+    "./theme/css/language-picker.css",
+]
+
+[preprocessor]
+
+[preprocessor.gettext]
+after = ["links"]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`

@@ -19,3 +19,6 @@
 
 # Local Debian packages
 /debs
+
+# mdbook build output
+/book

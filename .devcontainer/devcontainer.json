@@ -5,6 +5,7 @@
         "mkhl.direnv",
         "github.vscode-github-actions",
         "grafana.vscode-jsonnet",
+        "ms-vscode.makefile-tools",
         "vivaxy.vscode-conventional-commits"
       ]
     }
