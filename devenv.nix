@@ -18,6 +18,7 @@
     mdbook
     mdbook-admonish
     mdbook-i18n-helpers
+    mdbook-linkcheck
     multipath-tools
     parted
     util-linux

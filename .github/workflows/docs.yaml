@@ -42,8 +42,10 @@ jobs:
       - name: Install mdbook plugins
         shell: bash
         run: |
-          cargo install mdbook-admonish
-          cargo install mdbook-i18n-helpers
+          for i in mdbook-admonish mdbook-linkcheck mdbook-i18n-helpers
+          do
+            cargo install "$i"
+          done
       - name: Build
         run: |
           mdbook build
@@ -72,7 +74,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: "./book"
+          path: "./book/html"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

@@ -8,6 +8,8 @@ title = "rsdk"
 [build]
 extra-watch-dirs = ["po"]
 
+[output.linkcheck]
+
 [output.html]
 git-repository-url = "https://github.com/radxa-repo/rsdk/tree/main"
 edit-url-template = "https://github.com/radxa-repo/rsdk/edit/main/{path}"
