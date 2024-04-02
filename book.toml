@@ -18,11 +18,13 @@ additional-css = [
     "./theme/css/language-picker.css",
 ]
 
-[preprocessor]
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
 
 [preprocessor.gettext]
 after = ["links"]
 
-[preprocessor.admonish]
-command = "mdbook-admonish"
-assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
