@@ -2,4 +2,4 @@
 
 `rsdk` command is the common CLI entry point.
 
-This command currently does not do anything by itself.
+When it was run without any argument, it will run `rsdk-tui` instead.

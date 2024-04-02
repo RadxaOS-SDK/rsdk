@@ -21,6 +21,7 @@
     mdbook-linkcheck
     mdbook-toc
     multipath-tools
+    newt
     parted
     util-linux
     wget

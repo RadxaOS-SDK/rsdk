@@ -6,7 +6,7 @@ main() {
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../lib/rsdk/utils.sh"
 
-	local SUBCOMMAND="${1:-help}"
+	local SUBCOMMAND="${1:-tui}"
 	shift || true
 
 	if [[ -e "$SCRIPT_DIR/../libexec/rsdk/rsdk-$SUBCOMMAND" ]]; then

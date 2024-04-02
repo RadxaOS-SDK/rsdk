@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+__rsdk_build() {
+	local product
+
+	radiolist_init
+	local products=() i
+	mapfile -t products < <(jq -r '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+	# Trim empty elements
+	array_remove "products" ""
+	for i in "${products[@]}"; do
+		radiolist_add "$i" "OFF"
+	done
+	if ! radiolist_show "Please select a product:"; then
+		return
+	fi
+	product="$(radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}")"
+
+	if ! yesno "Are you sure to build for '$product'?"; then
+		return
+	fi
+
+	rsdk build "$product"
+}
+
+__rsdk_about() {
+	msgbox "rsdk - RadxaOS Software Development Kit
+
+Copyright 2024-$(date +%Y) Radxa Computer Co., Ltd"
+}
+
+tui_main() {
+	menu_init
+	menu_add __rsdk_build "Build system image"
+	menu_add_separator
+	menu_add __rsdk_about "About"
+	menu_show "Please select a task:"
+}
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/librtui/tui.sh
+	source "$SCRIPT_DIR/../../lib/librtui/tui.sh"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
+
+	local DEBUG="${DEBUG:-false}"
+
+	tui_start tui_main "RSDK"
+}
+
+main "$@"
