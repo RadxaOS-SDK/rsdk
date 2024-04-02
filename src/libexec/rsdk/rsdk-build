@@ -11,7 +11,7 @@ prepare_keyrings() {
 	fi
 
 	# Copy additional keyrings supplied within the git project
-	local keyrings="$SCRIPT_DIR/../../../keyrings"
+	local keyrings="$SCRIPT_DIR/../../../externals/keyrings"
 	if [[ -e $keyrings ]]; then
 		cp -r "$keyrings/debian/apt-trusted-asc/." "$OUTPUT_DIR"
 		cp -r "$keyrings/radxa/keyrings/." "$OUTPUT_DIR"

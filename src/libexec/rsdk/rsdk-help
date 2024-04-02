@@ -36,7 +36,7 @@ $ rsdk build <options> [product] <suite> <edition>
     serve both Radxa archives as well as any other 3rd party archives.
 
     The following archives will use this mirror:
-$(find "$SCRIPT_DIR/../../keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "        %f\n")
+$(find "$SCRIPT_DIR/../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "        %f\n")
 -i | --image-name [image_name]
     Set the system image name. (Default: $RSDK_DEFAULT_IMAGE_NAME)
 -h | --help
