@@ -10,3 +10,6 @@
 [submodule "keyrings/vscodium"]
 	path = externals/keyrings/vscodium
 	url = https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo.git
+[submodule "externals/librtui"]
+	path = externals/librtui
+	url = https://github.com/radxa-pkg/librtui.git
