@@ -1,23 +1,29 @@
 #!/usr/bin/env bash
 
 prepare_keyrings() {
-	# 1, create output dir
+	# Create output dir
 	OUTPUT_DIR="$1"
 	mkdir -p "$OUTPUT_DIR"
 
-	# 2. copy keyrings
-	cp -r "$SCRIPT_DIR/../../../keyrings/debian/apt-trusted-asc/." "$OUTPUT_DIR"
-	cp -r "$SCRIPT_DIR/../../../keyrings/radxa/keyrings/." "$OUTPUT_DIR"
-	cp -r "$SCRIPT_DIR/../../../keyrings/ubuntu/keyrings/." "$OUTPUT_DIR"
-	cp -r "$SCRIPT_DIR/../../../keyrings/vscodium/pub.gpg" "$OUTPUT_DIR"
+	# Pre-populate with keyring from current system
+	if [[ -e "/usr/share/keyrings/" ]]; then
+		cp -r "/usr/share/keyrings/." "$OUTPUT_DIR"
+	fi
 
-	# 3. dearmor keyrings
-	for i in "$OUTPUT_DIR"/*.asc "$OUTPUT_DIR/pub.gpg"; do
-		gpg --dearmor "$i"
-		rm "$i"
-	done
+	# Copy additional keyrings supplied within the git project
+	local keyrings="$SCRIPT_DIR/../../../keyrings"
+	if [[ -e $keyrings ]]; then
+		cp -r "$keyrings/debian/apt-trusted-asc/." "$OUTPUT_DIR"
+		cp -r "$keyrings/radxa/keyrings/." "$OUTPUT_DIR"
+		cp -r "$keyrings/ubuntu/keyrings/." "$OUTPUT_DIR"
+		cp -r "$keyrings/vscodium/pub.gpg" "$OUTPUT_DIR"
 
-	echo "APT keyrings are ready."
+		# Dearmor keyrings
+		for i in "$OUTPUT_DIR"/*.asc "$OUTPUT_DIR/pub.gpg"; do
+			gpg --dearmor "$i"
+			rm "$i"
+		done
+	fi
 }
 
 generate_rootfs() {
