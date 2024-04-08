@@ -1,4 +1,4 @@
-local product_data = import "../../../lib/product_data.libjsonnet";
+local product_data = import "../../../configs/product_data.libjsonnet";
 
 function(
     product,
