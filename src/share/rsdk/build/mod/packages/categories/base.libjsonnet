@@ -125,7 +125,6 @@ else
             // MRAA
             "libmraa2",
             "libmraa-dev",
-            "python3-mraa",
         ],
 
         "customize-hooks"+:
