@@ -119,6 +119,13 @@ else
             "android-tools-adbd",
             "libreelec-alsa-utils",
             "radxa-otgutils",
+        ] +
+
+        [
+            // MRAA
+            "libmraa2",
+            "libmraa-dev",
+            "python3-mraa",
         ],
 
         "customize-hooks"+:
