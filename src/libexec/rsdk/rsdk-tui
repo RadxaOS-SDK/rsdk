@@ -40,8 +40,19 @@ tui_main() {
 main() {
 	local SCRIPT_DIR
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-	# shellcheck source=src/lib/librtui/tui.sh
-	source "$SCRIPT_DIR/../../lib/librtui/tui.sh"
+	if [[ -f "$SCRIPT_DIR/../../lib/librtui/tui.sh" ]]; then
+		# shellcheck source=/dev/null
+		source "$SCRIPT_DIR/../../lib/librtui/tui.sh"
+	elif [[ -f "$SCRIPT_DIR/../../../externals/librtui/src/tui.sh" ]]; then
+		# shellcheck source=externals/librtui/src/tui.sh
+		source "$SCRIPT_DIR/../../../externals/librtui/src/tui.sh"
+	elif [[ -f "/usr/lib/librtui/tui.sh" ]]; then
+		# shellcheck source=/dev/null
+		source "/usr/lib/librtui/tui.sh"
+	else
+		echo "Missing librtui. Please make sure you have installed it." >&2
+		return 1
+	fi
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 	# shellcheck source=src/lib/rsdk/stdlib.sh
