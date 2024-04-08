@@ -218,7 +218,7 @@ main() {
 	fi
 
 	local PRODUCT="${1}" SUITE EDITION
-	if ! jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json"; then
+	if ! jq -re --arg product "$PRODUCT" '.[] | select(.product == $product)' "$SCRIPT_DIR/../../share/rsdk/configs/products.json" &>/dev/null; then
 		echo "'$PRODUCT' is not a supported product." >&2
 		return 1
 	fi
