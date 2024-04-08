@@ -2,9 +2,10 @@ local product_data = import "../../../lib/product_data.libjsonnet";
 
 function(
     product,
+    variant,
 ) std.manifestYamlDoc(
     {
-        name: "Build image for Release channel",
+        name: "Build image for %(variant)s channel" % {variant: variant},
         on: {
             workflow_dispatch: {}
         },
@@ -39,14 +40,25 @@ function(
                         id: "release",
                         uses: "softprops/action-gh-release@v2",
                         with: {
-                            tag_name: "b${{ github.run_number }}",
-                            body_path: "README.md",
                             token: "${{ secrets.GITHUB_TOKEN }}",
                             target_commitish: "main",
                             draft: false,
                             prerelease: true,
                             files: ".changelog/changelog.md",
-                        }
+                        } + if variant == "release"
+                        then
+                            {
+                                tag_name: "b${{ github.run_number }}",
+                                body_path: "README.md",
+                            }
+                        else if variant == "test"
+                        then
+                            {
+                                tag_name: "t${{ github.run_number }}",
+                                body: "This is a test build for internal development.\nOnly use when specifically instructed by Radxa support.\n",
+                            }
+                        else
+                            {},
                     }
                 ],
                 outputs: {
@@ -79,7 +91,14 @@ function(
                             edition: "${{ matrix.edition }}",
                             "release-id": "${{ needs.prepare_release.outputs.release_id }}",
                             "github-token": "${{ secrets.GITHUB_TOKEN }}",
-                        }
+                        } + if variant == "test"
+                        then
+                            {
+                                "test-repo": true,
+                                timestamp: "t${{ github.run_number }}",
+                            }
+                        else
+                            {},
                     }
                 ]
             }
