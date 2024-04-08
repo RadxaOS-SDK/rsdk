@@ -1,0 +1,24 @@
+name: rsdk-query
+description: rsdk product information query Action
+inputs:
+  product:
+    required: true
+outputs:
+  suites:
+    value: ${{ steps.query.outputs.suites }}
+  editions:
+    value: ${{ steps.query.outputs.editions }}
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: RadxaOS-SDK/rsdk
+        path: .tmp/rsdk
+    - name: Set suite based on input variables
+      id: query
+      shell: bash
+      run: |
+        echo "suites=$(jq -c '. | map(select(.product == "${{ inputs.product }}"))[].supported_suite' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
+        echo "editions=$(jq -c '. | map(select(.product == "${{ inputs.product }}"))[].supported_edition' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT

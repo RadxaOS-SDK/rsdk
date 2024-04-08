@@ -27,6 +27,14 @@ function(
                         }
                     },
                     {
+                        name: "Query product info",
+                        id: "query",
+                        uses: "RadxaOS-SDK/rsdk/.github/actions/query@main",
+                        with: {
+                            product: product
+                        }
+                    },
+                    {
                         name: "Create empty release",
                         id: "release",
                         uses: "softprops/action-gh-release@v2",
@@ -42,7 +50,9 @@ function(
                     }
                 ],
                 outputs: {
-                    release_id: "${{ steps.release.outputs.id }}"
+                    release_id: "${{ steps.release.outputs.id }}",
+                    suites: "${{ steps.query.outputs.suites }}",
+                    editions: "${{ steps.query.outputs.editions }}",
                 }
             },
             build: {
@@ -51,6 +61,8 @@ function(
                 strategy: {
                     matrix:{
                         product: [ product ],
+                        suite: "${{ fromJSON(needs.prepare_release.outputs.suites )}}",
+                        edition: "${{ fromJSON(needs.prepare_release.outputs.editions )}}",
                     }
                 },
                 steps: [
@@ -63,6 +75,8 @@ function(
                         uses: "RadxaOS-SDK/rsdk/.github/actions/build@main",
                         with: {
                             product: "${{ matrix.product }}",
+                            suite: "${{ matrix.suite }}",
+                            edition: "${{ matrix.edition }}",
                             "release-id": "${{ needs.prepare_release.outputs.release_id }}",
                             "github-token": "${{ secrets.GITHUB_TOKEN }}",
                         }
