@@ -32,7 +32,10 @@ _rsdk_build_completions() {
 	array_remove "products" ""
 
 	for i in "${products[@]}"; do
-		if in_array "$i" "${COMP_WORDS[@]}"; then
+		# We exclude the last word from the array, as the last word is what user
+		# is currently typing. We should only stop suggesting products when user
+		# has decided on a product, not when they are still typing.
+		if in_array "$i" "${COMP_WORDS[@]:0:$((${#COMP_WORDS[@]} - 1))}"; then
 			product_provided="true"
 			break
 		fi
