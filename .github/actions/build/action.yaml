@@ -30,7 +30,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: RadxaOS-SDK/rsdk
+        repository: radxa-pkg/rsdk
         submodules: recursive
     - name: Set suite based on input variables
       shell: bash
