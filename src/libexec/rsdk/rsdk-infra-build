@@ -13,7 +13,7 @@ main() {
 	eval set -- "$TEMP"
 
 	export RSDK_WORKFLOW_FILE="${RSDK_WORKFLOW_FILE:-}"
-	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-radxa-build}"
+	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.product)}"
 
 	while true; do
 		TEMP="$1"
