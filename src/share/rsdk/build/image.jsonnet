@@ -12,6 +12,7 @@ function(
     temp_dir = "./temp_dir",
     product,
     efi = true,
+    partition_table_type = product_partition_table_type(product),
 ) |||
     #!/usr/bin/env -S guestfish -f
 
@@ -26,7 +27,7 @@ function(
     part-add /dev/sda primary 32768 65535
 ||| % {
     output: output,
-    partition_table_type: product_partition_table_type(product),
+    partition_table_type: partition_table_type,
 } +
 (if efi
 then
@@ -123,14 +124,26 @@ else
     shutdown
     !cat "%(temp_dir)s/parted" | parted ---pretend-input-tty "%(output)s" > /dev/null 2>&1
     !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * 512 ))" "%(output)s"
+||| % {
+    output: output,
+    temp_dir: temp_dir,
+    rootdev: rootdev(efi),
+} +
+(if partition_table_type == "gpt"
+then
+|||
     !sgdisk -ge "%(output)s" > /dev/null 2>&1 || true
+|||
+else
+    ""
+) +
+|||
     !chmod +x "%(temp_dir)s/u-boot/%(product)s/setup.sh"
     !"%(temp_dir)s/u-boot/%(product)s/setup.sh" update_bootloader "%(output)s" 2> /dev/null
 ||| % {
     output: output,
     temp_dir: temp_dir,
     product: product,
-    rootdev: rootdev(efi),
 } +
 (if efi
 then
