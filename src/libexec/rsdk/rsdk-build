@@ -135,8 +135,6 @@ main() {
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
-	# shellcheck source=src/lib/rsdk/rsdk_configs.sh
-	source "$SCRIPT_DIR/../../lib/rsdk/rsdk_configs.sh"
 
 	local TEMP
 	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:" -n "$0" -- "$@")"; then
@@ -150,7 +148,7 @@ main() {
 	local RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
 	local RSDK_OPTION_RADXA_MIRROR="${RSDK_OPTION_RADXA_MIRROR:-}"
 	local RSDK_OPTION_ROOTFS="${RSDK_OPTION_ROOTFS:-rootfs.tar}"
-	local RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-$RSDK_DEFAULT_IMAGE_NAME}"
+	local RSDK_OPTION_IMAGE_NAME="${RSDK_OPTION_IMAGE_NAME:-$("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name)}"
 	local RSDK_OPTION_CACHE="${RSDK_OPTION_CACHE:-true}"
 	local RSDK_OPTION_KERNEL_OVERRIDE="${RSDK_OPTION_KERNEL_OVERRIDE:-}"
 	local RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-}"

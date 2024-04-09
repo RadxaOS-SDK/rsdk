@@ -181,15 +181,12 @@ _rsdk_write-image_completions() {
 _rsdk_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
-	# shellcheck source=src/lib/rsdk/rsdk_configs.sh
-	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/rsdk_configs.sh"
 
 	case "$COMP_CWORD" in
 	0) : ;;
 	1)
-		local subcommands=(
-			"${RSDK_SUPPORTED_SUBCOMMANDS[@]}"
-		)
+		local subcommands=()
+		mapfile -t subcommands < <("$(dirname "$(command -v "${COMP_WORDS[0]}")")/../bin/rsdk" config completions.supported_subcommands)
 
 		if [[ -f "/.dockerenv" ]]; then
 			array_remove "subcommands" "chroot"

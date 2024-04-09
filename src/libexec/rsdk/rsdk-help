@@ -5,7 +5,8 @@ rsdk-help-rsdk() {
 rsdk
 ====
 
-Supported subcommands: ${RSDK_SUPPORTED_SUBCOMMANDS[*]}
+Supported subcommands:
+$("$SCRIPT_DIR/../../bin/rsdk" config completions.supported_subcommands)
 EOF
 }
 
@@ -38,7 +39,7 @@ $ rsdk build <options> [product] <suite> <edition>
     The following archives will use this mirror:
 $(find "$SCRIPT_DIR/../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "        %f\n")
 -i | --image-name [image_name]
-    Set the system image name. (Default: $RSDK_DEFAULT_IMAGE_NAME)
+    Set the system image name. (Default: $("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name))
 -h | --help
     Show this message.
 EOF
@@ -49,8 +50,6 @@ main() {
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
-	# shellcheck source=src/lib/rsdk/rsdk_configs.sh
-	source "$SCRIPT_DIR/../../lib/rsdk/rsdk_configs.sh"
 
 	local subcommand="${1:-rsdk}"
 	shift || true
