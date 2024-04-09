@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-cat <<EOF
+main() {
+	local SCRIPT_DIR
+	# shellcheck disable=SC2034
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+
+	cat <<EOF
 
 ██████╗ ███████╗██████╗ ██╗  ██╗
 ██╔══██╗██╔════╝██╔══██╗██║ ██╔╝
@@ -12,3 +17,6 @@ RadxaOS Software Development Kit
 
 ${1:-Please run \`rsdk help\` view the user guide.}
 EOF
+}
+
+main "$@"
