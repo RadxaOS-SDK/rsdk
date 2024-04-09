@@ -104,7 +104,7 @@ main() {
 			break
 			;;
 		*)
-			error $EXIT_UNKNOWN_OPTION "$TEMP"
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
 			;;
 		esac
 	done
