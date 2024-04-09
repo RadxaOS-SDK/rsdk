@@ -1,0 +1,27 @@
+{
+    "build": {
+        "default_image_name": "output.img"
+    },
+    "completions": {
+        "supported_subcommands": [
+            "build",
+            "chroot",
+            "config",
+            "devcon",
+            "help",
+            "infra-build",
+            "infra-update",
+            "install",
+            "setup",
+            "shell",
+            "write-image"
+        ]
+    },
+    "infra": {
+        "organizations": {
+            "package": "radxa-pkg",
+            "repository": "radxa-repo",
+            "product": "radxa-build"
+        }
+    }
+}

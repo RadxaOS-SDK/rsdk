@@ -79,6 +79,19 @@ _rsdk_chroot_completions() {
 	esac
 }
 
+_rsdk_config_completions() {
+	case "$COMP_CWORD" in
+	2)
+		local current_level="${COMP_WORDS[COMP_CWORD]%.*}" suggestions=()
+		if [[ $current_level == "${COMP_WORDS[COMP_CWORD]}" ]]; then
+			current_level=""
+		fi
+		mapfile -t suggestions < <(jq -re --arg field "$current_level" 'getpath($field / ".") | to_entries[].key | "\($field).\(.)" | ltrimstr(".")' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/rsdk.json")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		;;
+	esac
+}
+
 _rsdk_install_completions() {
 	_rsdk_chroot_completions "$@"
 }

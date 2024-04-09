@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+
+	local TEMP
+	if ! TEMP="$(getopt -o "h" -l "help" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-h | --help)
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
+			;;
+		esac
+	done
+
+	if (($# == 0)); then
+		TEMP="$(basename "$0")"
+		rsdk help "${TEMP#rsdk-}"
+		return
+	fi
+
+	local FIELD="$1"
+	jq -re --arg field "$FIELD" 'getpath($field / ".") | select(type == "array")[], select(type != "array")' "$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
+}
+
+main "$@"
