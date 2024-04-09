@@ -50,14 +50,10 @@ else
             "ntfs-3g",
             "python3-pip",
             "software-properties-common",
-            "sysfsutils",
             "tmux",
-            "u-boot-tools",
             "vim",
             "wget",
-            "whiptail",
             "xz-utils",
-            "zram-tools",
         ] +
 
 (if suite == "bookworm"
@@ -76,7 +72,6 @@ else
             "ca-certificates",
             "dnsmasq",
             "ldnsutils",
-            "ifupdown",
             "iproute2",
             "iptables",
             "iputils-ping",
