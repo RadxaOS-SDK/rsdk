@@ -5,7 +5,7 @@ update_repo() {
 	local OUTPUT_ROOT="$PWD/out"
 	local OUTPUT="$OUTPUT_ROOT/$RSDK_BUILD_ORG/${PRODUCT}"
 	local TEMPLATE_DIR="$SCRIPT_DIR/../../share/rsdk"
-	local TEMPLATE="$TEMPLATE_DIR/infra-repo"
+	local TEMPLATE="$TEMPLATE_DIR/infra-product"
 
 	if [[ $RSDK_OPTION_DRY_RUN == "false" ]] && ! gh auth status &>/dev/null; then
 		echo "This operation requires GitHub authentication:"
