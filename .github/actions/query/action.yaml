@@ -14,7 +14,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: radxa-pkg/rsdk
+        repository: RadxaOS-SDK/rsdk
         path: .tmp/rsdk
     - name: Set suite based on input variables
       id: query
