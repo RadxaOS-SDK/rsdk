@@ -13,12 +13,12 @@ function(
             GH_TOKEN: "${{ github.token }}"
         },
         jobs: {
-            prepare_release:{
+            prepare_release: {
                 "runs-on": "ubuntu-latest",
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v4"
+                        uses: "actions/checkout@v4",
                     },
                     {
                         name: "Generate changelog",
@@ -71,7 +71,7 @@ function(
                 "runs-on": "ubuntu-latest",
                 needs: "prepare_release",
                 strategy: {
-                    matrix:{
+                    matrix: {
                         product: [ product ],
                         suite: "${{ fromJSON(needs.prepare_release.outputs.suites )}}",
                         edition: "${{ fromJSON(needs.prepare_release.outputs.editions )}}",
@@ -80,7 +80,7 @@ function(
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v4"
+                        uses: "actions/checkout@v4",
                     },
                     {
                         name: "Build image",
@@ -104,5 +104,5 @@ function(
             }
         }
     },
-    quote_keys=false
+    quote_keys=false,
 )

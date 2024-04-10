@@ -9,7 +9,7 @@ function() std.manifestYamlDoc(
             "pull-requests": "write",
         },
         jobs: {
-            dependabot:{
+            dependabot: {
                 "runs-on": "ubuntu-latest",
                 "if": "github.actor == 'dependabot[bot]'",
                 steps: [
@@ -36,5 +36,5 @@ function() std.manifestYamlDoc(
             },
         },
     },
-    quote_keys=false
+    quote_keys=false,
 )
