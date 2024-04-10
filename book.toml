@@ -11,8 +11,8 @@ extra-watch-dirs = ["po"]
 [output.linkcheck]
 
 [output.html]
-git-repository-url = "https://github.com/radxa-pkg/rsdk/tree/main"
-edit-url-template = "https://github.com/radxa-pkg/rsdk/edit/main/{path}"
+git-repository-url = "https://github.com/RadxaOS-SDK/rsdk/tree/main"
+edit-url-template = "https://github.com/RadxaOS-SDK/rsdk/edit/main/{path}"
 additional-css = [
     "./theme/css/mdbook-admonish.css",
     "./theme/css/language-picker.css",

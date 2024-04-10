@@ -13,7 +13,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: radxa-pkg/rsdk
+        repository: RadxaOS-SDK/rsdk
         path: .tmp/rsdk
     - name: Generate action parameters
       id: query
