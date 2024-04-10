@@ -12,8 +12,8 @@ on:
       - book.toml
       - .github/workflows/docs.yaml
   push:
-    # branches:
-    #   - main
+    branches-ignore:
+      - 'dependabot/**'
     paths-ignore:
       - '**.md'
       - .gitignore
