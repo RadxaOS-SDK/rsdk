@@ -96,7 +96,7 @@ _rsdk_install_completions() {
 	_rsdk_chroot_completions "$@"
 }
 
-_rsdk_infra-build_completions() {
+_rsdk_infra-product-build_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
 
@@ -123,7 +123,7 @@ _rsdk_infra-build_completions() {
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 }
 
-_rsdk_infra-update_completions() {
+_rsdk_infra-product-update_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
 
