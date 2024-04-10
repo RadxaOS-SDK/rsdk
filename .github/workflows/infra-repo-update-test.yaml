@@ -1,0 +1,15 @@
+name: Update Test repos
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Test repos
+        uses: ./.github/actions/infra-repo-update
+        with:
+          test-repo: true
+          token: ${{ secrets.RSDK_APT_REPOSITORY_TOKEN }}

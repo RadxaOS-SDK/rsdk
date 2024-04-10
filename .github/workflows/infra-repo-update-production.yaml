@@ -1,0 +1,14 @@
+name: Update Production repos
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Production repos
+        uses: ./.github/actions/infra-repo-update
+        with:
+          token: ${{ secrets.RSDK_APT_REPOSITORY_TOKEN }}

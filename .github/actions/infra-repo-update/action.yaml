@@ -1,0 +1,67 @@
+name: 'infra-repo-update'
+description: 'Radxa apt repos management'
+inputs:
+  test-repo:
+    default: false
+  reset:
+    default: false
+  token:
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: radxa-pkg/rsdk
+        path: .tmp/rsdk
+    - name: Generate action parameters
+      id: query
+      shell: bash
+      run: |
+        if [[ "${{ inputs.test-repo }}" == "true" ]]
+        then
+          repo_suffix="-test"
+        else
+          repo_suffix=""
+        fi
+
+        if [[ "${{ inputs.reset }}" == "true" ]]
+        then
+          event_type="reset_repo"
+        else
+          event_type="new_package_release"
+        fi
+
+        repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
+        supported_distros=(bullseye bookworm focal jammy)
+
+        for distro in "${supported_distros[@]}"
+        do
+          echo "$distro=$repo_org/$distro$repo_suffix" >> $GITHUB_OUTPUT
+        done
+        echo "event_type=$event_type" >> $GITHUB_OUTPUT
+    - name: Update ${{ steps.query.outputs.bullseye }}
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ inputs.token }}
+        repository: ${{ steps.query.outputs.bullseye }}
+        event-type: ${{ steps.query.outputs.event_type }}
+    - name: Update ${{ steps.query.outputs.bookworm }}
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ inputs.token }}
+        repository: ${{ steps.query.outputs.bookworm }}
+        event-type: ${{ steps.query.outputs.event_type }}
+    - name: Update ${{ steps.query.outputs.focal }}
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ inputs.token }}
+        repository: ${{ steps.query.outputs.focal }}
+        event-type: ${{ steps.query.outputs.event_type }}
+    - name: Update ${{ steps.query.outputs.jammy }}
+      uses: peter-evans/repository-dispatch@v3
+      with:
+        token: ${{ inputs.token }}
+        repository: ${{ steps.query.outputs.jammy }}
+        event-type: ${{ steps.query.outputs.event_type }}

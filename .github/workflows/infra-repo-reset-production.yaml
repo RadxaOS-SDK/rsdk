@@ -1,0 +1,15 @@
+name: Reset Production repos
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  reset-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reset Production repos
+        uses: ./.github/actions/infra-repo-update
+        with:
+          reset: true
+          token: ${{ secrets.RSDK_APT_REPOSITORY_TOKEN }}
