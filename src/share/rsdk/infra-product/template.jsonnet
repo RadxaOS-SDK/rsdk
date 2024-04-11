@@ -6,6 +6,8 @@ local dependabot_workflow = import ".github/workflows/dependabot.yml.jsonnet";
 function(
     target,
     build_org,
+    repo_org,
+    pkg_org,
 ) {
     "README.md": README_md(target, build_org),
     ".github/dependabot.yml": dependabot_yml(),

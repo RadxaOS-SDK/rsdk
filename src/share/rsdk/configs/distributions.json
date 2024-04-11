@@ -7,6 +7,11 @@
             "bookworm",
             "trixie",
             "sid"
+        ],
+        "supported_suites": [
+            "bullseye",
+            "bookworm",
+            "sid"
         ]
     },
     {
@@ -14,6 +19,8 @@
         "suites": [
             "focal",
             "jammy"
+        ],
+        "supported_suites": [
         ]
     }
 ]
