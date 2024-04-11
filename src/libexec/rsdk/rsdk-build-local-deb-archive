@@ -21,4 +21,17 @@ fi
 
 aptly repo create -distribution="$DEB_ARCHIVE" "$DEB_ARCHIVE"
 aptly repo add "$DEB_ARCHIVE" "$DEB_SOURCE"
-aptly publish repo -skip-signing "$DEB_ARCHIVE" "$DEB_ARCHIVE"
+aptly publish repo -skip-signing -architectures=all,arm64,riscv64 "$DEB_ARCHIVE" "$DEB_ARCHIVE"
+
+GPG_PARAMETERS=(
+	"--yes"
+	"--armor"
+	"-u" "72AF2B5F7B24A8FFE4F41AC4E572249A33EB9743"
+	"-u" "EF181314AFE1834694A34CC65D93177D0752732A"
+)
+
+for i in "$HOME"/.aptly/public/*/dists/*/Release; do
+	DISTRO_PATH="$(dirname "$i")"
+	gpg "${GPG_PARAMETERS[@]}" --clear-sign -o "$DISTRO_PATH/InRelease" "$i"
+	gpg "${GPG_PARAMETERS[@]}" --detach-sign -o "$DISTRO_PATH/Release.gpg" "$i"
+done
