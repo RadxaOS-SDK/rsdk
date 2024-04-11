@@ -4,12 +4,12 @@ local workflow = import ".github/workflows/workflow.jsonnet";
 local dependabot_workflow = import ".github/workflows/dependabot.yml.jsonnet";
 
 function(
-    product,
+    target,
     build_org,
 ) {
-    "README.md": README_md(product, build_org),
+    "README.md": README_md(target, build_org),
     ".github/dependabot.yml": dependabot_yml(),
-    ".github/workflows/build.yml": workflow(product, "release"),
-    ".github/workflows/test.yml": workflow(product, "test"),
+    ".github/workflows/build.yml": workflow(target, "release"),
+    ".github/workflows/test.yml": workflow(target, "test"),
     ".github/workflows/dependabot.yml": dependabot_workflow(),
 }

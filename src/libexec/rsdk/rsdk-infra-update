@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
 update_repo() {
-	local PRODUCT="${1}"
-	local OUTPUT_ROOT="$PWD/out"
-	local OUTPUT="$OUTPUT_ROOT/$RSDK_BUILD_ORG/${PRODUCT}"
-	local TEMPLATE_DIR="$SCRIPT_DIR/../../share/rsdk"
-	local TEMPLATE="$TEMPLATE_DIR/infra-product"
+	local TARGET="${1}"
+	local OUTPUT="$PWD/out/infra/$TARGET"
 
 	if [[ $RSDK_OPTION_DRY_RUN == "false" ]] && ! gh auth status &>/dev/null; then
 		echo "This operation requires GitHub authentication:"
@@ -28,12 +25,12 @@ update_repo() {
 		popd
 	else
 		rm -rf "$OUTPUT"
-		mkdir -p "$OUTPUT_ROOT/$RSDK_BUILD_ORG"
+		mkdir -p "$OUTPUT/.."
 		echo "Trying to clone existing repository first..."
-		if ! gh repo clone "$RSDK_BUILD_ORG/$PRODUCT" "$OUTPUT"; then
+		if ! gh repo clone "$RSDK_BUILD_ORG/$TARGET" "$OUTPUT"; then
 			echo "Target repository does not exist. New repository will be created."
-			pushd "$OUTPUT_ROOT/$RSDK_BUILD_ORG"
-			gh repo create "$RSDK_BUILD_ORG/$PRODUCT" --clone --public
+			pushd "$OUTPUT/.."
+			gh repo create "$RSDK_BUILD_ORG/$TARGET" --clone --public
 			popd
 		fi
 	fi
@@ -42,18 +39,18 @@ update_repo() {
 	find "$OUTPUT" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 
 	echo "Prepare folder structure..."
-	pushd "$TEMPLATE"
+	pushd "$RSDK_GIT_REPO_TEMPLATE"
 	find . -mindepth 1 -type d -exec mkdir -p "$OUTPUT/{}" \;
 	popd
 
 	echo "Populate content..."
 	local JSONNET_ARGS=(
 		"-S"
-		"--tla-str" "product=$PRODUCT"
+		"--tla-str" "target=$TARGET"
 		"--tla-str" "build_org=$RSDK_BUILD_ORG"
 		"--multi" "$OUTPUT"
 	)
-	jsonnet "${JSONNET_ARGS[@]}" "$TEMPLATE/template.jsonnet"
+	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"
 
 	local RSDK_REV
 	RSDK_REV="$(git rev-parse --short "HEAD^{commit}")$(! git diff --quiet && echo .dirty)" || true
@@ -68,16 +65,17 @@ update_repo() {
 
 	if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
 		git push --set-upstream origin main
-		gh repo edit --description "$(jq -r --arg product "$PRODUCT" '.[] | select(.product == $product).product_full_name' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"
+		gh repo edit --description "$(repo_desc "$TARGET")"
 	fi
 	popd
 }
 
 main() {
-	local SCRIPT_DIR
+	local SCRIPT_DIR BASE_NAME
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	BASE_NAME="$(basename "$0")"
 
 	local TEMP
 	if ! TEMP="$(getopt -o "hd" -l "help,dry-run" -n "$0" -- "$@")"; then
@@ -87,6 +85,29 @@ main() {
 
 	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
 	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.product)}"
+	export RSDK_GIT_REPO_TYPE="${RSDK_GIT_REPO_TYPE:-}"
+	export RSDK_GIT_REPO_ARRAY=("${RSDK_GIT_REPO_ARRAY[@]}")
+	export RSDK_GIT_REPO_TEMPLATE="${RSDK_GIT_REPO_TEMPLATE:-}"
+
+	case "$BASE_NAME" in
+	"rsdk-infra-update")
+		echo "'$BASE_NAME' cannot be run directly." >&2
+		echo "Please run one of its symbolic links instead." >&2
+		return 1
+		;;
+	"rsdk-infra-product-update")
+		RSDK_GIT_REPO_TYPE="product"
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -r '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-product"
+		repo_desc() {
+			jq -r --arg target "$1" '.[] | select(.product == $target).product_full_name' "$SCRIPT_DIR/../../share/rsdk/configs/products.json"
+		}
+		;;
+	*)
+		echo "Unsupported command '$BASE_NAME'." >&2
+		return 1
+		;;
+	esac
 
 	while true; do
 		TEMP="$1"
@@ -96,8 +117,7 @@ main() {
 			RSDK_OPTION_DRY_RUN="true"
 			;;
 		-h | --help)
-			TEMP="$(basename "$0")"
-			rsdk help "${TEMP#rsdk-}"
+			rsdk help "${BASE_NAME#rsdk-}"
 			return
 			;;
 		--)
@@ -110,11 +130,9 @@ main() {
 	done
 
 	if (($# == 0)); then
-		read -rp "No product supplied. Do you want to update ALL supported products? [y/N] "
+		read -rp "No ${RSDK_GIT_REPO_TYPE} supplied. Do you want to update ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
 		if [[ ${REPLY/Y/y} == "y" ]]; then
-			local products
-			mapfile -t products < <(jq -r '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
-			set -- "${products[@]}"
+			set -- "${RSDK_GIT_REPO_ARRAY[@]}"
 		else
 			echo "Operation cancelled."
 			return

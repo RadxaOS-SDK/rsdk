@@ -1,7 +1,7 @@
 local product_data = import "../../../configs/product_data.libjsonnet";
 
 function(
-    product,
+    target,
     variant,
 ) std.manifestYamlDoc(
     {
@@ -24,7 +24,7 @@ function(
                         name: "Generate changelog",
                         uses: "radxa-repo/rbuild-changelog@main",
                         with: {
-                            product: product
+                            product: target
                         }
                     },
                     {
@@ -32,7 +32,7 @@ function(
                         id: "query",
                         uses: "RadxaOS-SDK/rsdk/.github/actions/query@main",
                         with: {
-                            product: product
+                            product: target
                         }
                     },
                     {
@@ -72,7 +72,7 @@ function(
                 needs: "prepare_release",
                 strategy: {
                     matrix: {
-                        product: [ product ],
+                        product: [ target ],
                         suite: "${{ fromJSON(needs.prepare_release.outputs.suites )}}",
                         edition: "${{ fromJSON(needs.prepare_release.outputs.editions )}}",
                     }

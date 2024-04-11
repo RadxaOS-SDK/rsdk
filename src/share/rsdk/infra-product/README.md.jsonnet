@@ -1,7 +1,7 @@
 local product_data = import "../configs/product_data.libjsonnet";
 
 function(
-    product,
+    target,
     build_org,
 ) |||
     # %(product_full_name)s
@@ -21,7 +21,7 @@ function(
 
     Should you have any additional questions, please visit [our forum](https://forum.radxa.com/) or [our Discord](https://rock.sh/go), and we are willing to help.
 ||| % {
-    product: product_data(product).product,
-    product_full_name: product_data(product).product_full_name,
+    product: product_data(target).product,
+    product_full_name: product_data(target).product_full_name,
     build_org: build_org
 }
