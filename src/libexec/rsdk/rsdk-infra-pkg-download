@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+find_target_distros() {
+	local requested=() supported=() deb="$1" pkgs_conf="$2"
+	shift 2
+	supported=("$@")
+
+	mapfile -t requested < <(jq -er --arg target "$deb" 'to_entries[] | select(.key == $target).value.Releases[]' /home/excalibur/Downloads/pkg.conf) && array_remove "requested" ""
+	if ((${#requested[@]} > 0)); then
+		array_intersect "${supported[@]}" -- "${requested[@]}"
+		return
+	fi
+
+	mapfile -t requested < <(jq -er '."*".Releases[]' "$pkgs_conf") && array_remove "requested" ""
+	array_intersect "${supported[@]}" -- "${requested[@]}"
+}
+
+download_pkgs() {
+	local RSDK_TEMP i DISTROS=("$@") OUTPUT="$PWD/debs"
+	RSDK_TEMP="$(mktemp -d)"
+	for i in "${DISTROS[@]}"; do
+		mkdir -p "$OUTPUT/$i"
+	done
+
+	local nproc
+	nproc=$(($(nproc)))
+
+	for i in "${!RSDK_PKG_REPO_ARRAY[@]}"; do
+		request_parallel
+		(
+			org="$RSDK_PACKAGE_ORG"
+			pkg="${RSDK_PKG_REPO_ARRAY[i]}"
+			tag="${RSDK_PKG_REPO_TAG_ARRAY[i]}"
+
+			echo "Downloading '$org/$pkg@$tag'..."
+			mkdir -p "$RSDK_TEMP/$pkg"
+
+			if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
+				gh release download "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"
+				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]]; then
+					cp "$RSDK_TEMP/$pkg"/*.deb "$OUTPUT/${DISTROS[0]}"
+				else
+					for j in "$RSDK_TEMP/$pkg"/*.deb; do
+						mapfile -t targets < <(find_target_distros "$(basename "$j")" "$RSDK_TEMP/$pkg/pkg.conf" "${DISTROS[@]}") && array_remove "targets" ""
+						for k in "${targets[@]}"; do
+							cp "$j" "$OUTPUT/$k"
+						done
+					done
+				fi
+			fi
+		) &
+	done
+	wait_parallel
+
+	rm -rf "$RSDK_TEMP"
+}
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
+
+	local TEMP
+	if ! TEMP="$(getopt -o "hd" -l "help,dry-run" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
+	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
+	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
+	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
+	export RSDK_PKG_REPO_TAG_ARRAY=("${RSDK_PKG_REPO_TAG_ARRAY[@]}")
+
+	mapfile -t RSDK_PKG_REPO_ARRAY < <(jq -er 'to_entries[].key' pkgs.json) && array_remove "RSDK_PKG_REPO_ARRAY" ""
+	mapfile -t RSDK_PKG_REPO_TAG_ARRAY < <(jq -er 'to_entries[].value' pkgs.json) && array_remove "RSDK_PKG_REPO_TAG_ARRAY" ""
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-d | --dry-run)
+			RSDK_OPTION_DRY_RUN="true"
+			;;
+		-h | --help)
+			rsdk help "${BASE_NAME#rsdk-}"
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
+			;;
+		esac
+	done
+
+	if (($# == 0)); then
+		TEMP="$(basename "$0")"
+		rsdk help "${TEMP#rsdk-}"
+		return
+	fi
+
+	download_pkgs "$@"
+}
+
+main "$@"
