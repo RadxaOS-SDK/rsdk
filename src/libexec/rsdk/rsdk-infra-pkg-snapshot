@@ -16,19 +16,14 @@ main() {
 	local RSDK_TEMP p
 	RSDK_TEMP="$(mktemp -d)"
 
-	local nproc
-	nproc=$(($(nproc)))
-
 	for p in "${RSDK_PKG_REPO_ARRAY[@]}"; do
-		while (($(jobs -r | wc -l) > nproc)); do
-			sleep 0.1
-		done
+		request_parallel
 		(
 			echo "Querying '$RSDK_PACKAGE_ORG/$p'..."
 			gh release list --exclude-drafts --exclude-pre-releases --json tagName,isLatest --jq ".[] | {\"$p\": select(.isLatest).tagName}" --repo "$RSDK_PACKAGE_ORG/$p" >"$RSDK_TEMP/$p.json"
 		) &
 	done
-	wait
+	wait_parallel
 
 	echo "Merging into pkgs.json..."
 	jq -es 'add' "$RSDK_TEMP"/*.json >pkgs.json

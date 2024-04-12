@@ -31,3 +31,25 @@ array_remove() {
 	done
 	eval "$array_name=( \"\${new_array[@]}\" )"
 }
+
+request_parallel() {
+	local nproc
+	nproc=$(($(nproc)))
+
+	while (($(jobs -r | wc -l) > nproc)); do
+		sleep 0.1
+	done
+}
+
+wait_parallel() {
+	# An error aware wait
+	# Subshell inherits set -e so they will report error code correctly
+	# https://stackoverflow.com/a/43776775
+	while true; do
+		wait -n || {
+			local code="$?"
+			([[ $code == "127" ]] && exit 0 || exit "$code")
+			break
+		}
+	done
+}
