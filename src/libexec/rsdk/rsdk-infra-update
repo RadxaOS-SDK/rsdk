@@ -83,6 +83,8 @@ main() {
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
@@ -109,7 +111,7 @@ main() {
 		;;
 	"rsdk-infra-product-update")
 		RSDK_GIT_REPO_TYPE="product"
-		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-product"
 		RSDK_TARGET_ORGANIZATION="$RSDK_BUILD_ORG"
 		repo_desc() {
@@ -118,7 +120,7 @@ main() {
 		;;
 	"rsdk-infra-repo-update")
 		RSDK_GIT_REPO_TYPE="suite"
-		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json")
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-repo"
 		RSDK_TARGET_ORGANIZATION="$RSDK_APT_REPO_ORG"
 		repo_desc() {

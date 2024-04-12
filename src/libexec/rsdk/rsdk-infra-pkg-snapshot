@@ -5,11 +5,13 @@ main() {
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 	# shellcheck source=src/lib/rsdk/utils.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
 	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
 
-	mapfile -t RSDK_PKG_REPO_ARRAY < <(gh repo list "$RSDK_PACKAGE_ORG" --no-archived --visibility public --limit 65535 --json name --jq '.[].name')
+	mapfile -t RSDK_PKG_REPO_ARRAY < <(gh repo list "$RSDK_PACKAGE_ORG" --no-archived --visibility public --limit 65535 --json name --jq '.[].name') && array_remove "RSDK_PKG_REPO_ARRAY" ""
 
 	local RSDK_TEMP p
 	RSDK_TEMP="$(mktemp -d)"

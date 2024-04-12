@@ -27,9 +27,7 @@ _rsdk_build_completions() {
 	)
 
 	local products=() product_provided="false"
-	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
-	# Trim empty elements
-	array_remove "products" ""
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json") && array_remove "products" ""
 
 	for i in "${products[@]}"; do
 		# We exclude the last word from the array, as the last word is what user
@@ -50,10 +48,13 @@ _rsdk_build_completions() {
 		array_remove "suggestions" "$i"
 	done
 
-	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
 _rsdk_chroot_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
 	case "$COMP_CWORD" in
 	2)
 		local i suggestions=()
@@ -74,20 +75,24 @@ _rsdk_chroot_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 		;;
 	esac
 }
 
 _rsdk_config_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
 	case "$COMP_CWORD" in
 	2)
 		local current_level="${COMP_WORDS[COMP_CWORD]%.*}" suggestions=()
 		if [[ $current_level == "${COMP_WORDS[COMP_CWORD]}" ]]; then
 			current_level=""
 		fi
-		mapfile -t suggestions < <(jq -er --arg field "$current_level" 'getpath($field / ".") | to_entries[].key | "\($field).\(.)" | ltrimstr(".")' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/rsdk.json")
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t suggestions < <(jq -er --arg field "$current_level" 'getpath($field / ".") | to_entries[].key | "\($field).\(.)" | ltrimstr(".")' \
+			"$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/rsdk.json") && array_remove "suggestions" ""
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 		;;
 	esac
 }
@@ -110,7 +115,7 @@ _rsdk_infra-product-build_completions() {
 	)
 
 	local products=()
-	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json") && array_remove "products" ""
 	# Trim empty elements
 	array_remove "products" ""
 	suggestions+=("${products[@]}")
@@ -120,7 +125,7 @@ _rsdk_infra-product-build_completions() {
 		array_remove "suggestions" "$i"
 	done
 
-	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
 _rsdk_infra-product-update_completions() {
@@ -135,7 +140,7 @@ _rsdk_infra-product-update_completions() {
 	)
 
 	local products=()
-	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json") && array_remove "products" ""
 	# Trim empty elements
 	array_remove "products" ""
 	suggestions+=("${products[@]}")
@@ -145,10 +150,13 @@ _rsdk_infra-product-update_completions() {
 		array_remove "suggestions" "$i"
 	done
 
-	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
 _rsdk_write-image_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
 	case "$COMP_CWORD" in
 	2)
 		local i suggestions=()
@@ -160,7 +168,7 @@ _rsdk_write-image_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 		;;
 	3)
 		local i suggestions=()
@@ -173,7 +181,7 @@ _rsdk_write-image_completions() {
 				suggestions+=("$i")
 			fi
 		done
-		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 		;;
 	esac
 }
@@ -186,7 +194,7 @@ _rsdk_completions() {
 	0) : ;;
 	1)
 		local subcommands=()
-		mapfile -t subcommands < <("$(dirname "$(command -v "${COMP_WORDS[0]}")")/../bin/rsdk" config completions.supported_subcommands)
+		mapfile -t subcommands < <("$(dirname "$(command -v "${COMP_WORDS[0]}")")/../bin/rsdk" config completions.supported_subcommands) && array_remove "subcommands" ""
 
 		if [[ -f "/.dockerenv" ]]; then
 			array_remove "subcommands" "chroot"
@@ -197,7 +205,7 @@ _rsdk_completions() {
 			array_remove "subcommands" "shell"
 		fi
 
-		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
+		mapfile -t COMPREPLY < <(compgen -W "${subcommands[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 		;;
 	*)
 		if [[ "$(type -t "_rsdk_${COMP_WORDS[1]}_completions")" == "function" ]]; then
