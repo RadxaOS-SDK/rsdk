@@ -21,6 +21,25 @@ in_array() {
 	[[ $* =~ $item ]]
 }
 
+array_intersect() {
+	local a=() b=()
+	while [[ $1 != "--" ]]; do
+		a+=("$1")
+		shift
+	done
+	shift
+	b=("$@")
+
+	local i j
+	for i in "${a[@]}"; do
+		for j in "${b[@]}"; do
+			if [[ $i == "$j" ]]; then
+				echo "$i"
+			fi
+		done
+	done
+}
+
 array_remove() {
 	local array_name="$1" item="$2" old_array=() new_array=()
 	eval "old_array=( \"\${${array_name}[@]}\" )"
