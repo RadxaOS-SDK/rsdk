@@ -35,6 +35,7 @@ update_repo() {
 		fi
 	fi
 
+	# FIXME: what if we want to keep the content?
 	echo "Remove existing content..."
 	find "$OUTPUT" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 
