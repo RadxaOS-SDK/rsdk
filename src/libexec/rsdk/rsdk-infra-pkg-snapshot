@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+
+	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
+	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
+
+	mapfile -t RSDK_PKG_REPO_ARRAY < <(gh repo list "$RSDK_PACKAGE_ORG" --no-archived --visibility public --limit 65535 --json name --jq '.[].name')
+
+	local RSDK_TEMP p
+	RSDK_TEMP="$(mktemp -d)"
+
+	local nproc
+	nproc=$(($(nproc)))
+
+	for p in "${RSDK_PKG_REPO_ARRAY[@]}"; do
+		while (($(jobs -r | wc -l) > nproc)); do
+			sleep 0.1
+		done
+		(
+			echo "Querying '$RSDK_PACKAGE_ORG/$p'..."
+			gh release list --exclude-drafts --exclude-pre-releases --json name,isLatest --jq ".[] | {\"$p\": select(.isLatest).name}" --repo "$RSDK_PACKAGE_ORG/$p" >"$RSDK_TEMP/$p.json"
+		) &
+	done
+	wait
+
+	echo "Merging into pkgs.json..."
+	jq -es 'add' "$RSDK_TEMP"/*.json >pkgs.json
+	rm -rf "$RSDK_TEMP"
+
+	if [[ -f pkgs.lock ]]; then
+		echo "Applying pkgs.lock..."
+		jq -es 'add' pkgs.json pkgs.lock >pkgs.json.new
+		mv pkgs.json.new pkgs.json
+	fi
+}
+
+main "$@"
