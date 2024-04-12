@@ -48,7 +48,7 @@ main() {
 		read -rp "No product supplied. Do you want to build ALL supported products? [y/N] "
 		if [[ ${REPLY/Y/y} == "y" ]]; then
 			local products
-			mapfile -t products < <(jq -r '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+			mapfile -t products < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
 			set -- "${products[@]}"
 		else
 			echo "Operation cancelled."

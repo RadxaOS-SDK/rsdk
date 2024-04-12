@@ -216,24 +216,24 @@ main() {
 	fi
 
 	local PRODUCT="${1}" SUITE EDITION
-	if ! jq -re --arg product "$PRODUCT" '.[] | select(.product == $product)' "$SCRIPT_DIR/../../share/rsdk/configs/products.json" &>/dev/null; then
+	if ! jq -er --arg product "$PRODUCT" '.[] | select(.product == $product)' "$SCRIPT_DIR/../../share/rsdk/configs/products.json" &>/dev/null; then
 		echo "'$PRODUCT' is not a supported product." >&2
 		return 1
 	fi
 
-	SUITE="${2:-$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
-	EDITION="${3:-$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
+	SUITE="${2:-$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
+	EDITION="${3:-$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
 	local OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 	mkdir -p "$OUTPUT"
 
 	local i
-	if i="$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).override_kernel' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
+	if i="$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).override_kernel' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
 		RSDK_OPTION_KERNEL_OVERRIDE="${RSDK_OPTION_KERNEL_OVERRIDE:-$i}"
 	fi
-	if i="$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).override_firmware' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
+	if i="$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).override_firmware' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
 		RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-$i}"
 	fi
-	if i="$(jq -re --arg product "$PRODUCT" '.[] | select(.product == $product).override_product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
+	if i="$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).override_product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
 		RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-$i}"
 	fi
 

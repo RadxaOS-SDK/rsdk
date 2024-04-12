@@ -35,7 +35,7 @@ main() {
 	fi
 
 	local FIELD="$1"
-	jq -re --arg field "$FIELD" 'getpath($field / ".") | select(type == "array")[], select(type != "array")' "$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
+	jq -er --arg field "$FIELD" 'getpath($field / ".") | select(type == "array")[], select(type != "array")' "$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
 }
 
 main "$@"

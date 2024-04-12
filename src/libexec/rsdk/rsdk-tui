@@ -5,7 +5,7 @@ __rsdk_build() {
 
 	radiolist_init
 	local products=() i
-	mapfile -t products < <(jq -r '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 	for i in "${products[@]}"; do

@@ -109,16 +109,16 @@ main() {
 		;;
 	"rsdk-infra-product-update")
 		RSDK_GIT_REPO_TYPE="product"
-		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -re '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-product"
 		RSDK_TARGET_ORGANIZATION="$RSDK_BUILD_ORG"
 		repo_desc() {
-			jq -re --arg target "$1" '.[] | select(.product == $target).product_full_name' "$SCRIPT_DIR/../../share/rsdk/configs/products.json"
+			jq -er --arg target "$1" '.[] | select(.product == $target).product_full_name' "$SCRIPT_DIR/../../share/rsdk/configs/products.json"
 		}
 		;;
 	"rsdk-infra-repo-update")
 		RSDK_GIT_REPO_TYPE="suite"
-		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -re '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json")
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json")
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-repo"
 		RSDK_TARGET_ORGANIZATION="$RSDK_APT_REPO_ORG"
 		repo_desc() {
@@ -131,7 +131,7 @@ main() {
 				type="Radxa Repository"
 				;;
 			esac
-			distro="$(jq -re --arg target "$target" '.[] | select(.suites[] | . == $target).distribution' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json")"
+			distro="$(jq -er --arg target "$target" '.[] | select(.suites[] | . == $target).distribution' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json")"
 			echo "$type for $distro $target"
 		}
 		;;

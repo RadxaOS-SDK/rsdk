@@ -27,7 +27,7 @@ _rsdk_build_completions() {
 	)
 
 	local products=() product_provided="false"
-	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 
@@ -86,7 +86,7 @@ _rsdk_config_completions() {
 		if [[ $current_level == "${COMP_WORDS[COMP_CWORD]}" ]]; then
 			current_level=""
 		fi
-		mapfile -t suggestions < <(jq -re --arg field "$current_level" 'getpath($field / ".") | to_entries[].key | "\($field).\(.)" | ltrimstr(".")' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/rsdk.json")
+		mapfile -t suggestions < <(jq -er --arg field "$current_level" 'getpath($field / ".") | to_entries[].key | "\($field).\(.)" | ltrimstr(".")' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/rsdk.json")
 		mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}")
 		;;
 	esac
@@ -110,7 +110,7 @@ _rsdk_infra-product-build_completions() {
 	)
 
 	local products=()
-	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 	suggestions+=("${products[@]}")
@@ -135,7 +135,7 @@ _rsdk_infra-product-update_completions() {
 	)
 
 	local products=()
-	mapfile -t products < <(jq -r '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
+	mapfile -t products < <(jq -er '.[].product' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/products.json")
 	# Trim empty elements
 	array_remove "products" ""
 	suggestions+=("${products[@]}")
