@@ -23,7 +23,7 @@ main() {
 		done
 		(
 			echo "Querying '$RSDK_PACKAGE_ORG/$p'..."
-			gh release list --exclude-drafts --exclude-pre-releases --json name,isLatest --jq ".[] | {\"$p\": select(.isLatest).name}" --repo "$RSDK_PACKAGE_ORG/$p" >"$RSDK_TEMP/$p.json"
+			gh release list --exclude-drafts --exclude-pre-releases --json tagName,isLatest --jq ".[] | {\"$p\": select(.isLatest).tagName}" --repo "$RSDK_PACKAGE_ORG/$p" >"$RSDK_TEMP/$p.json"
 		) &
 	done
 	wait
