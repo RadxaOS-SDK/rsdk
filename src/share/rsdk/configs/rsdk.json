@@ -22,6 +22,12 @@
             "package": "radxa-pkg",
             "repository": "radxa-repo",
             "product": "radxa-build"
+        },
+        "repository": {
+            "keyrings": [
+                "72AF2B5F7B24A8FFE4F41AC4E572249A33EB9743",
+                "EF181314AFE1834694A34CC65D93177D0752732A"
+            ]
         }
     }
 }

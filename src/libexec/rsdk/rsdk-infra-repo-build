@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+
+create_archive() {
+	local DEB_ARCHIVE="rsdk-local" i DEB_SOURCE
+	DEB_SOURCE="$(realpath "$SCRIPT_DIR/../../../debs")"
+
+	for i in "$@"; do
+		aptly publish drop -force-drop "$i" "$DEB_ARCHIVE" || true
+		aptly repo drop -force "$i" || true
+	done
+	aptly db cleanup
+
+	for i in "$@"; do
+		local DEB_PACKAGES=("$DEB_SOURCE/$i"/*.deb)
+
+		if ((${#DEB_PACKAGES[@]} == 0)); then
+			echo "No packages were found in $DEB_SOURCE/$i." >&2
+			echo "Local package archive will not be created." >&2
+			exit "$EXIT_FILE_NOT_EXIST"
+		fi
+
+		aptly repo create -distribution="$i" "$i"
+		aptly repo add "$i" "$DEB_SOURCE/$i"
+		aptly publish repo -skip-signing -architectures=all,arm64,riscv64 "$i" "$DEB_ARCHIVE"
+	done
+
+	if [[ $RSDK_OPTION_SKIP_SIGNING == "false" ]]; then
+		local GPG_PARAMETERS=(
+			"--yes"
+			"--armor"
+		)
+
+		local keyrings=() key_missing="false"
+		mapfile -t keyrings < <("$SCRIPT_DIR/../../bin/rsdk" config infra.repository.keyrings) && array_remove "keyrings" ""
+		for i in "${keyrings[@]}"; do
+			if ! gpg -K "$i" &>/dev/null; then
+				echo "Private key for '$i' is not available!" >&2
+				key_missing="true"
+			fi
+			GPG_PARAMETERS+=("-u" "$i")
+		done
+
+		if [[ $key_missing == "true" ]]; then
+			echo "Signing failed due to missing private key." >&2
+			return 1
+		fi
+
+		for i in "$@"; do
+			echo "Signing '$i'..."
+			local DISTRO_PATH="$HOME/.aptly/public/$DEB_ARCHIVE/dists/$i"
+			gpg "${GPG_PARAMETERS[@]}" --clear-sign -o "$DISTRO_PATH/InRelease" "$DISTRO_PATH/Release"
+			gpg "${GPG_PARAMETERS[@]}" --detach-sign -o "$DISTRO_PATH/Release.gpg" "$DISTRO_PATH/Release"
+		done
+	fi
+}
+
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
+
+	local TEMP
+	if ! TEMP="$(getopt -o "hds" -l "help,dry-run,skip-signing" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
+	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
+	export RSDK_OPTION_SKIP_SIGNING="${RSDK_OPTION_SKIP_SIGNING:-false}"
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-d | --dry-run)
+			RSDK_OPTION_DRY_RUN="true"
+			;;
+		-h | --help)
+			rsdk help "${BASE_NAME#rsdk-}"
+			return
+			;;
+		-s | --skip-signing)
+			RSDK_OPTION_SKIP_SIGNING="true"
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
+			;;
+		esac
+	done
+
+	if (($# == 0)); then
+		TEMP="$(basename "$0")"
+		rsdk help "${TEMP#rsdk-}"
+		return
+	fi
+
+	create_archive "$@"
+}
+
+main "$@"
