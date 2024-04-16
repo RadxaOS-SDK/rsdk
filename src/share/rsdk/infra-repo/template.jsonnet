@@ -1,11 +1,11 @@
 local apt_repo_json = import ".apt-repo.json.jsonnet";
 local freight_conf = import ".freight.conf.jsonnet";
-local LICENSE = import "LICENSE.jsonnet";
+local LICENSE = import "../common/licenses/GPLv3.jsonnet";
 local README_md = import "README.md.jsonnet";
-local dependabot_yaml = import ".github/dependabot.yaml.jsonnet";
+local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local reset_yaml = import ".github/workflows/reset.yaml.jsonnet";
 local update_yaml = import ".github/workflows/update.yaml.jsonnet";
-local dependabot_workflow = import ".github/workflows/dependabot.yaml.jsonnet";
+local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
 
 function(
     target,
