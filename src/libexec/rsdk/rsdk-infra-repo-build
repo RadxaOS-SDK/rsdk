@@ -2,7 +2,7 @@
 
 create_archive() {
 	local DEB_ARCHIVE="rsdk-local" i DEB_SOURCE
-	DEB_SOURCE="$(realpath "$SCRIPT_DIR/../../../debs")"
+	DEB_SOURCE="$(realpath "$PWD/debs")"
 
 	for i in "$@"; do
 		aptly publish drop -force-drop "$i" "$DEB_ARCHIVE" || true
