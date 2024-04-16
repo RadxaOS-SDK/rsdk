@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 find_target_distros() {
-	local requested=() supported=() deb="$1" pkgs_conf="$2"
+	local requested=() supported=() deb="$1" pkg_conf="$2"
 	shift 2
 	supported=("$@")
 
-	mapfile -t requested < <(jq -er --arg target "$deb" 'to_entries[] | select(.key == $target).value.Releases[]' /home/excalibur/Downloads/pkg.conf) && array_remove "requested" ""
+	mapfile -t requested < <(jq -er --arg target "$deb" 'to_entries[] | select(.key == $target).value.Releases[]' "$pkg_conf") && array_remove "requested" ""
 	if ((${#requested[@]} > 0)); then
 		array_intersect "${supported[@]}" -- "${requested[@]}"
 		return
 	fi
 
-	mapfile -t requested < <(jq -er '."*".Releases[]' "$pkgs_conf") && array_remove "requested" ""
+	mapfile -t requested < <(jq -er '."*".Releases[]' "$pkg_conf") && array_remove "requested" ""
 	array_intersect "${supported[@]}" -- "${requested[@]}"
 }
 
