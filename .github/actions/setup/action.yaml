@@ -1,0 +1,23 @@
+name: rsdk-setup
+description: rsdk setup Action
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: RadxaOS-SDK/rsdk
+        submodules: recursive
+    - name: Enable KVM group perms
+      shell: bash
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+    - name: Set up QEMU Emulation
+      uses: docker/setup-qemu-action@v3
+    - name: rsdk-welcome
+      uses: devcontainers/ci@v0.3
+      with:
+        runCmd: |
+          src/bin/rsdk welcome
