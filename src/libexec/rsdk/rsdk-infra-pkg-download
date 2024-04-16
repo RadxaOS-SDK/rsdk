@@ -12,7 +12,11 @@ find_target_distros() {
 	fi
 
 	mapfile -t requested < <(jq -er '."*".Releases[]' "$pkg_conf") && array_remove "requested" ""
-	array_intersect "${supported[@]}" -- "${requested[@]}"
+	if ((${#requested[@]} > 0)); then
+		array_intersect "${supported[@]}" -- "${requested[@]}"
+	else
+		echo "${supported[0]}"
+	fi
 }
 
 download_pkgs() {
