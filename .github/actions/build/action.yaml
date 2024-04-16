@@ -28,7 +28,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup rsdk
-      uses: ./actions/setup
+      uses: ./.github/actions/setup
     - name: Set suite based on input variables
       shell: bash
       run: |
