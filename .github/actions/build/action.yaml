@@ -28,7 +28,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup rsdk
-      uses: ./.github/actions/setup
+      uses: RadxaOS-SDK/rsdk/.github/actions/setup@main
     - name: Set suite based on input variables
       shell: bash
       run: |
