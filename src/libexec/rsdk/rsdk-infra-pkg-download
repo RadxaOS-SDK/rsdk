@@ -22,9 +22,6 @@ download_pkgs() {
 		mkdir -p "$OUTPUT/$i"
 	done
 
-	local nproc
-	nproc=$(($(nproc)))
-
 	for i in "${!RSDK_PKG_REPO_ARRAY[@]}"; do
 		request_parallel
 		(
