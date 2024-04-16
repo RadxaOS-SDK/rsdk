@@ -1,9 +1,6 @@
-local apt_repo_json = import ".apt-repo.json.jsonnet";
-local freight_conf = import ".freight.conf.jsonnet";
 local LICENSE = import "../common/licenses/GPLv3.jsonnet";
 local README_md = import "README.md.jsonnet";
 local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
-local reset_yaml = import ".github/workflows/reset.yaml.jsonnet";
 local update_yaml = import ".github/workflows/update.yaml.jsonnet";
 local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
 
@@ -13,12 +10,9 @@ function(
     repo_org,
     pkg_org,
 ) {
-    ".apt-repo.json": apt_repo_json(target),
-    ".freight.conf": freight_conf(),
     "LICENSE": LICENSE(),
     "README.md": README_md(target, repo_org, pkg_org),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
-    ".github/workflows/reset.yaml": reset_yaml(),
-    ".github/workflows/update.yaml": update_yaml(pkg_org),
+    ".github/workflows/update.yaml": update_yaml(target, pkg_org),
 }
