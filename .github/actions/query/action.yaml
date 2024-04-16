@@ -2,7 +2,7 @@ name: rsdk-query
 description: rsdk product information query Action
 inputs:
   product:
-    required: true
+    required: false
 outputs:
   suites:
     value: ${{ steps.query.outputs.suites }}
@@ -20,5 +20,9 @@ runs:
       id: query
       shell: bash
       run: |
-        echo "suites=$(jq -c '. | map(select(.product == "${{ inputs.product }}"))[].supported_suite' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
-        echo "editions=$(jq -c '. | map(select(.product == "${{ inputs.product }}"))[].supported_edition' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
+        if [[ -n "${{ inputs.product }}" ]]; then
+          echo "suites=$(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[].supported_suite' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
+          echo "editions=$(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[].supported_edition' .tmp/rsdk/src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
+        else
+          echo "suites=$(jq -ec '[ .[].supported_suites ] | add' .tmp/rsdk/src/share/rsdk/configs/distributions.json)" >> $GITHUB_OUTPUT
+        fi
