@@ -210,6 +210,16 @@
         "supported_edition": ["kde", "cli"]
     },
     {
+        "product": "radxa-cm5-rpi-cm4-io-6_1",
+        "override_product": "radxa-cm5-rpi-cm4-io",
+        "override_kernel": "rk2312",
+        "product_name": "Radxa CM5 RPI CM4 IO",
+        "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board Linux 6.1 Development Build",
+        "soc": "rk3588s",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde", "cli"]
+    },
+    {
         "product": "radxa-cm5-rpi-cm4-io",
         "product_name": "Radxa CM5 RPI CM4 IO",
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board",
