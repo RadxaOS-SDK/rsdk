@@ -11,27 +11,31 @@ update_repo() {
 		fi
 	fi
 
-	if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
-		echo "Dry run. Will only update local repo."
-		mkdir -p "$OUTPUT"
-		pushd "$OUTPUT"
-		git init
-		popd
-	elif [[ -e "$OUTPUT/.git" ]] && (cd "$OUTPUT" && [[ -n $(git remote) ]]); then
+	if [[ -e "$OUTPUT/.git" ]] && (cd "$OUTPUT" && [[ -n $(git remote) ]]); then
 		echo "Found existing repository. Updating..."
 		pushd "$OUTPUT"
-		git fetch origin main
-		git pull origin main
+		if git remote show -n origin &>/dev/null; then
+			git fetch origin main
+			git pull origin main
+		fi
 		popd
 	else
 		rm -rf "$OUTPUT"
 		mkdir -p "$OUTPUT/.."
 		echo "Trying to clone existing repository first..."
 		if ! gh repo clone "$RSDK_TARGET_ORGANIZATION/$TARGET" "$OUTPUT"; then
-			echo "Target repository does not exist. New repository will be created."
-			pushd "$OUTPUT/.."
-			gh repo create "$RSDK_TARGET_ORGANIZATION/$TARGET" --clone --public
-			popd
+			if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
+				echo "Dry run. Will only create local repo."
+				mkdir -p "$OUTPUT"
+				pushd "$OUTPUT"
+				git init
+				popd
+			else
+				echo "Target repository does not exist. New repository will be created."
+				pushd "$OUTPUT/.."
+				gh repo create "$RSDK_TARGET_ORGANIZATION/$TARGET" --clone --public
+				popd
+			fi
 		fi
 	fi
 
