@@ -39,9 +39,16 @@ update_repo() {
 		fi
 	fi
 
-	# FIXME: what if we want to keep the content?
 	echo "Remove existing content..."
-	find "$OUTPUT" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+	local i file_exclusion=(
+		"!" "-name" ".git"
+	)
+	for i in "${RSDK_GIT_REPO_KEEP_FILES[@]}"; do
+		file_exclusion+=(
+			"!" "-name" "$i"
+		)
+	done
+	find "$OUTPUT" -mindepth 1 -maxdepth 1 "${file_exclusion[@]}" -exec rm -rf {} +
 
 	echo "Prepare folder structure..."
 	pushd "$RSDK_GIT_REPO_TEMPLATE"
@@ -106,6 +113,7 @@ main() {
 	export RSDK_GIT_REPO_TEMPLATE="${RSDK_GIT_REPO_TEMPLATE:-}"
 	export RSDK_TARGET_SUFFIX="${RSDK_TARGET_SUFFIX:-}"
 	export RSDK_TARGET_ORGANIZATION="${RSDK_TARGET_ORGANIZATION:-}"
+	export RSDK_GIT_REPO_KEEP_FILES=("${RSDK_GIT_REPO_KEEP_FILES[@]}")
 
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
@@ -127,6 +135,10 @@ main() {
 		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-repo"
 		RSDK_TARGET_ORGANIZATION="$RSDK_APT_REPO_ORG"
+		RSDK_GIT_REPO_KEEP_FILES=(
+			"pkgs.json"
+			"pkgs.lock"
+		)
 		repo_desc() {
 			local distro type target="${1%-test}"
 			case "$1" in
