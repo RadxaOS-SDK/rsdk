@@ -5,10 +5,12 @@ main() {
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "h" -l "help" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hu" -l "help,unset" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
+
+	local RSDK_OPTION_UNSET="${RSDK_OPTION_UNSET:-false}"
 
 	while true; do
 		TEMP="$1"
@@ -19,6 +21,9 @@ main() {
 			rsdk help "${TEMP#rsdk-}"
 			return
 			;;
+		-u | --unset)
+			RSDK_OPTION_UNSET="true"
+			;;
 		--)
 			break
 			;;
@@ -28,12 +33,6 @@ main() {
 		esac
 	done
 
-	if (($# == 0)); then
-		TEMP="$(basename "$0")"
-		rsdk help "${TEMP#rsdk-}"
-		return
-	fi
-
 	local FIELD="$1" config_files=(
 		"$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
 	)
@@ -42,7 +41,25 @@ main() {
 		config_files+=(.rsdk.json)
 	fi
 
-	jq -ers --arg field "$FIELD" 'reduce .[] as $i ({}; . * $i) | getpath($field / ".") | select(type == "array")[], select(type != "array")' "${config_files[@]}"
+	case $# in
+	1)
+		if [[ $RSDK_OPTION_UNSET == "true" ]]; then
+			jq -er --arg field "$FIELD" 'delpaths([$field / "."])' .rsdk.json >.rsdk.json.new
+			mv .rsdk.json.new .rsdk.json
+		else
+			jq -ers --arg field "$FIELD" 'reduce .[] as $i ({}; . * $i) | getpath($field / ".") | select(type == "array")[], select(type != "array")' "${config_files[@]}"
+		fi
+		;;
+	2)
+		local VALUE="$2"
+		jq -er --arg field "$FIELD" --arg value "$VALUE" 'setpath($field / "."; $value)' .rsdk.json >.rsdk.json.new
+		mv .rsdk.json.new .rsdk.json
+		;;
+	*)
+		"$0" --help
+		return
+		;;
+	esac
 }
 
 main "$@"
