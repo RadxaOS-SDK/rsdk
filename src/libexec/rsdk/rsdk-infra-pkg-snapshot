@@ -8,8 +8,37 @@ main() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
+	local TEMP
+	if ! TEMP="$(getopt -o "hl:" -l "help,lock-file:" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
 	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
 	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
+	export RSDK_PKG_LOCK_FILE="${RSDK_PKG_LOCK_FILE:-pkgs.lock}"
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-h | --help)
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
+			return
+			;;
+		-l | --lock-file)
+			RSDK_PKG_LOCK_FILE="$1"
+			shift
+			;;
+		--)
+			break
+			;;
+		*)
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
+			;;
+		esac
+	done
 
 	mapfile -t RSDK_PKG_REPO_ARRAY < <(gh repo list "$RSDK_PACKAGE_ORG" --no-archived --visibility public --limit 65535 --json name --jq '.[].name') && array_remove "RSDK_PKG_REPO_ARRAY" ""
 
@@ -29,11 +58,11 @@ main() {
 	jq -es 'add' "$RSDK_TEMP"/*.json >pkgs.json
 	rm -rf "$RSDK_TEMP"
 
-	if [[ -f pkgs.lock ]]; then
+	if [[ -f $RSDK_PKG_LOCK_FILE ]]; then
 		echo "Applying pkgs.lock..."
 		local RSDK_TEMP_JSON
 		RSDK_TEMP_JSON="$(mktemp)"
-		jq -es 'add' pkgs.json pkgs.lock >"$RSDK_TEMP_JSON"
+		jq -es 'add' pkgs.json "$RSDK_PKG_LOCK_FILE" >"$RSDK_TEMP_JSON"
 		mv "$RSDK_TEMP_JSON" pkgs.json
 	fi
 }
