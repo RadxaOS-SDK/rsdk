@@ -22,3 +22,6 @@
 
 # mdbook build output
 /book
+
+# Local rsdk config
+.rsdk.json

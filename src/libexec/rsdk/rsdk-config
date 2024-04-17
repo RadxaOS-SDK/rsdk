@@ -34,8 +34,15 @@ main() {
 		return
 	fi
 
-	local FIELD="$1"
-	jq -er --arg field "$FIELD" 'getpath($field / ".") | select(type == "array")[], select(type != "array")' "$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
+	local FIELD="$1" config_files=(
+		"$SCRIPT_DIR/../../share/rsdk/configs/rsdk.json"
+	)
+
+	if [[ -f .rsdk.json ]]; then
+		config_files+=(.rsdk.json)
+	fi
+
+	jq -ers --arg field "$FIELD" 'reduce .[] as $i ({}; . * $i) | getpath($field / ".") | select(type == "array")[], select(type != "array")' "${config_files[@]}"
 }
 
 main "$@"
