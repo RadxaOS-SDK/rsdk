@@ -79,7 +79,8 @@ main() {
 			RSDK_OPTION_DRY_RUN="true"
 			;;
 		-h | --help)
-			rsdk help "${BASE_NAME#rsdk-}"
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
 			return
 			;;
 		-s | --skip-signing)
@@ -96,8 +97,7 @@ main() {
 	done
 
 	if (($# == 0)); then
-		TEMP="$(basename "$0")"
-		rsdk help "${TEMP#rsdk-}"
+		"$0" --help
 		return
 	fi
 
