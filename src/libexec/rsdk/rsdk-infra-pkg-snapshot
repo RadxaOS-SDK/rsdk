@@ -31,8 +31,10 @@ main() {
 
 	if [[ -f pkgs.lock ]]; then
 		echo "Applying pkgs.lock..."
-		jq -es 'add' pkgs.json pkgs.lock >pkgs.json.new
-		mv pkgs.json.new pkgs.json
+		local RSDK_TEMP_JSON
+		RSDK_TEMP_JSON="$(mktemp)"
+		jq -es 'add' pkgs.json pkgs.lock >"$RSDK_TEMP_JSON"
+		mv "$RSDK_TEMP_JSON" pkgs.json
 	fi
 }
 
