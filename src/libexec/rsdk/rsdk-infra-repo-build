@@ -11,14 +11,6 @@ create_archive() {
 	aptly db cleanup
 
 	for i in "$@"; do
-		local DEB_PACKAGES=("$DEB_SOURCE/$i"/*.deb)
-
-		if ((${#DEB_PACKAGES[@]} == 0)); then
-			echo "No packages were found in $DEB_SOURCE/$i." >&2
-			echo "Local package archive will not be created." >&2
-			exit "$EXIT_FILE_NOT_EXIST"
-		fi
-
 		aptly repo create -distribution="$i" "$i"
 		aptly repo add "$i" "$DEB_SOURCE/$i"
 		aptly publish repo -skip-signing -architectures=all,arm64,riscv64 "$i" "$DEB_ARCHIVE"
