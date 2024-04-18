@@ -49,7 +49,9 @@ main() {
 			jq -er --arg field "$FIELD" 'delpaths([$field / "."])' .rsdk.json >"$RSDK_TEMP_JSON"
 			mv "$RSDK_TEMP_JSON" .rsdk.json
 		else
-			jq -ers --arg field "$FIELD" 'reduce .[] as $i ({}; . * $i) | getpath($field / ".") | select(type == "array")[], select(type != "array")' "${config_files[@]}"
+			jq -ers --arg field "$FIELD" 'reduce .[] as $i ({}; . * $i) |
+				if $field == "." then . else getpath($field / ".") end |
+				if type == "array" then .[] else . end' "${config_files[@]}"
 		fi
 		;;
 	2)
