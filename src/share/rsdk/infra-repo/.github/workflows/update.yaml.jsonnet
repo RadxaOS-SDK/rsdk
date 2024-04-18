@@ -74,10 +74,12 @@ function(
 
                             echo "pages=$(realpath ~/.aptly/public/rsdk-local/.)" >> $GITHUB_OUTPUT
 
-                            git config --global user.name 'github-actions[bot]'
-                            git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-                            git add pkgs.json
-                            git commit -m "chore: update package snapshot"
+                            if git status --porcelain | grep --quiet "pkgs.json" ; then
+                                git config --global user.name 'github-actions[bot]'
+                                git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+                                git add pkgs.json
+                                git commit -m "chore: update package snapshot"
+                            fi
                             popd
                         ||| % {target: target},
                     },
