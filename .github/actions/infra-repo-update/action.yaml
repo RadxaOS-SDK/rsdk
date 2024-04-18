@@ -32,12 +32,7 @@ runs:
         supported_distros=()
         mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
 
-        gh extension install mdb/gh-dispatch
-
         for distro in "${supported_distros[@]}"
         do
-          gh dispatch repository \
-            --repo "$repo_org/$distro$repo_suffix" \
-            --workflow "update.yaml" \
-            --event-type "new_package_release"
+          gh workflow run .github/workflows/update.yaml --repo "$repo_org/$distro$repo_suffix"
         done
