@@ -27,10 +27,17 @@ function(
                 },
                 steps: [
                     {
-                        name: "Checkout",
+                        name: "Checkout rsdk",
                         uses: "actions/checkout@v4",
                         with: {
                             repository: "RadxaOS-SDK/rsdk"
+                        },
+                    },
+                    {
+                        name: "Checkout current repo",
+                        uses: "actions/checkout@v4",
+                        with: {
+                            path: ".infra-repo"
                         },
                     },
                     {
@@ -53,23 +60,11 @@ function(
 
                             suites=("%(target)s")
 
-                            src/bin/rsdk infra-pkg-snapshot
-                            src/bin/rsdk infra-pkg-download "${suites[@]}"
-                            src/bin/rsdk infra-repo-build "${suites[@]}"
+                            pushd .infra-repo
+                            ../src/bin/rsdk infra-pkg-snapshot
+                            ../src/bin/rsdk infra-pkg-download "${suites[@]}"
+                            ../src/bin/rsdk infra-repo-build "${suites[@]}"
 
-                            echo "pages=$(realpath ~/.aptly/public/rsdk-local/.)" >> $GITHUB_OUTPUT
-                            cp pkgs.json /tmp/pkgs.json
-                        ||| % {target: target},
-                    },
-                    {
-                        name: "Checkout",
-                        uses: "actions/checkout@v4",
-                    },
-                    {
-                        name: "Copy content from current repo",
-                        shell: "bash",
-                        run: |||
-                            cp /tmp/pkgs.json ./
                             cp pkgs.json ~/.aptly/public/rsdk-local/
                             pandoc --from gfm --to html --standalone README.md --output ~/.aptly/public/rsdk-local/index.html
 
@@ -77,14 +72,17 @@ function(
                             find . > files.list
                             popd
 
+                            echo "pages=$(realpath ~/.aptly/public/rsdk-local/.)" >> $GITHUB_OUTPUT
+
                             git config --global user.name 'github-actions[bot]'
                             git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
                             git add pkgs.json
                             git commit -m "chore: update package snapshot"
-                        |||,
+                            popd
+                        ||| % {target: target},
                     },
                     {
-                        name: "Setup Pages",
+                        name: "Setup GitHub Pages",
                         uses: "actions/configure-pages@v5",
                     },
                     {
@@ -105,7 +103,9 @@ function(
                         "if": "steps.deploy.outcome == 'success'",
                         shell: "bash",
                         run: |||
+                            pushd .infra-repo
                             git push
+                            popd
                         |||,
                     },
                 ],
