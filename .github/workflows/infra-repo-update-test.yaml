@@ -8,6 +8,8 @@ jobs:
   update-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Update Test repos
         uses: ./.github/actions/infra-repo-update
         with:
