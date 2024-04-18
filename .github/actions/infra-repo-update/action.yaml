@@ -10,7 +10,7 @@ runs:
   steps:
     - name: Query suites info
       id: query
-      uses: ./actions/query
+      uses: RadxaOS-SDK/rsdk/.github/actions/query@main
     - name: Checkout
       uses: actions/checkout@v4
       with:
