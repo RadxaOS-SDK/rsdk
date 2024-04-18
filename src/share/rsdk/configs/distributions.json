@@ -18,7 +18,8 @@
         "distribution": "ubuntu",
         "suites": [
             "focal",
-            "jammy"
+            "jammy",
+            "noble"
         ],
         "supported_suites": [
         ]
