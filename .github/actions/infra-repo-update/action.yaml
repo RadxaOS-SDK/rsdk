@@ -3,20 +3,22 @@ description: 'Radxa apt repos management'
 inputs:
   test-repo:
     default: false
-  reset:
-    default: false
   token:
     required: true
 runs:
   using: "composite"
   steps:
+    - name: Query suites info
+      id: query
+      uses: ./actions/query
     - name: Checkout
       uses: actions/checkout@v4
       with:
         repository: RadxaOS-SDK/rsdk
         path: .tmp/rsdk
-    - name: Generate action parameters
-      id: query
+    - name: Dispatch workflow
+      env:
+          GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: |
         if [[ "${{ inputs.test-repo }}" == "true" ]]
@@ -26,42 +28,16 @@ runs:
           repo_suffix=""
         fi
 
-        if [[ "${{ inputs.reset }}" == "true" ]]
-        then
-          event_type="reset_repo"
-        else
-          event_type="new_package_release"
-        fi
-
         repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
-        supported_distros=(bullseye bookworm focal jammy)
+        supported_distros=()
+	      mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+
+        gh extension install mdb/gh-dispatch
 
         for distro in "${supported_distros[@]}"
         do
-          echo "$distro=$repo_org/$distro$repo_suffix" >> $GITHUB_OUTPUT
+          gh dispatch repository \
+            --repo "$repo_org/$distro$repo_suffix" \
+            --workflow "update.yaml" \
+            --event-type "new_package_release"
         done
-        echo "event_type=$event_type" >> $GITHUB_OUTPUT
-    - name: Update ${{ steps.query.outputs.bullseye }}
-      uses: peter-evans/repository-dispatch@v3
-      with:
-        token: ${{ inputs.token }}
-        repository: ${{ steps.query.outputs.bullseye }}
-        event-type: ${{ steps.query.outputs.event_type }}
-    - name: Update ${{ steps.query.outputs.bookworm }}
-      uses: peter-evans/repository-dispatch@v3
-      with:
-        token: ${{ inputs.token }}
-        repository: ${{ steps.query.outputs.bookworm }}
-        event-type: ${{ steps.query.outputs.event_type }}
-    - name: Update ${{ steps.query.outputs.focal }}
-      uses: peter-evans/repository-dispatch@v3
-      with:
-        token: ${{ inputs.token }}
-        repository: ${{ steps.query.outputs.focal }}
-        event-type: ${{ steps.query.outputs.event_type }}
-    - name: Update ${{ steps.query.outputs.jammy }}
-      uses: peter-evans/repository-dispatch@v3
-      with:
-        token: ${{ inputs.token }}
-        repository: ${{ steps.query.outputs.jammy }}
-        event-type: ${{ steps.query.outputs.event_type }}
