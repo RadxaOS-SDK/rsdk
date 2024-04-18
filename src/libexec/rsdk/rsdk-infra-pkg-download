@@ -5,18 +5,16 @@ find_target_distros() {
 	shift 2
 	supported=("$@")
 
-	mapfile -t requested < <(jq -er --arg target "$deb" 'to_entries[] | select(.key == $target).value.Releases[]' "$pkg_conf") && array_remove "requested" ""
-	if ((${#requested[@]} > 0)); then
-		array_intersect "${supported[@]}" -- "${requested[@]}"
-		return
-	fi
+	local requested_json i
+	for i in "$deb" "*"; do
+		if requested_json="$(jq -er --arg target "$i" 'to_entries[] | select(.key == $target).value.Releases' "$pkg_conf")" && [[ $requested_json != "null" ]]; then
+			mapfile -t requested < <(jq -er '.[]' <<<"$requested_json") && array_remove "requested" ""
+			array_intersect "${supported[@]}" -- "${requested[@]}"
+			return
+		fi
+	done
 
-	mapfile -t requested < <(jq -er '."*".Releases[]' "$pkg_conf") && array_remove "requested" ""
-	if ((${#requested[@]} > 0)); then
-		array_intersect "${supported[@]}" -- "${requested[@]}"
-	else
-		echo "${supported[0]}"
-	fi
+	echo "${supported[0]}"
 }
 
 download_pkgs() {
