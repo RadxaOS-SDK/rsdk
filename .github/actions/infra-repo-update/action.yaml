@@ -30,7 +30,7 @@ runs:
 
         repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
         supported_distros=()
-	      mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+        mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
 
         gh extension install mdb/gh-dispatch
 
