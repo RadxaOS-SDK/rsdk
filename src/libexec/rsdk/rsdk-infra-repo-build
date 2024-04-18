@@ -2,7 +2,7 @@
 
 create_archive() {
 	local DEB_ARCHIVE="rsdk-local" i DEB_SOURCE
-	DEB_SOURCE="$(realpath "$PWD/debs")"
+	DEB_SOURCE="$(realpath "$RSDK_OPTION_DEB_DIR")"
 
 	for i in "$@"; do
 		aptly publish drop -force-drop "$i" "$DEB_ARCHIVE" || true
@@ -55,13 +55,14 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds" -l "help,dry-run,skip-signing" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds" -l "help,dry-run,skip-signing,deb-dir:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
 
 	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
 	export RSDK_OPTION_SKIP_SIGNING="${RSDK_OPTION_SKIP_SIGNING:-false}"
+	export RSDK_OPTION_DEB_DIR="${RSDK_OPTION_DEB_DIR:-${TMPDIR:-/tmp}/rsdk-deb}"
 
 	while true; do
 		TEMP="$1"
@@ -78,6 +79,10 @@ main() {
 		-s | --skip-signing)
 			RSDK_OPTION_SKIP_SIGNING="true"
 			return
+			;;
+		--deb-dir)
+			RSDK_OPTION_DEB_DIR="$1"
+			shift
 			;;
 		--)
 			break

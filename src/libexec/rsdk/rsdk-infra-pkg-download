@@ -18,7 +18,7 @@ find_target_distros() {
 }
 
 download_pkgs() {
-	local RSDK_TEMP i DISTROS=("$@") OUTPUT="$PWD/debs"
+	local RSDK_TEMP i DISTROS=("$@") OUTPUT="$RSDK_OPTION_DEB_DIR"
 	RSDK_TEMP="$(mktemp -d)"
 	for i in "${DISTROS[@]}"; do
 		mkdir -p "$OUTPUT/$i"
@@ -63,7 +63,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hd" -l "help,dry-run" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hd" -l "help,dry-run,deb-dir:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -72,6 +72,7 @@ main() {
 	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
 	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
 	export RSDK_PKG_REPO_TAG_ARRAY=("${RSDK_PKG_REPO_TAG_ARRAY[@]}")
+	export RSDK_OPTION_DEB_DIR="${RSDK_OPTION_DEB_DIR:-${TMPDIR:-/tmp}/rsdk-deb}"
 
 	mapfile -t RSDK_PKG_REPO_ARRAY < <(jq -er 'to_entries[].key' pkgs.json) && array_remove "RSDK_PKG_REPO_ARRAY" ""
 	mapfile -t RSDK_PKG_REPO_TAG_ARRAY < <(jq -er 'to_entries[].value' pkgs.json) && array_remove "RSDK_PKG_REPO_TAG_ARRAY" ""
@@ -87,6 +88,10 @@ main() {
 			TEMP="$(basename "$0")"
 			rsdk help "${TEMP#rsdk-}"
 			return
+			;;
+		--deb-dir)
+			RSDK_OPTION_DEB_DIR="$1"
+			shift
 			;;
 		--)
 			break
