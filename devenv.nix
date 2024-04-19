@@ -5,6 +5,7 @@
   packages = with pkgs; [
     aptly
     bash-completion
+    cargo
     commitizen
     curl
     dosfstools
@@ -31,7 +32,7 @@
   ];
 
   enterShell = ''
-    export PATH=$PWD/src/bin:$PWD/node_modules/.bin:$PATH
+    export PATH=$PWD/src/bin:$PWD/node_modules/.bin:$HOME/.cargo/bin:$PATH
 
     if [[ -n "$DEVENV_NIX" ]]
     then
