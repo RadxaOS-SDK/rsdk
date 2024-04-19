@@ -17,31 +17,31 @@ rsdk-${FUNCNAME[0]##rsdk-help-}
 
 ## Command usage
 
-$ rsdk build <options> [product] <suite> <edition>
+    $ rsdk build <options> [product] <suite> <edition>
 
 ## Options
 
---no-cache
-    Do not use cached build artifacts. This will result in rootfs rebuild.
---no-efi
-    Do not create EFI partition in the generated image.
--d | --debug
-    Enable debug output. This will also build rootfs into a folder for easier
-    examination.
--T | --test-repo
-    Build using Radxa APT test archives.
--m | --mirror [mirror_url]
-    Specify custom Debian / Ubuntu archive mirror URL.
--M [mirror_url]
-    Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
-    serve both Radxa archives as well as any other 3rd party archives.
+    --no-cache
+        Do not use cached build artifacts. This will result in rootfs rebuild.
+    --no-efi
+        Do not create EFI partition in the generated image.
+    -d | --debug
+        Enable debug output. This will also build rootfs into a folder for easier
+        examination.
+    -T | --test-repo
+        Build using Radxa APT test archives.
+    -m | --mirror [mirror_url]
+        Specify custom Debian / Ubuntu archive mirror URL.
+    -M [mirror_url]
+        Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
+        serve both Radxa archives as well as any other 3rd party archives.
 
-    The following archives will use this mirror:
-$(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "        %f\n")
--i | --image-name [image_name]
-    Set the system image name. (Default: $("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name))
--h | --help
-    Show this message.
+        The following archives will use this mirror:
+$(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "            %f\n")
+    -i | --image-name [image_name]
+        Set the system image name. (Default: $("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name))
+    -h | --help
+        Show this message.
 EOF
 }
 
