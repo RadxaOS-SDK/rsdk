@@ -28,3 +28,5 @@ after = ["links"]
 [preprocessor.toc]
 command = "mdbook-toc"
 renderer = ["html"]
+
+[preprocessor.cmdrun]
