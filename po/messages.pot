@@ -1,0 +1,391 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: rsdk\n"
+"POT-Creation-Date: 2024-04-19T07:46:48Z\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: docs/SUMMARY.md:1
+msgid "Summary"
+msgstr ""
+
+#: docs/SUMMARY.md:3
+msgid "Introduction"
+msgstr ""
+
+#: docs/SUMMARY.md:5
+msgid "Tutorials"
+msgstr ""
+
+#: docs/SUMMARY.md:7
+msgid "Installation"
+msgstr ""
+
+#: docs/SUMMARY.md:8
+msgid "With devcontainer"
+msgstr ""
+
+#: docs/SUMMARY.md:9
+msgid "Using released Debian package"
+msgstr ""
+
+#: docs/SUMMARY.md:10
+msgid "Native installation"
+msgstr ""
+
+#: docs/SUMMARY.md:11 docs/tutorials/usage.md:1
+msgid "Basic usage"
+msgstr ""
+
+#: docs/SUMMARY.md:12 docs/tutorials/migration.md:1
+msgid "Migrating from old toolchain"
+msgstr ""
+
+#: docs/SUMMARY.md:14
+msgid "Command References"
+msgstr ""
+
+#: docs/SUMMARY.md:16 docs/cmd/rsdk.md:1
+msgid "rsdk"
+msgstr ""
+
+#: docs/SUMMARY.md:17
+msgid "rsdk-shell"
+msgstr ""
+
+#: docs/SUMMARY.md:18
+msgid "rsdk-build"
+msgstr ""
+
+#: docs/intro.md:1
+msgid "Why another system builder?"
+msgstr ""
+
+#: docs/intro.md:3
+msgid ""
+"`rsdk` is yet another evolution of Radxa's system builder. The primary goal "
+"is to move away from [`debos`](https://github.com/go-debos/debos) for "
+"following reasons:"
+msgstr ""
+
+#: docs/intro.md:6
+msgid ""
+"(Previously) [Lack of ARM64 "
+"support](https://github.com/go-debos/debos/issues/363)."
+msgstr ""
+
+#: docs/intro.md:7
+msgid ""
+"We use pagefile to workaround dkms build failure, which [requires KVM to be "
+"available](https://github.com/radxa-repo/rbuild/issues/16#issuecomment-1534176754)."
+msgstr ""
+
+#: docs/intro.md:8
+msgid "Go templates leave much to be desired."
+msgstr ""
+
+#: docs/intro.md:9
+msgid ""
+"[Provided actions](https://pkg.go.dev/github.com/go-debos/debos/actions) are "
+"becoming limiting to achieve our desired result."
+msgstr ""
+
+#: docs/intro.md:11
+msgid ""
+"Beyond those, our system has grown into 100+ repositories, interconnected by "
+"various CI/CD workflows. From an operational standpoint we also need a tool "
+"to centrally manage them, with the added bonus that customers can use the "
+"very same tool to reproduce our setup for their own use."
+msgstr ""
+
+#: docs/intro.md:15
+msgid ""
+"Finally, we want to have a short answer to the commonly asked question "
+"\"where can I download the SDK for X\". So far, our answer has always been a "
+"brief explanation of the system design, because of its complexity. We want "
+"to have something that matches customer's expectation more closely, where "
+"there is only a single entry to all related Radxa source code."
+msgstr ""
+
+#: docs/intro.md:20
+msgid "Thus, `rsdk` is born."
+msgstr ""
+
+#: docs/install/devcontainer.md:1
+msgid "Running `rsdk` with devcontainer"
+msgstr ""
+
+#: docs/install/devcontainer.md:8
+msgid "Please first follow Visual Studio Code's documentation to:"
+msgstr ""
+
+#: docs/install/devcontainer.md:10
+msgid ""
+"[Install Visual Studio "
+"Code](https://code.visualstudio.com/docs/setup/setup-overview)"
+msgstr ""
+
+#: docs/install/devcontainer.md:11
+msgid ""
+"[Setup "
+"devcontainer](https://code.visualstudio.com/docs/devcontainers/containers)"
+msgstr ""
+
+#: docs/install/devcontainer.md:13
+msgid "Then clone the project with `git`:"
+msgstr ""
+
+#: docs/install/devcontainer.md:19
+msgid ""
+"Open the project in Visual Studio Code. A notification will pop up on the "
+"corner asking if you want to reopen in devcontainer. Click `yes` and wait "
+"for the container to be set up."
+msgstr ""
+
+#: docs/install/devcontainer.md:23
+msgid "Common issues"
+msgstr ""
+
+#: docs/install/devcontainer.md:25
+msgid ""
+"devcontainer setup paused with `You might be rate limited by GitHub.` message"
+msgstr ""
+
+#: docs/install/devcontainer.md:27
+msgid ""
+"You might be rate limited by GitHub. Please follow the instruction listed in "
+"the output."
+msgstr ""
+
+#: docs/install/devcontainer.md:29
+msgid "Failed to launch devcontainer."
+msgstr ""
+
+#: docs/install/devcontainer.md:31
+msgid ""
+"Please edit `.devcintainer/devcontainer.json`, and adjust `runArgs` property."
+msgstr ""
+
+#: docs/install/deb.md:1
+msgid "Running `rsdk` using released Debian package"
+msgstr ""
+
+#: docs/install/deb.md:3
+msgid "To be released."
+msgstr ""
+
+#: docs/install/native.md:1
+msgid "Running `rsdk` natively"
+msgstr ""
+
+#: docs/install/native.md:11
+msgid ""
+"To run `rsdk` natively, you will ideally need an Ubuntu system, as it is the "
+"base system used in Dev Container."
+msgstr ""
+
+#: docs/install/native.md:13
+msgid ""
+"Please first install "
+"[`devenv`](https://devenv.sh/getting-started/#2-install-cachix) on your "
+"system."
+msgstr ""
+
+#: docs/install/native.md:15
+msgid ""
+"Optionally you can setup "
+"[`direnv`](https://devenv.sh/automatic-shell-activation/), then run `direnv "
+"allow` within the project folder to enable it."
+msgstr ""
+
+#: docs/install/native.md:17
+msgid ""
+"You can then run `devenv shell` to enter the development shell. This shell "
+"will manipulate your PATH to have the development dependency available."
+msgstr ""
+
+#: docs/install/native.md:19
+msgid ""
+"If you have `direnv` setup, you don't have to run the above command when you "
+"enter the project directory to use the SDK. However, the `direnv` shell "
+"lacks `starship` integration as well as `rsdk` auto completion, as it only "
+"saves the environmental variables."
+msgstr ""
+
+#: docs/install/native.md:21
+msgid ""
+"There are some additional system configurations and packages that are "
+"currently not managed by `devenv`. They are mostly covered by "
+"`install_native_dependency` function in `rsdk-setup`."
+msgstr ""
+
+#: docs/tutorials/usage.md:3
+msgid "`rsdk` comes with `bash-completion` to assist its CLI usage."
+msgstr ""
+
+#: docs/tutorials/usage.md:5
+msgid ""
+"After typing `rsdk` into your terminal, if there is no subcommand suggestion "
+"after you press Tab key twice, you should run `rsdk shell` to enter the "
+"development environment."
+msgstr ""
+
+#: docs/tutorials/usage.md:7
+msgid ""
+"From there, you can use autocompletion to query the supported command list."
+msgstr ""
+
+#: docs/tutorials/usage.md:9
+msgid "Running a command with `--help` argument will display its help text."
+msgstr ""
+
+#: docs/tutorials/usage.md:11
+msgid "Use TUI to run guided tasks"
+msgstr ""
+
+#: docs/tutorials/usage.md:13 docs/cmd/rsdk.md:3
+msgid "`rsdk` command is the common CLI entry point."
+msgstr ""
+
+#: docs/tutorials/usage.md:15
+msgid "When it is run without any argument, `rsdk-tui` will be run instead."
+msgstr ""
+
+#: docs/tutorials/usage.md:17
+msgid "Start TUI Wizard by running `rsdk` in the terminal."
+msgstr ""
+
+#: docs/tutorials/usage.md:19
+msgid ""
+"Select the task you want to run.  \n"
+"You can use arrow key to navigate, use Enter key to select, and use Escape "
+"key to leave current window.  \n"
+"In this example, we will choose `Build system image`:"
+msgstr ""
+
+#: docs/tutorials/usage.md:36
+msgid ""
+"Select the product you want to build.  \n"
+"You can use the space bar to select the product, and the chosen product will "
+"have asterisk symbol placed in the parentheses.  \n"
+"**Enter key does not select the product when used alone!**  \n"
+"In this example, we will choose `rock-5b-6_1`:"
+msgstr ""
+
+#: docs/tutorials/usage.md:54
+msgid ""
+"Select `Yes` to start the build process.  \n"
+"`rsdk-tui` will then run the associated CLI commands to complete the task:"
+msgstr ""
+
+#: docs/tutorials/usage.md:60
+msgid "'rock-5b-6_1'"
+msgstr ""
+
+#: docs/tutorials/migration.md:3
+msgid "`rbuild`"
+msgstr ""
+
+#: docs/tutorials/migration.md:5
+msgid ""
+"`rsdk build` is the `rbuild` replacement. It uses the same argument "
+"ordering, and support similar input values."
+msgstr ""
+
+#: docs/tutorials/migration.md:8
+msgid ""
+"When no suite or edition is supplied, `rsdk build` will use the value "
+"defined in `src/share/rsdk/configs/products.json` instead of `bullseye` "
+"`cli`."
+msgstr ""
+
+#: docs/tutorials/migration.md:10
+msgid ""
+"Not all `rbuild` options are supported by `rsdk build`. Please check the "
+"command help for more details."
+msgstr ""
+
+#: docs/tutorials/migration.md:13
+msgid ""
+"`.rbuild-config` file is now replaced by `devenv.local.nix`, and option "
+"names are adjusted. You can check `devenv.local.nix.example` for syntax."
+msgstr ""
+
+#: docs/tutorials/migration.md:16
+msgid "`rbuild json`"
+msgstr ""
+
+#: docs/tutorials/migration.md:18
+msgid ""
+"This subcommand is replaced by configuration files under "
+"`src/share/rsdk/configs`."
+msgstr ""
+
+#: docs/tutorials/migration.md:20
+msgid "`rbuild shrink-image`"
+msgstr ""
+
+#: docs/tutorials/migration.md:22
+msgid ""
+"This subcommand is no longer needed, as now image shrinking is no longer a "
+"root operation, and comes standard."
+msgstr ""
+
+#: docs/tutorials/migration.md:24
+msgid "`rbuild write-image`"
+msgstr ""
+
+#: docs/tutorials/migration.md:26
+msgid ""
+"`rsdk write-image` is the `rbuild write-image` replacement. It uses the same "
+"argument ordering."
+msgstr ""
+
+#: docs/cmd/rsdk.md:5
+msgid "When it was run without any argument, it will run `rsdk-tui` instead."
+msgstr ""
+
+#: docs/cmd/rsdk-shell.md:1
+msgid "`rsdk-shell`"
+msgstr ""
+
+#: docs/cmd/rsdk-shell.md:3
+msgid ""
+"It is recommended to run `rsdk shell` first to set up the work environment "
+"before running other commands.  \n"
+"However, most commands should run without issue.  \n"
+"Some enhancements (for example, bash completion and shell prompt) may not be "
+"available outside of `rsdk shell` by default."
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:3
+msgid "Build RadxaOS image"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:5
+msgid ""
+"When no suite or edition options is supplied, `rsdk-build` will use the "
+"product-specific default values, which are defined in "
+"`src/share/rsdk/configs/products.json` as the first element of the "
+"respective array.  \n"
+"Using ROCK 3C as an example, if you want to build a CLI image for RadxaOS "
+"Bullseye, you can run the following command:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:12
+msgid "RadxaOS output path"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:14
+msgid ""
+"you can find the generated RadxaOS image as "
+"`out/${product}_${suite}_${edition}/output.img`."
+msgstr ""
+
