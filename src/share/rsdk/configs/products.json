@@ -278,6 +278,16 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "rock-5c-6_1",
+        "override_product": "rock-5c",
+        "override_kernel": "rk2312",
+        "product_name": "ROCK 5C",
+        "product_full_name": "ROCK 5C Linux 6.1 Development Build",
+        "soc": "rk3588s",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "rock-5-itx",
         "product_name": "ROCK 5 ITX",
         "product_full_name": "ROCK 5 ITX",
