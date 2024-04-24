@@ -50,6 +50,8 @@ function(
                         run: |||
                             sudo apt-get update
                             sudo apt-get install -y aptly pandoc
+                            git config --global user.name 'github-actions[bot]'
+                            git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
                             cat << EOF | gpg --import
                             ${{ secrets.GPG_KEY }}
@@ -61,9 +63,16 @@ function(
                             suites=("%(target)s")
 
                             pushd .infra-repo
+                            if [[ "${{ github.repository }}" != *-test ]] && \
+                               wget "https://raw.githubusercontent.com/${{ github.repository }}-test/main/pkgs.lock" -O pkgs.lock.new; then
+                                mv pkgs.lock.new pkgs.lock
+                                git add pkgs.lock
+                            fi
+
                             ../src/bin/rsdk infra-pkg-snapshot
                             ../src/bin/rsdk infra-pkg-download "${suites[@]}"
                             ../src/bin/rsdk infra-repo-build "${suites[@]}"
+                            git add pkgs.json
 
                             cp pkgs.json ~/.aptly/public/rsdk-local/
                             pandoc --from gfm --to html --standalone README.md --output ~/.aptly/public/rsdk-local/index.html
@@ -74,10 +83,7 @@ function(
 
                             echo "pages=$(realpath ~/.aptly/public/rsdk-local/.)" >> $GITHUB_OUTPUT
 
-                            if git status --porcelain | grep --quiet "pkgs.json" ; then
-                                git config --global user.name 'github-actions[bot]'
-                                git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-                                git add pkgs.json
+                            if [[ -n "$(git status --porcelain)" ]]; then
                                 git commit -m "chore: update package snapshot"
                             fi
                             popd
