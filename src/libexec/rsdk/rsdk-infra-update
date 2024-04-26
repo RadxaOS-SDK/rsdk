@@ -23,7 +23,7 @@ update_repo() {
 		rm -rf "$OUTPUT"
 		mkdir -p "$OUTPUT/.."
 		echo "Trying to clone existing repository first..."
-		if ! gh repo clone "$RSDK_TARGET_ORGANIZATION/$TARGET" "$OUTPUT"; then
+		if ! gh repo clone "$RSDK_TARGET_ORGANIZATION/$TARGET" "$OUTPUT" -- --single-branch; then
 			if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
 				echo "Dry run. Will only create local repo."
 				mkdir -p "$OUTPUT"
