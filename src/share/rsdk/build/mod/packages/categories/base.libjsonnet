@@ -117,9 +117,10 @@ else
         ] +
 
         [
-            // MRAA
+            // Misc
             "libmraa2",
             "libmraa-dev",
+            "libopencv-dev",
         ],
 
         "customize-hooks"+:
