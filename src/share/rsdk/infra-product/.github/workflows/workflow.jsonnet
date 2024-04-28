@@ -81,6 +81,9 @@ function(
                     {
                         name: "Maximize build space",
                         uses: "easimon/maximize-build-space@v10",
+                        with: {
+                            "root-reserve-mb": "4096",
+                        },
                     },
                     {
                         name: "Checkout",
