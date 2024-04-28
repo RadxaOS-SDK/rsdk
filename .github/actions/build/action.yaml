@@ -27,6 +27,8 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@v10
     - name: Setup rsdk
       uses: RadxaOS-SDK/rsdk/.github/actions/setup@main
     - name: Set suite based on input variables
