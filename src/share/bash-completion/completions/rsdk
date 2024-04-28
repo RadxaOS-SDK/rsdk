@@ -71,7 +71,7 @@ _rsdk_chroot_completions() {
 				continue
 			fi
 			i="$(realpath "$i")"
-			if [[ -b $i ]]; then
+			if [[ -b $i ]] && grep -q "$(basename "$i")" /proc/partitions; then
 				suggestions+=("$i")
 			fi
 		done
@@ -177,7 +177,7 @@ _rsdk_write-image_completions() {
 				continue
 			fi
 			i="$(realpath "$i")"
-			if [[ -b $i ]]; then
+			if [[ -b $i ]] && grep -q "$(basename "$i")" /proc/partitions; then
 				suggestions+=("$i")
 			fi
 		done
