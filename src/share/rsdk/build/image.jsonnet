@@ -19,7 +19,7 @@ function(
     !echo "Image generation started at $(date)."
     echo "Allocating image file..."
     !rm -f "%(output)s"
-    sparse "%(output)s" 6G
+    sparse "%(output)s" 7G
     run
 
     echo "Creating partition table..."
