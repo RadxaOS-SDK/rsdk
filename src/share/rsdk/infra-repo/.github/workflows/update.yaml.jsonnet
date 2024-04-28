@@ -64,7 +64,7 @@ function(
 
                             pushd .infra-repo
                             if [[ "${{ github.repository }}" != *-test ]] && \
-                               wget "https://raw.githubusercontent.com/${{ github.repository }}-test/main/pkgs.lock" -O pkgs.lock.new; then
+                                wget "https://raw.githubusercontent.com/${{ github.repository }}-test/main/pkgs.lock" -O pkgs.lock.new; then
                                 mv pkgs.lock.new pkgs.lock
                                 git add pkgs.lock
                             fi
@@ -72,10 +72,10 @@ function(
                             ../src/bin/rsdk infra-pkg-snapshot
                             ../src/bin/rsdk infra-pkg-download "${suites[@]}"
                             ../src/bin/rsdk infra-repo-build "${suites[@]}"
-	                        export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
+                            export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
                             git add pkgs.json
 
-                            pushd "~/.aptly/public/$RSDK_REPO_ORIGIN/"
+                            pushd "$HOME/.aptly/public/$RSDK_REPO_ORIGIN/"
                                 cp "$OLDPWD/pkgs.json" ./
                                 pandoc --from gfm --to html --standalone "$OLDPWD/README.md" --output index.html
                                 find . > files.list
