@@ -88,5 +88,10 @@ rsdk-install)
 esac
 
 sudo umount -R "$RSDK_TEMP"
-rm -rf "$RSDK_TEMP"
-sync
+if cut -f 2 -d " " /proc/mounts | grep -q "$RSDK_TEMP"; then
+	echo "Failed to umount $RSDK_TEMP. Your kernel might report some issues." >&2
+	exit 1
+else
+	rm -rf "$RSDK_TEMP"
+	sync
+fi
