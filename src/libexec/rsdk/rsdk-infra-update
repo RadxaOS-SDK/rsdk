@@ -82,6 +82,9 @@ update_repo() {
 	if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
 		git push --set-upstream origin main
 		gh repo edit --description "$description" --homepage "$homepage"
+		if [[ -n $RSDK_OPTION_RUN_WORKFLOW ]]; then
+			gh workflow run "$RSDK_OPTION_RUN_WORKFLOW"
+		fi
 	else
 		echo "Set repository description as '$description'."
 		echo "Set repository homepage as '$homepage'."
@@ -99,7 +102,7 @@ main() {
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds:t" -l "help,dry-run,suffix:,test" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds:tr:" -l "help,dry-run,suffix:,test,run:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -114,6 +117,7 @@ main() {
 	export RSDK_TARGET_SUFFIX="${RSDK_TARGET_SUFFIX:-}"
 	export RSDK_TARGET_ORGANIZATION="${RSDK_TARGET_ORGANIZATION:-}"
 	export RSDK_GIT_REPO_KEEP_FILES=("${RSDK_GIT_REPO_KEEP_FILES[@]}")
+	export RSDK_OPTION_RUN_WORKFLOW="${RSDK_OPTION_RUN_WORKFLOW:-}"
 
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
@@ -177,6 +181,10 @@ main() {
 			;;
 		-t | --test)
 			RSDK_TARGET_SUFFIX="-test"
+			;;
+		-r | --run)
+			RSDK_OPTION_RUN_WORKFLOW="$1"
+			shift
 			;;
 		--)
 			break
