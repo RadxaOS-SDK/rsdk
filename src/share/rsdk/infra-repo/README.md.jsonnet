@@ -7,6 +7,11 @@ function(
 
     [![Update packages](https://github.com/%(repo_org)s/%(target)s/actions/workflows/update.yaml/badge.svg)](https://github.com/%(repo_org)s/%(target)s/actions/workflows/update.yaml)
 
+    ## Content
+
+    * [Published GitHub Releases](pkgs.json)
+    * [File index](files.list)
+
     ## Usage
 
     ```bash

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 create_archive() {
-	local DEB_ARCHIVE="rsdk-local" i DEB_SOURCE
+	local i DEB_SOURCE
 	DEB_SOURCE="$(realpath "$RSDK_OPTION_DEB_DIR")"
 
 	for i in "$@"; do
-		aptly publish drop -force-drop "$i" "$DEB_ARCHIVE" || true
+		aptly publish drop -force-drop "$i" "$RSDK_REPO_ORIGIN" || true
 		aptly repo drop -force "$i" || true
 	done
 	aptly db cleanup
@@ -13,7 +13,7 @@ create_archive() {
 	for i in "$@"; do
 		aptly repo create -distribution="$i" "$i"
 		aptly repo add "$i" "$DEB_SOURCE/$i"
-		aptly publish repo -skip-signing -architectures=all,arm64,riscv64 "$i" "$DEB_ARCHIVE"
+		aptly publish repo -skip-signing -architectures=all,arm64,riscv64 -origin="$RSDK_REPO_ORIGIN" -label="$RSDK_REPO_LABEL" "$i" "$RSDK_REPO_ORIGIN"
 	done
 
 	if [[ $RSDK_OPTION_SKIP_SIGNING == "false" ]]; then
@@ -39,7 +39,7 @@ create_archive() {
 
 		for i in "$@"; do
 			echo "Signing '$i'..."
-			local DISTRO_PATH="$HOME/.aptly/public/$DEB_ARCHIVE/dists/$i"
+			local DISTRO_PATH="$HOME/.aptly/public/$RSDK_REPO_ORIGIN/dists/$i"
 			gpg "${GPG_PARAMETERS[@]}" --clear-sign -o "$DISTRO_PATH/InRelease" "$DISTRO_PATH/Release"
 			gpg "${GPG_PARAMETERS[@]}" --detach-sign -o "$DISTRO_PATH/Release.gpg" "$DISTRO_PATH/Release"
 		done
@@ -55,7 +55,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds" -l "help,dry-run,skip-signing,deb-dir:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds" -l "help,dry-run,skip-signing,deb-dir:,origin:,label:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -63,6 +63,8 @@ main() {
 	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
 	export RSDK_OPTION_SKIP_SIGNING="${RSDK_OPTION_SKIP_SIGNING:-false}"
 	export RSDK_OPTION_DEB_DIR="${RSDK_OPTION_DEB_DIR:-${TMPDIR:-/tmp}/rsdk-deb}"
+	export RSDK_REPO_ORIGIN="${RSDK_REPO_ORIGIN:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.repository.origin)}"
+	export RSDK_REPO_LABEL="${RSDK_REPO_LABEL:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.repository.label)}"
 
 	while true; do
 		TEMP="$1"
@@ -78,10 +80,17 @@ main() {
 			;;
 		-s | --skip-signing)
 			RSDK_OPTION_SKIP_SIGNING="true"
-			return
 			;;
 		--deb-dir)
 			RSDK_OPTION_DEB_DIR="$1"
+			shift
+			;;
+		--origin)
+			RSDK_REPO_ORIGIN="$1"
+			shift
+			;;
+		--label)
+			RSDK_REPO_LABEL="$1"
 			shift
 			;;
 		--)
@@ -96,6 +105,9 @@ main() {
 	if (($# == 0)); then
 		"$0" --help
 		return
+	elif [[ ! -e $RSDK_OPTION_DEB_DIR ]]; then
+		echo "deb-dir is set to '$RSDK_OPTION_DEB_DIR' but it does not exist!" >&2
+		return 1
 	fi
 
 	create_archive "$@"

@@ -72,16 +72,15 @@ function(
                             ../src/bin/rsdk infra-pkg-snapshot
                             ../src/bin/rsdk infra-pkg-download "${suites[@]}"
                             ../src/bin/rsdk infra-repo-build "${suites[@]}"
+	                        export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
                             git add pkgs.json
 
-                            cp pkgs.json ~/.aptly/public/rsdk-local/
-                            pandoc --from gfm --to html --standalone README.md --output ~/.aptly/public/rsdk-local/index.html
-
-                            pushd ~/.aptly/public/rsdk-local/
-                            find . > files.list
+                            pushd "~/.aptly/public/$RSDK_REPO_ORIGIN/"
+                                cp "$OLDPWD/pkgs.json" ./
+                                pandoc --from gfm --to html --standalone "$OLDPWD/README.md" --output index.html
+                                find . > files.list
+                                echo "pages=$(realpath .)" >> $GITHUB_OUTPUT
                             popd
-
-                            echo "pages=$(realpath ~/.aptly/public/rsdk-local/.)" >> $GITHUB_OUTPUT
 
                             if [[ -n "$(git status --porcelain)" ]]; then
                                 git commit -m "chore: update package snapshot"
