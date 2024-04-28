@@ -79,6 +79,10 @@ function(
                 },
                 steps: [
                     {
+                        name: "Maximize build space",
+                        uses: "easimon/maximize-build-space@v10",
+                    },
+                    {
                         name: "Checkout",
                         uses: "actions/checkout@v4",
                     },
