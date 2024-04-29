@@ -81,7 +81,12 @@ else
                 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew --allow-downgrades
             ||| % {
-                recommends: "--install-recommends",
+                recommends: (if distro_check(suite) == "debian" && vendor_packages
+                    then
+                        "--install-recommends"
+                    else
+                        "--no-install-recommends"
+                ),
                 product: product,
                 u_boot_override: (if std.isEmpty(u_boot_override)
                     then
