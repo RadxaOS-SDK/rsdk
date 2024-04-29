@@ -73,6 +73,10 @@ generate_rootfs() {
 		JSONNET_ARGS+=("--tla-str" "u_boot_override=$RSDK_OPTION_FIRMWARE_OVERRIDE")
 	fi
 
+	if [[ -n $RSDK_OPTION_VENDOR_PACKAGES ]]; then
+		JSONNET_ARGS+=("--tla-code" "vendor_packages=$RSDK_OPTION_VENDOR_PACKAGES")
+	fi
+
 	# Prepare keyrings
 	prepare_keyrings "$RSDK_TEMP/keyrings/"
 
@@ -137,7 +141,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -153,6 +157,7 @@ main() {
 	local RSDK_OPTION_KERNEL_OVERRIDE="${RSDK_OPTION_KERNEL_OVERRIDE:-}"
 	local RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-}"
 	local RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-}"
+	local RSDK_OPTION_VENDOR_PACKAGES="${RSDK_OPTION_VENDOR_PACKAGES:-true}"
 
 	while true; do
 		TEMP="$1"
@@ -199,6 +204,9 @@ main() {
 		-p | --override-product)
 			RSDK_OPTION_PRODUCT_OVERRIDE="$1"
 			shift
+			;;
+		--no-vendor-packages)
+			RSDK_OPTION_VENDOR_PACKAGES="false"
 			;;
 		--)
 			break
