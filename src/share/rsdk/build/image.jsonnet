@@ -162,6 +162,12 @@ else
 }) +
 |||
 
+    echo "Enlarging rootfs to the underlying block device..."
+    add "%(output)s"
+    run
+    resize2fs /dev/sda%(rootdev)d
+    shutdown
+
     echo "Cleaning up..."
     !rm -rf "%(temp_dir)s"
     !sync
@@ -169,6 +175,7 @@ else
     echo "Deploy succeed!"
 ||| % {
     output: output,
+    rootdev: rootdev(efi),
     temp_dir: temp_dir,
 } +
 '!echo "Image generation finished at $(date)."'
