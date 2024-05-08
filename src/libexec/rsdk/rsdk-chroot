@@ -25,7 +25,8 @@ if [[ -f $disk ]]; then
 	trap 'set +e; sudo -n true && (sudo umount -R "$RSDK_TEMP"; sudo kpartx -d "$disk_file"; sync); rm -rf "$RSDK_TEMP"' SIGINT SIGQUIT SIGTSTP EXIT
 	sudo kpartx -a "$disk"
 	echo "Target is a file. Trying to find rootfs partition..."
-	if ! disk="$(sudo blkid -t LABEL=rootfs -o device | grep /dev/mapper/loop | tail -n 1)"; then
+	if ! disk="$(sudo blkid -t LABEL=rootfs -o device | grep /dev/mapper/loop | tail -n 1)" &&
+		! disk="$(sudo blkid -t LABEL=opi_root -o device | grep /dev/mapper/loop | tail -n 1)"; then
 		error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
 	fi
 	disk="${disk%p*}p"
@@ -43,8 +44,8 @@ if [[ -b "$disk"3 ]]; then
 elif [[ -b "$disk"2 ]]; then
 	sudo mount "$disk"2 "$RSDK_TEMP"
 	case "$(sudo blkid "$disk"1 -s LABEL -o value)" in
-	"armbi_boot")
-		# new armbian image
+	"armbi_boot" | "opi_boot")
+		# new armbian image / Orange Pi image
 		sudo mount "$disk"1 "$RSDK_TEMP/boot"
 		;;
 	*)
