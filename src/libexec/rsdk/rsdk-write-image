@@ -17,6 +17,8 @@ elif [[ ! -b $BLOCKDEV ]]; then
 	echo "$EXIT_NOT_BLOCK_DEVICE" "$BLOCKDEV"
 fi
 
+# Prepopulate sudo token, so echo message won't be mixed with password prompt
+env sudo -v
 (
 	case "$(file "$IMAGE")" in
 	*"XZ compressed"*)
