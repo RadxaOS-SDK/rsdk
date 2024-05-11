@@ -53,6 +53,7 @@ runs:
     - name: Build within devcontainer
       uses: devcontainers/ci@v0.3
       with:
+        push: never
         runCmd: |
           src/bin/rsdk setup
           src/bin/rsdk shell rsdk build ${{ env.options }} ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
