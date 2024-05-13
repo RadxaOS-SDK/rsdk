@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 _rsdk_build_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
