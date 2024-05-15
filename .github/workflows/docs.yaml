@@ -42,7 +42,7 @@ jobs:
       - name: Install mdbook plugins
         shell: bash
         run: |
-          for i in mdbook-admonish mdbook-linkcheck mdbook-i18n-helpers mdbook-toc
+          for i in mdbook-admonish mdbook-linkcheck mdbook-i18n-helpers mdbook-toc mdbook-cmdrun
           do
             cargo install "$i"
           done
