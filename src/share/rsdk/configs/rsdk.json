@@ -11,9 +11,12 @@
             "help",
             "infra-product-build",
             "infra-product-update",
+            "infra-repo-build",
+            "infra-repo-update",
             "install",
             "setup",
             "shell",
+            "tui",
             "write-image"
         ]
     },

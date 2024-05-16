@@ -151,6 +151,68 @@ _rsdk_infra-product-update_completions() {
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
+
+_rsdk_infra-repo-build_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
+	local suggestions=(
+		"-d"
+		"--dry-run"
+		"-h"
+		"--help"
+		"-s"
+		"--suffix"
+		"-t"
+		"--test"
+		"-r"
+		"--run"
+	)
+
+	local distros=()
+	mapfile -t distros < <(jq -er '.[].suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
+	# Trim empty elements
+	array_remove "distros" ""
+	suggestions+=("${distros[@]}")
+
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
+	done
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
+}
+
+_rsdk_infra-repo-update_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
+	local suggestions=(
+		"-d"
+		"--dry-run"
+		"-h"
+		"--help"
+		"-s"
+		"--skip-signing"
+		"--deb-dir"
+		"--origin"
+		"--label"
+	)
+
+	local distros=()
+	mapfile -t distros < <(jq -er '.[].suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
+	# Trim empty elements
+	array_remove "distros" ""
+	suggestions+=("${distros[@]}")
+
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
+	done
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
+}
+
 _rsdk_write-image_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
