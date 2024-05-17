@@ -65,7 +65,8 @@ jobs:
             MDBOOK_BOOK__LANGUAGE=$po_lang \
             MDBOOK_OUTPUT__HTML__SITE_URL=/rsdk/$po_lang/ \
             MDBOOK_OUTPUT__HTML__REDIRECT='{}' \
-            mdbook build -d book/html/$po_lang
+            mdbook build -d book/$po_lang
+            mv book/$po_lang/html book/html/$po_lang
             echo "::endgroup::"
           done
       - name: Setup Pages
