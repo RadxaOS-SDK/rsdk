@@ -18,6 +18,7 @@
     libguestfs-with-appliance
     mdbook
     mdbook-admonish
+    mdbook-cmdrun
     mdbook-i18n-helpers
     mdbook-linkcheck
     mdbook-toc
