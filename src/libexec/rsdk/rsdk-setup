@@ -103,7 +103,6 @@ nix registry add devenv github:cachix/devenv
 (yes || true) | nix profile install --accept-flake-config devenv#default
 
 devenv shell npm install @devcontainers/cli
-devenv shell cargo install mdbook-cmdrun
 trap - EXIT
 
 RSDK_COMPLETION_DIR="${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions"
