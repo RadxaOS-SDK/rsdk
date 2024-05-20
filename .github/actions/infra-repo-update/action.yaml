@@ -34,5 +34,9 @@ runs:
 
         for distro in "${supported_distros[@]}"
         do
-          gh workflow run .github/workflows/update.yaml --repo "$repo_org/$distro$repo_suffix"
+          if gh repo view "$repo_org/$distro$repo_suffix" &>/dev/null; then
+            gh workflow run .github/workflows/update.yaml --repo "$repo_org/$distro$repo_suffix"
+          else
+            echo "$repo_org/$distro$repo_suffix does not exist. Skip."
+          fi
         done
