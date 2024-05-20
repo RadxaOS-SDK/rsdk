@@ -22,6 +22,7 @@
             "noble"
         ],
         "supported_suites": [
+            "jammy"
         ]
     }
 ]
