@@ -87,6 +87,11 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=src/lib/rsdk/utils.sh
 source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
+if git status &>/dev/null && [[ -z "$(git submodule status)" ]]; then
+	echo "git submodule is missing. Fetching now..."
+	git submodule update --recursive
+fi
+
 direnv allow
 # shellcheck disable=SC2016
 echo 'eval "$(direnv hook bash)"' >>~/.bashrc
