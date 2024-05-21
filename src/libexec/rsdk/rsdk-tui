@@ -9,7 +9,7 @@ __rsdk_build() {
 	for i in "${products[@]}"; do
 		radiolist_add "$i" "OFF"
 	done
-	if ! radiolist_show "Please select a product:"; then
+	if ! radiolist_show "Please select a product:" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
 		return
 	fi
 	product="$(radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}")"
