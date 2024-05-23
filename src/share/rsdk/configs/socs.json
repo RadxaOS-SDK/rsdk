@@ -12,17 +12,21 @@
         "partition_table_type": "gpt",
         "soc_list": [
             "rk3308",
+            "rk3308bs",
             "rk3328",
             "rk3399t",
             "rk3399",
             "op1",
             "rk3399pro",
             "rk3528",
+            "rk3528a",
             "rk3562",
             "rk3566",
+            "rk3566t",
             "rk3568",
             "rk3582",
             "rk3588s",
+            "rk3588s2",
             "rk3588"
         ]
     }
