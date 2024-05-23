@@ -56,18 +56,22 @@ update_repo() {
 	popd
 
 	echo "Populate content..."
+	local RSDK_REV
+	RSDK_REV="$(git rev-parse --short "HEAD^{commit}")"
 	local JSONNET_ARGS=(
 		"-S"
 		"--tla-str" "target=$TARGET"
 		"--tla-str" "build_org=$RSDK_BUILD_ORG"
 		"--tla-str" "repo_org=$RSDK_APT_REPO_ORG"
 		"--tla-str" "pkg_org=$RSDK_PACKAGE_ORG"
+		"--tla-str" "git_rev=$RSDK_REV"
 		"--multi" "$OUTPUT"
 	)
 	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"
 
-	local RSDK_REV
-	RSDK_REV="$(git rev-parse --short "HEAD^{commit}")$(! git diff --quiet && echo .dirty)" || true
+	if ! git diff --quiet; then
+		RSDK_REV="$RSDK_REV.dirty"
+	fi
 
 	pushd "$OUTPUT"
 	if [[ -n "$(git status --porcelain)" ]]; then

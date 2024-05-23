@@ -8,6 +8,7 @@ function(
     build_org,
     repo_org,
     pkg_org,
+    git_rev,
 ) {
     "README.md": README_md(target, build_org),
     ".github/dependabot.yml": dependabot_yml(),

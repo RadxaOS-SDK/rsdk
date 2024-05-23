@@ -1,6 +1,7 @@
 function(
     target,
     pkg_org,
+    git_rev,
 ) std.manifestYamlDoc(
     {
         name: "Update packages",
@@ -30,7 +31,8 @@ function(
                         name: "Checkout rsdk",
                         uses: "actions/checkout@v4",
                         with: {
-                            repository: "RadxaOS-SDK/rsdk"
+                            repository: "RadxaOS-SDK/rsdk",
+                            ref: "%(git_rev)s" % {git_rev: git_rev},
                         },
                     },
                     {
