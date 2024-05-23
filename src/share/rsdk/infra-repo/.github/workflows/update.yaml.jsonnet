@@ -84,7 +84,7 @@ function(
 
                             ../src/bin/rsdk infra-pkg-snapshot
                             ../src/bin/rsdk infra-pkg-download "${suites[@]}"
-                            ../src/bin/rsdk infra-repo-build "${suites[@]}"
+                            ../src/bin/rsdk infra-repo-sync "${suites[@]}"
                             export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
                             git add pkgs.json
 

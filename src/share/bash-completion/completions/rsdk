@@ -152,7 +152,7 @@ _rsdk_infra-product-update_completions() {
 }
 
 
-_rsdk_infra-repo-build_completions() {
+_rsdk_infra-repo-sync_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
 
