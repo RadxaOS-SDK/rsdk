@@ -14,7 +14,9 @@ find_target_distros() {
 		fi
 	done
 
-	echo "${supported[0]}"
+	if [[ $RSDK_OPTION_DEFAULT_DISTRO == "true" ]]; then
+		echo "${supported[0]}"
+	fi
 }
 
 download_pkgs() {
@@ -36,7 +38,7 @@ download_pkgs() {
 
 			if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
 				gh release download "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"
-				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]]; then
+				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]] && [[ $RSDK_OPTION_DEFAULT_DISTRO == "true" ]]; then
 					cp "$RSDK_TEMP/$pkg"/*.deb "$OUTPUT/${DISTROS[0]}"
 				else
 					for j in "$RSDK_TEMP/$pkg"/*.deb; do
@@ -63,7 +65,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hd" -l "help,dry-run,deb-dir:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hd" -l "help,dry-run,deb-dir:,no-default-distro" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -73,6 +75,7 @@ main() {
 	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
 	export RSDK_PKG_REPO_TAG_ARRAY=("${RSDK_PKG_REPO_TAG_ARRAY[@]}")
 	export RSDK_OPTION_DEB_DIR="${RSDK_OPTION_DEB_DIR:-${TMPDIR:-/tmp}/rsdk-deb}"
+	export RSDK_OPTION_DEFAULT_DISTRO="${RSDK_OPTION_DEFAULT_DISTRO:-true}"
 
 	mapfile -t RSDK_PKG_REPO_ARRAY < <(jq -er 'to_entries[].key' pkgs.json) && array_remove "RSDK_PKG_REPO_ARRAY" ""
 	mapfile -t RSDK_PKG_REPO_TAG_ARRAY < <(jq -er 'to_entries[].value' pkgs.json) && array_remove "RSDK_PKG_REPO_TAG_ARRAY" ""
@@ -92,6 +95,9 @@ main() {
 		--deb-dir)
 			RSDK_OPTION_DEB_DIR="$1"
 			shift
+			;;
+		--no-default-distro)
+			RSDK_OPTION_DEFAULT_DISTRO="false"
 			;;
 		--)
 			break
