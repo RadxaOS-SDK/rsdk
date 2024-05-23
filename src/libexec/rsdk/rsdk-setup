@@ -89,7 +89,7 @@ source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 if git status &>/dev/null && [[ -z "$(git submodule status)" ]]; then
 	echo "git submodule is missing. Fetching now..."
-	git submodule update --recursive
+	git submodule update --recursive --init
 fi
 
 direnv allow
