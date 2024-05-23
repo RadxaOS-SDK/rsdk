@@ -44,6 +44,7 @@ else
             "lbzip2",
             "less",
             "locales",
+            "lm-sensors",
             "man-db",
             "nano",
             "needrestart",
