@@ -183,7 +183,7 @@ _rsdk_infra-product-update_completions() {
 }
 
 
-_rsdk_infra-repo-sync_completions() {
+_rsdk_infra-repo-update_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
 
@@ -198,10 +198,12 @@ _rsdk_infra-repo-sync_completions() {
 		"--test"
 		"-r"
 		"--run"
+		"-P"
+		"--prefix"
 	)
 
 	local distros=()
-	mapfile -t distros < <(jq -er '.[].suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
+	mapfile -t distros < <(jq -er '.[].supported_suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
 	# Trim empty elements
 	array_remove "distros" ""
 	suggestions+=("${distros[@]}")
@@ -214,7 +216,7 @@ _rsdk_infra-repo-sync_completions() {
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
-_rsdk_infra-repo-update_completions() {
+_rsdk_infra-repo-sync_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
 
@@ -231,7 +233,7 @@ _rsdk_infra-repo-update_completions() {
 	)
 
 	local distros=()
-	mapfile -t distros < <(jq -er '.[].suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
+	mapfile -t distros < <(jq -er '.[].supported_suites[]' "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../share/rsdk/configs/distributions.json") && array_remove "products" ""
 	# Trim empty elements
 	array_remove "distros" ""
 	suggestions+=("${distros[@]}")

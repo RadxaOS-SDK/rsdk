@@ -106,7 +106,7 @@ main() {
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds:tr:" -l "help,dry-run,suffix:,test,run:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds:tr:P:" -l "help,dry-run,suffix:,test,run:,prefix:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -122,6 +122,7 @@ main() {
 	export RSDK_TARGET_ORGANIZATION="${RSDK_TARGET_ORGANIZATION:-}"
 	export RSDK_GIT_REPO_KEEP_FILES=("${RSDK_GIT_REPO_KEEP_FILES[@]}")
 	export RSDK_OPTION_RUN_WORKFLOW="${RSDK_OPTION_RUN_WORKFLOW:-}"
+	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
 
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
@@ -190,6 +191,10 @@ main() {
 			RSDK_OPTION_RUN_WORKFLOW="$1"
 			shift
 			;;
+		-P | --prefix)
+			RSDK_TARGET_PREFIX="$1"
+			shift
+			;;
 		--)
 			break
 			;;
@@ -210,7 +215,7 @@ main() {
 	fi
 
 	while (($# != 0)); do
-		update_repo "$1$RSDK_TARGET_SUFFIX"
+		update_repo "${RSDK_TARGET_PREFIX}${1}${RSDK_TARGET_SUFFIX}"
 		shift
 	done
 }
