@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+
+main() {
+	local SCRIPT_DIR BASE_NAME
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
+	BASE_NAME="$(basename "$0")"
+
+	local TEMP
+	if ! TEMP="$(getopt -o "hptP:s:" -l "help,production,test,prefix:,suffix:" -n "$0" -- "$@")"; then
+		return
+	fi
+	eval set -- "$TEMP"
+
+	export RSDK_WORKFLOW_FILE="${RSDK_WORKFLOW_FILE:-}"
+	export RSDK_BUILD_ORG="${RSDK_BUILD_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.product)}"
+	export RSDK_APT_REPO_ORG="${RSDK_APT_REPO_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.repository)}"
+	export RSDK_BUILD_TYPE="${RSDK_BUILD_TYPE:-}"
+	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
+	export RSDK_TARGET_SUFFIX="${RSDK_TARGET_SUFFIX:-}"
+	export RSDK_GIT_REPO_TYPE="${RSDK_GIT_REPO_TYPE:-}"
+	export RSDK_GIT_REPO_ARRAY=("${RSDK_GIT_REPO_ARRAY[@]}")
+	export RSDK_GIT_REPO_ORG="${RSDK_GIT_REPO_ORG:-}"
+
+	case "$BASE_NAME" in
+	"rsdk-infra-build")
+		echo "'$BASE_NAME' cannot be run directly." >&2
+		echo "Please run one of its symbolic links instead." >&2
+		return 1
+		;;
+	"rsdk-infra-product-build")
+		RSDK_GIT_REPO_TYPE="product"
+		RSDK_GIT_REPO_ORG="${RSDK_GIT_REPO_ORG:-$RSDK_BUILD_ORG}"
+		get_workflow() {
+			case "$RSDK_BUILD_TYPE" in
+			production)
+				RSDK_WORKFLOW_FILE="build.yml"
+				;;
+			test)
+				RSDK_WORKFLOW_FILE="test.yml"
+				;;
+			*)
+				echo "Unknown release variant. Please use -p|--production or -t|--test to specify." >&2
+				return 1
+				;;
+			esac
+		}
+		get_git_repos() {
+			mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
+		}
+		get_repo_with_modifier() {
+			echo "$1"
+		}
+		;;
+	"rsdk-infra-repo-build")
+		RSDK_GIT_REPO_TYPE="suite"
+		RSDK_GIT_REPO_ORG="${RSDK_GIT_REPO_ORG:-$RSDK_APT_REPO_ORG}"
+		get_workflow() {
+			RSDK_WORKFLOW_FILE="update.yaml"
+		}
+		get_git_repos() {
+			mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
+		}
+		get_repo_with_modifier() {
+			echo "${RSDK_TARGET_PREFIX}${1}${RSDK_TARGET_SUFFIX}"
+		}
+		;;
+	*)
+		echo "Unsupported command '$BASE_NAME'." >&2
+		return 1
+		;;
+	esac
+
+	while true; do
+		TEMP="$1"
+		shift
+		case "$TEMP" in
+		-p | --production)
+			RSDK_BUILD_TYPE="production"
+			RSDK_TARGET_SUFFIX=""
+			;;
+		-t | --test)
+			RSDK_BUILD_TYPE="test"
+			RSDK_TARGET_SUFFIX="-test"
+			;;
+		-P | --prefix)
+			RSDK_TARGET_PREFIX="$1"
+			shift
+			;;
+		-s | --suffix)
+			RSDK_TARGET_SUFFIX="$1"
+			shift
+			;;
+		-h | --help)
+			TEMP="$(basename "$0")"
+			rsdk help "${TEMP#rsdk-}"
+			return
+			;;
+		--)
+			break
+			;;
+		*)
+			error "$EXIT_UNKNOWN_OPTION" "$TEMP"
+			;;
+		esac
+	done
+
+	get_workflow
+
+	if (($# == 0)); then
+		get_git_repos
+
+		echo "No $RSDK_GIT_REPO_TYPE supplied."
+		echo "============="
+		echo "Currently, following $RSDK_GIT_REPO_TYPE are supported:"
+		printf "%s\n" "${RSDK_GIT_REPO_ARRAY[@]}"
+		read -rp "Do you want to build ALL supported $RSDK_GIT_REPO_TYPE? [y/N] "
+		if [[ ${REPLY/Y/y} != "y" ]]; then
+			echo "Operation cancelled."
+			return 1
+		fi
+		set -- "${RSDK_GIT_REPO_ARRAY[@]}"
+	fi
+
+	if ! gh auth status &>/dev/null; then
+		echo "This operation requires GitHub authentication:"
+		if ! gh auth login; then
+			error "$EXIT_AUTHENTICATION_FAILED" "github"
+		fi
+	fi
+
+	while (($# != 0)); do
+		local repo
+		repo="$(get_repo_with_modifier "$1")"
+		shift
+
+		gh workflow run ".github/workflows/$RSDK_WORKFLOW_FILE" --repo "$RSDK_GIT_REPO_ORG/$repo"
+	done
+}
+
+main "$@"
