@@ -57,7 +57,7 @@ update_repo() {
 
 	echo "Populate content..."
 	local RSDK_REV
-	RSDK_REV="$(git rev-parse --short "HEAD^{commit}")"
+	RSDK_REV="$(git rev-parse "HEAD^{commit}")"
 	local JSONNET_ARGS=(
 		"-S"
 		"--tla-str" "target=$TARGET"
