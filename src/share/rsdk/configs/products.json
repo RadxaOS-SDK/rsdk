@@ -275,7 +275,7 @@
         "product_full_name": "ROCK 5C",
         "soc": "rk3588",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "rock-5c-6_1",
@@ -285,7 +285,7 @@
         "product_full_name": "ROCK 5C Linux 6.1 Development Build",
         "soc": "rk3588s",
         "supported_suite": ["bookworm"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "rock-5d",
