@@ -215,7 +215,7 @@ main() {
 		echo "============="
 		echo "Currently, following $RSDK_GIT_REPO_TYPE are supported:"
 		printf "${RSDK_TARGET_PREFIX}%s${RSDK_TARGET_SUFFIX}\n" "${RSDK_GIT_REPO_ARRAY[@]}"
-		read -rp "Do you want to build ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
+		read -rp "Do you want to update ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
 		if [[ ${REPLY/Y/y} != "y" ]]; then
 			echo "Operation cancelled."
 			return 1
