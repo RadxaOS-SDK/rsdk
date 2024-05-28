@@ -204,6 +204,12 @@ main() {
 		esac
 	done
 
+	if ! git merge-base --is-ancestor HEAD "@{u}"; then
+		echo "Current HEAD is not present in the remote." >&2
+		echo "Abort due to potential non-working ref assignment." >&2
+		return 1
+	fi
+
 	if (($# == 0)); then
 		read -rp "No ${RSDK_GIT_REPO_TYPE} supplied. Do you want to update ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
 		if [[ ${REPLY/Y/y} == "y" ]]; then
