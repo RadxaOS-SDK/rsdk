@@ -34,6 +34,7 @@ main() {
 	"rsdk-infra-product-build")
 		RSDK_GIT_REPO_TYPE="product"
 		RSDK_GIT_REPO_ORG="${RSDK_GIT_REPO_ORG:-$RSDK_BUILD_ORG}"
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		get_workflow() {
 			case "$RSDK_BUILD_TYPE" in
 			production)
@@ -48,9 +49,6 @@ main() {
 				;;
 			esac
 		}
-		get_git_repos() {
-			mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
-		}
 		get_repo_with_modifier() {
 			echo "$1"
 		}
@@ -58,11 +56,9 @@ main() {
 	"rsdk-infra-repo-build")
 		RSDK_GIT_REPO_TYPE="suite"
 		RSDK_GIT_REPO_ORG="${RSDK_GIT_REPO_ORG:-$RSDK_APT_REPO_ORG}"
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		get_workflow() {
 			RSDK_WORKFLOW_FILE="update.yaml"
-		}
-		get_git_repos() {
-			mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].supported_suites[]' "$SCRIPT_DIR/../../share/rsdk/configs/distributions.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		}
 		get_repo_with_modifier() {
 			echo "${RSDK_TARGET_PREFIX}${1}${RSDK_TARGET_SUFFIX}"
@@ -111,13 +107,14 @@ main() {
 	get_workflow
 
 	if (($# == 0)); then
-		get_git_repos
-
 		echo "No $RSDK_GIT_REPO_TYPE supplied."
 		echo "============="
 		echo "Currently, following $RSDK_GIT_REPO_TYPE are supported:"
-		printf "%s\n" "${RSDK_GIT_REPO_ARRAY[@]}"
-		read -rp "Do you want to build ALL supported $RSDK_GIT_REPO_TYPE? [y/N] "
+		local i
+		for i in "${RSDK_GIT_REPO_ARRAY[@]}"; do
+			get_repo_with_modifier "$i"
+		done
+		read -rp "Do you want to build ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
 		if [[ ${REPLY/Y/y} != "y" ]]; then
 			echo "Operation cancelled."
 			return 1
