@@ -14,7 +14,7 @@ function(
 ) {
     "LICENSE": LICENSE(),
     "README.md": README_md(target, repo_org, pkg_org),
-    "pkgs.lock": pkgs_lock(),
+    //"pkgs.lock": pkgs_lock(),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/update.yaml": update_yaml(target, pkg_org, git_rev),
