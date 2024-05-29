@@ -62,7 +62,7 @@ main() {
 		echo "Applying pkgs.lock..."
 		local RSDK_TEMP_JSON
 		RSDK_TEMP_JSON="$(mktemp)"
-		jq -es 'add' pkgs.json "$RSDK_PKG_LOCK_FILE" >"$RSDK_TEMP_JSON"
+		jq -es 'add | with_entries(select(.value != null))' pkgs.json "$RSDK_PKG_LOCK_FILE" >"$RSDK_TEMP_JSON"
 		mv "$RSDK_TEMP_JSON" pkgs.json
 		# Fix file permission for GitHub Pages
 		# https://github.com/actions/upload-pages-artifact?tab=readme-ov-file#file-permissions
