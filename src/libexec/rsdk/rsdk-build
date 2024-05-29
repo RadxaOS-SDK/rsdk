@@ -232,6 +232,7 @@ main() {
 	EDITION="${3:-$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
 	local OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
 	mkdir -p "$OUTPUT"
+	echo "Building ${PRODUCT} ${SUITE} ${EDITION}..."
 
 	local i
 	if i="$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).override_kernel' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")"; then
