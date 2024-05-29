@@ -149,7 +149,9 @@ main() {
 			"pkgs.lock"
 		)
 		repo_desc() {
-			local distro type target="${1%-test}"
+			local distro type target="$1"
+			target="${target%-test}"
+			target="${target#*-}"
 			case "$1" in
 			*-test)
 				type="Radxa Test Repository"
