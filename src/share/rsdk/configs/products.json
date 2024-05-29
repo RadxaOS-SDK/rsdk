@@ -197,7 +197,7 @@
         "override_kernel": "rk2312",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board Linux 6.1 Development Build",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -205,7 +205,7 @@
         "product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
     },
@@ -215,7 +215,7 @@
         "override_kernel": "rk2312",
         "product_name": "Radxa CM5 RPI CM4 IO",
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board Linux 6.1 Development Build",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -223,7 +223,7 @@
         "product": "radxa-cm5-rpi-cm4-io",
         "product_name": "Radxa CM5 RPI CM4 IO",
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
     },
@@ -231,7 +231,7 @@
         "product": "radxa-nx5-io",
         "product_name": "Radxa NX5 IO",
         "product_full_name": "Radxa NX5 IO Board",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
     },
@@ -239,7 +239,7 @@
         "product": "rock-5a",
         "product_name": "ROCK 5A",
         "product_full_name": "ROCK 5A",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
     },
@@ -273,7 +273,7 @@
         "product": "rock-5c",
         "product_name": "ROCK 5C",
         "product_full_name": "ROCK 5C",
-        "soc": "rk3588",
+        "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde", "cli"]
     },
@@ -283,7 +283,7 @@
         "override_kernel": "rk2312",
         "product_name": "ROCK 5C",
         "product_full_name": "ROCK 5C Linux 6.1 Development Build",
-        "soc": "rk3588s",
+        "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -291,9 +291,9 @@
         "product": "rock-5d",
         "product_name": "ROCK 5D",
         "product_full_name": "ROCK 5D",
-        "soc": "rk3588",
+        "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "rock-5-itx",
