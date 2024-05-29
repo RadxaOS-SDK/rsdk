@@ -227,6 +227,10 @@ main() {
 		update_repo "${RSDK_TARGET_PREFIX}${1}${RSDK_TARGET_SUFFIX}"
 		shift
 	done
+
+	echo "============="
+	echo "Operation completed."
+	echo "Please remember to check the secret setting and pages setting."
 }
 
 main "$@"
