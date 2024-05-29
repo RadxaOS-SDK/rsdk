@@ -107,9 +107,9 @@
         "product": "rock-2a",
         "product_name": "ROCK 2A",
         "product_full_name": "ROCK 2A",
-        "soc": "rk3528",
+        "soc": "rk3528a",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_edition": ["xfce", "cli"]
     },
     {
         "product": "radxa-cm3-io",

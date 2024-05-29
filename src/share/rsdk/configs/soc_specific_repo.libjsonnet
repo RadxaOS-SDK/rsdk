@@ -1,0 +1,5 @@
+local soc_list = import "socs.json";
+
+function(soc)
+    std.length(std.filter(function(x) std.member(x.soc_specific_repo, soc),
+               soc_list)) > 0

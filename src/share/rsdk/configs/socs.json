@@ -5,7 +5,8 @@
         "soc_list": [
             "a311d",
             "s905y2"
-        ]
+        ],
+        "soc_specific_repo": []
     },
     {
         "soc_family": "rockchip",
@@ -28,6 +29,9 @@
             "rk3588s",
             "rk3588s2",
             "rk3588"
+        ],
+        "soc_specific_repo": [
+            "rk3528a"
         ]
     }
 ]
