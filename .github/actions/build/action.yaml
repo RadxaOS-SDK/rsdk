@@ -31,6 +31,8 @@ runs:
       uses: easimon/maximize-build-space@v10
       with:
         root-reserve-mb: 16384
+        remove-dotnet: true
+        remove-android: true
     - name: Setup rsdk
       uses: RadxaOS-SDK/rsdk/.github/actions/setup@main
     - name: Set suite based on input variables
