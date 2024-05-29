@@ -5,7 +5,7 @@ create_archive() {
 	DEB_SOURCE="$(realpath "$RSDK_OPTION_DEB_DIR")"
 
 	for i in "$@"; do
-		aptly publish drop -force-drop "$i" "$RSDK_REPO_ORIGIN" || true
+		aptly publish drop -force-drop "$i" "${RSDK_REPO_ORIGIN:-.}" || true
 		aptly repo drop -force "$i" || true
 	done
 	aptly db cleanup
