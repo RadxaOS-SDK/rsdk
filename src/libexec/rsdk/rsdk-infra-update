@@ -31,7 +31,15 @@ update_repo() {
 				git init
 				popd
 			else
-				echo "Target repository does not exist. New repository will be created."
+				if [[ $RSDK_OPTION_NO_CONFIRM == "true" ]]; then
+					echo "Target repository does not exist. New repository will be created."
+				else
+					read -rp "Target repository does not exist. Do you want to create it now? [y/N] "
+					if [[ ${REPLY/Y/y} != "y" ]]; then
+						echo "Operation cancelled."
+						return 1
+					fi
+				fi
 				pushd "$OUTPUT/.."
 				gh repo create "$RSDK_TARGET_ORGANIZATION/$TARGET" --clone --public
 				popd
@@ -106,7 +114,7 @@ main() {
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds:tr:P:" -l "help,dry-run,suffix:,test,run:,prefix:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds:tr:P:y" -l "help,dry-run,suffix:,test,run:,prefix:,yes" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -123,6 +131,7 @@ main() {
 	export RSDK_GIT_REPO_KEEP_FILES=("${RSDK_GIT_REPO_KEEP_FILES[@]}")
 	export RSDK_OPTION_RUN_WORKFLOW="${RSDK_OPTION_RUN_WORKFLOW:-}"
 	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
+	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
 
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
@@ -195,6 +204,9 @@ main() {
 		-P | --prefix)
 			RSDK_TARGET_PREFIX="$1"
 			shift
+			;;
+		-y | --yes)
+			RSDK_OPTION_NO_CONFIRM="true"
 			;;
 		--)
 			break

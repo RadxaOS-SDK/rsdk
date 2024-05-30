@@ -166,6 +166,10 @@ _rsdk_infra-product-update_completions() {
 		"--dry-run"
 		"-h"
 		"--help"
+		"-r"
+		"--run"
+		"-y"
+		"--yes"
 	)
 
 	local products=()
@@ -200,6 +204,8 @@ _rsdk_infra-repo-update_completions() {
 		"--run"
 		"-P"
 		"--prefix"
+		"-y"
+		"--yes"
 	)
 
 	local distros=()
