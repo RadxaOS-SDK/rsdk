@@ -22,7 +22,7 @@ function(
     sudo dpkg -i "$keyring"
     rm -f "$keyring"
     # Add apt package repo
-    sudo tee /etc/apt/sources.list.d/20-radxa.list <<< "deb [signed-by=/usr/share/keyrings/radxa-archive-keyring.gpg] https://%(repo_org)s.github.io/%(target)s/ %(target)s main"
+    sudo tee /etc/apt/sources.list.d/70-radxa.list <<< "deb [signed-by=/usr/share/keyrings/radxa-archive-keyring.gpg] https://%(repo_org)s.github.io/%(target)s/ %(target)s main"
     sudo apt-get update
     ```
 ||| % {
