@@ -76,7 +76,7 @@ else
 |||
     
     echo "Deploying rootfs..."
-    %(deploy_method)s /
+    %(deploy_method)s
 
     echo "Copying content from rootfs..."
     !mkdir -p "%(temp_dir)s/u-boot"
@@ -88,9 +88,9 @@ else
 ||| % {
     deploy_method: (if std.endsWith(rootfs, ".tar")
     then
-        "tar-in %(rootfs)s" % { rootfs: rootfs }
+        "tar-in %(rootfs)s / xattrs:true" % { rootfs: rootfs }
     else
-        "copy-in %(rootfs)s/." % { rootfs: rootfs }
+        "copy-in %(rootfs)s/. /" % { rootfs: rootfs }
     ),
     temp_dir: temp_dir,
 } +
