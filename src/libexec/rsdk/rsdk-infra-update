@@ -231,7 +231,10 @@ main() {
 
 	echo "============="
 	echo "Operation completed."
-	echo "Please remember to check the secret setting and pages setting."
+	echo "If a new package repo is created, please remember to check:"
+	echo "  * organization secret setting"
+	echo "  * repository pages setting,"
+	echo "  * and PAT authorization (if auto repo update is enabled)."
 }
 
 main "$@"
