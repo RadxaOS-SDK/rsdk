@@ -1,7 +1,7 @@
 local README_md = import "README.md.jsonnet";
-local dependabot_yml = import ".github/dependabot.yml.jsonnet";
+local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local workflow = import ".github/workflows/workflow.jsonnet";
-local dependabot_workflow = import ".github/workflows/dependabot.yml.jsonnet";
+local dependabot_workflow = import ".github/workflows/dependabot.yaml.jsonnet";
 
 function(
     target,
@@ -11,8 +11,8 @@ function(
     git_rev,
 ) {
     "README.md": README_md(target, build_org),
-    ".github/dependabot.yml": dependabot_yml(),
-    ".github/workflows/build.yml": workflow(target, "release"),
-    ".github/workflows/test.yml": workflow(target, "test"),
-    ".github/workflows/dependabot.yml": dependabot_workflow(),
+    ".github/dependabot.yaml": dependabot_yaml(),
+    ".github/workflows/build.yaml": workflow(target, "release"),
+    ".github/workflows/test.yaml": workflow(target, "test"),
+    ".github/workflows/dependabot.yaml": dependabot_workflow(),
 }
