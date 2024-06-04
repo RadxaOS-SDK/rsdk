@@ -15,6 +15,10 @@ function(
 
     Please also always use [the latest release](https://github.com/%(build_org)s/%(product)s/releases/latest) instead of any pre-release / test builds. Those will not be supported.
 
+    ## Where is the source code?
+
+    This repository is only for hosting the GitHub workflows that build the image. As such, you will need to examine the workflow to find the builder.
+
     ## Help! Something doesn't work!
 
     For other questions, please first take a look at [our Documentation](https://docs.radxa.com), which covers the most basic usages.

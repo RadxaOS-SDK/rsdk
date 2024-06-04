@@ -9,8 +9,13 @@ function(
 
     ## Content
 
-    * [Published GitHub Releases](pkgs.json)
-    * [File index](files.list)
+    * [Published GitHub Releases](https://%(repo_org)s.github.io/%(target)s/pkgs.json)
+    * [File index](https://%(repo_org)s.github.io/%(target)s/files.list)
+
+    ## Report issues
+
+    The issue list for this repository should be strictly related to the package repository service itself.  
+    If your issue is related to a specific package's usage, you should file issues under package's repository over at [`%(pkg_org)s`](https://github.com/%(pkg_org)s).
 
     ## Usage
 
