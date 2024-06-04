@@ -25,7 +25,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
             "radxa-archive-keyring",
             "vscodium-archive-keyring",
         ],
-        "setup-hooks"+: (if soc_specific_repo(product_soc(product))
+        "setup-hooks"+: (if soc_specific_repo(product_soc(product) && suite != "bullseye")
         then
             [
             'echo deb %(radxa_url)s%(product_soc)s-%(suite)s %(product_soc)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc)s.list"'
