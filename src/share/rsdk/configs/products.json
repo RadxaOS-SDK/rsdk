@@ -199,7 +199,7 @@
         "product_full_name": "Radxa CM5 IO Board Linux 6.1 Development Build",
         "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-cm5-io",
@@ -207,7 +207,7 @@
         "product_full_name": "Radxa CM5 IO Board",
         "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-cm5-rpi-cm4-io-6_1",
@@ -217,7 +217,7 @@
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board Linux 6.1 Development Build",
         "soc": "rk3588s2",
         "supported_suite": ["bookworm"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-cm5-rpi-cm4-io",
@@ -225,7 +225,7 @@
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board",
         "soc": "rk3588s2",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-nx5-io",
