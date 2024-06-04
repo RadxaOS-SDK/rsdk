@@ -6,7 +6,7 @@ local product_soc_family(product) = soc_family(product_soc(product));
 local vscodium_url(radxa_mirror) = (
     if radxa_mirror == ""
     then
-        "https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/"
+        "https://download.vscodium.com/"
     else
         radxa_mirror
 ) + "debs";
