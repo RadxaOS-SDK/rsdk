@@ -219,6 +219,7 @@ main() {
 
 	if ! git merge-base --is-ancestor HEAD "@{u}"; then
 		echo "Current HEAD is not present in the remote." >&2
+		echo "Did you push your local branch?" >&2
 		echo "Abort due to potential non-working ref assignment." >&2
 		return 1
 	fi
