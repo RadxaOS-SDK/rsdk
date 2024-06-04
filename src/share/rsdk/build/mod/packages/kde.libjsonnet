@@ -79,9 +79,20 @@ then
         [
             "plasma-workspace-wayland",
             "qml-module-org-kde-pipewire",
+            // Debian 12's sddm won't turn the screen on boot
+            "gdm3",
         ]
 else
         []
-)
+),
+        "customize-hooks"+:
+(if suite == "bookworm"
+then
+        [
+            'echo gdm3 | chroot "$1" dpkg-reconfigure gdm3 -f Text',
+        ]
+else
+        []
+),
     },
 }
