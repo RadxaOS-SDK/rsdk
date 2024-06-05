@@ -85,11 +85,11 @@ then
 else
         []
 ),
-        "customize-hooks"+:
+        "essential-hooks"+:
 (if suite == "bookworm"
 then
         [
-            'echo gdm3 | chroot "$1" dpkg-reconfigure gdm3 -f Text',
+            'echo "gdm3 shared/default-x-display-manager select gdm3" | chroot "$1" debconf-set-selections',
         ]
 else
         []
