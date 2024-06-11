@@ -45,7 +45,6 @@ function(
         "customize-hooks"+:
         [
             'echo "127.0.1.1	%(product)s" >> "$1/etc/hosts"' % { product: product },
-            'mkdir "$1/etc/rsdk/"',
             'cp "%(output_dir)s/config.yaml" "$1/etc/rsdk/"' % { output_dir: output_dir },
             'echo "FINGERPRINT_VERSION=\'2\'" > "$1/etc/radxa_image_fingerprint"',
             'echo "RSDK_BUILD_DATE=\'$(date -R)\'" >> "$1/etc/radxa_image_fingerprint"',
