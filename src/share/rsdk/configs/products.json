@@ -168,6 +168,14 @@
         "supported_edition": ["xfce"]
     },
     {
+        "product": "radxa-cm3j-rpi-cm4-io",
+        "product_name": "Radxa CM3J RPI CM4 IO",
+        "product_full_name": "Radxa CM3J Compute Module with Raspberry Pi Compute Module 4 IO Board",
+        "soc": "rk3568",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
+    },
+    {
         "product": "radxa-e25",
         "product_name": "Radxa E25",
         "product_full_name": "Radxa E25 Dual 2.5Gb Ethernet Carrier Board",
