@@ -61,6 +61,16 @@ function(
 
                             sudo apt-get update
                             sudo apt-get install -y aptly pandoc
+
+                            # Workaround https://github.com/aptly-dev/aptly/issues/1297
+                            git clone -b 1297-hack https://github.com/RadxaOS-SDK/aptly.git /tmp/aptly
+                            export PATH="$HOME/go/bin:$PATH"
+                            pushd /tmp/aptly
+                            make release
+                            popd
+                            APTLY_PATH=/tmp/aptly/xc-out/*/linux_amd64
+                            export PATH="$APTLY_PATH:$PATH"
+
                             git config --global user.name 'github-actions[bot]'
                             git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
@@ -73,8 +83,6 @@ function(
 
                             suites=(
                                 "%(target)s"
-                                "amlogic-%(target)s"
-                                "rockchip-%(target)s"
                             )
 
                             pushd .infra-repo
@@ -85,9 +93,9 @@ function(
                             fi
 
                             ../src/bin/rsdk infra-pkg-snapshot
-                            ../src/bin/rsdk infra-pkg-download "${suites[@]}"
-                            ../src/bin/rsdk infra-repo-sync "${suites[@]}"
-                            export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
+                            ../src/bin/rsdk infra-pkg-download --no-default-distro "${suites[@]}"
+                            ../src/bin/rsdk infra-repo-sync --origin "${suites[0]}" --label "${suites[0]}" "${suites[@]}"
+                            export RSDK_REPO_ORIGIN="${suites[0]}"
                             git add pkgs.json
 
                             pushd "$HOME/.aptly/public/$RSDK_REPO_ORIGIN/"
