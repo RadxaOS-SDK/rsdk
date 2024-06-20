@@ -1,5 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
+local product_soc = import "../../../configs/product_soc.libjsonnet";
 
 function(suite,
          product,
@@ -73,7 +74,7 @@ else
         []
 ) +
 
-(if suite == "bookworm"
+(if suite == "bookworm" && std.startsWith(product_soc(product), "rk3588")
 then
         // Install Debian 12 packages
         [
@@ -86,7 +87,7 @@ else
         []
 ),
         "customize-hooks"+:
-(if suite == "bookworm"
+(if suite == "bookworm" && std.startsWith(product_soc(product), "rk3588")
 then
         [
             // Manually set gdm3 as the default display manager, as dpkg-reconfigure does not work under chroot
