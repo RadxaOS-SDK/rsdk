@@ -1,6 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
-local product_soc = import "../../configs/product_soc.libjsonnet";
+local product_soc = import "../../../configs/product_soc.libjsonnet";
 
 function(suite,
          product,
