@@ -1,5 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
+local product_soc = import "../../configs/product_soc.libjsonnet";
 
 function(suite,
          product,
@@ -79,25 +80,28 @@ then
         [
             "plasma-workspace-wayland",
             "qml-module-org-kde-pipewire",
-            // Debian 12's sddm won't turn the screen on boot
-            "gdm3",
-        ]
-else
-        []
-),
-        "customize-hooks"+:
-(if suite == "bookworm"
-then
-        [
-            // Manually set gdm3 as the default display manager, as dpkg-reconfigure does not work under chroot
-            |||
-                echo "gdm3 shared/default-x-display-manager select gdm3" | chroot "$1" debconf-set-selections
-                echo "/usr/sbin/gdm3" > "$1/etc/X11/default-display-manager"
-                ln -sf "/lib/systemd/system/gdm3.service" "$1/etc/systemd/system/display-manager.service"
-            |||
         ]
 else
         []
 ),
     },
-}
+} + (if suite == "bookworm" && std.startsWith(product_soc(product), "rk358")
+then
+    // Debian 12's sddm won't turn the screen on boot when using with Panthor
+    {
+        mmdebstrap+: {
+            packages+: [ "gdm3" ],
+            "customize-hooks"+:
+            [
+                // Manually set gdm3 as the default display manager, as dpkg-reconfigure does not work under chroot
+                |||
+                    echo "gdm3 shared/default-x-display-manager select gdm3" | chroot "$1" debconf-set-selections
+                    echo "/usr/sbin/gdm3" > "$1/etc/X11/default-display-manager"
+                    ln -sf "/lib/systemd/system/gdm3.service" "$1/etc/systemd/system/display-manager.service"
+                |||
+            ]
+        }
+    }
+else
+    {}
+)
