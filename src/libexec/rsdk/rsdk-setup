@@ -70,7 +70,7 @@ EOF
 	)
 	sudo dpkg --add-architecture arm64
 
-	if false "$riscv_support"; then
+	if [[ $riscv_support == "true" ]]; then
 		PACKAGES+=(
 			libfakechroot:riscv64
 			libfakeroot:riscv64
