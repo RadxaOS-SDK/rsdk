@@ -104,9 +104,9 @@
         "supported_edition": ["kde"]
     },
     {
-        "product": "rock-2a",
-        "product_name": "ROCK 2A",
-        "product_full_name": "ROCK 2A",
+        "product": "rock-2",
+        "product_name": "ROCK 2",
+        "product_full_name": "ROCK 2 Series",
         "soc": "rk3528a",
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce", "cli"]
