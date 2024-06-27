@@ -28,6 +28,14 @@ function(
                 },
                 steps: [
                     {
+                        name: "Secret tests",
+                        "if": "${{ secrets.GPG_KEY }} == '' || ${{ secrets.RADXA_APT_KEY_2024 }} == ''",
+                        uses: "actions/github-script@v7",
+                        with: {
+                            script: "core.setFailed('Required secrets are unset!');",
+                        },
+                    },
+                    {
                         name: "Checkout rsdk",
                         uses: "actions/checkout@v4",
                         with: {
