@@ -5,7 +5,7 @@ function(
     build_org,
 ) |||
     # %(product_full_name)s
-    [![Build image for Release channel](https://github.com/%(build_org)s/%(product)s/actions/workflows/build.yml/badge.svg)](https://github.com/%(build_org)s/%(product)s/actions/workflows/build.yml) [![Build image for Test channel](https://github.com/%(build_org)s/%(product)s/actions/workflows/test.yml/badge.svg)](https://github.com/%(build_org)s/%(product)s/actions/workflows/test.yml)
+    [![Build image for Release channel](https://github.com/%(build_org)s/%(product)s/actions/workflows/build.yaml/badge.svg)](https://github.com/%(build_org)s/%(product)s/actions/workflows/build.yaml) [![Build image for Test channel](https://github.com/%(build_org)s/%(product)s/actions/workflows/test.yaml/badge.svg)](https://github.com/%(build_org)s/%(product)s/actions/workflows/test.yaml)
 
     ## What is this?
 

@@ -38,10 +38,10 @@ main() {
 		get_workflow() {
 			case "$RSDK_BUILD_TYPE" in
 			production)
-				RSDK_WORKFLOW_FILE="build.yml"
+				RSDK_WORKFLOW_FILE="build.yaml"
 				;;
 			test)
-				RSDK_WORKFLOW_FILE="test.yml"
+				RSDK_WORKFLOW_FILE="test.yaml"
 				;;
 			*)
 				echo "Unknown release variant. Please use -p|--production or -t|--test to specify." >&2
