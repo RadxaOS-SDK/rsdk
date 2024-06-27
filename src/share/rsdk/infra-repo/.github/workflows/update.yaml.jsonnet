@@ -29,10 +29,17 @@ function(
                 steps: [
                     {
                         name: "Secret tests",
-                        "if": "${{ secrets.GPG_KEY }} == '' || ${{ secrets.RADXA_APT_KEY_2024 }} == ''",
                         uses: "actions/github-script@v7",
+                        env: {
+                            SECRETS: "${{ toJSON(secrets) }}",
+                        },
                         with: {
-                            script: "core.setFailed('Required secrets are unset!');",
+                            script: |||
+                                const secrets = JSON.parse(process.env.SECRETS);
+                                if (secrets.GPG_KEY === undefined || secrets.RADXA_APT_KEY_2024 === undefined) {
+                                    core.setFailed('Required secrets are unset!');
+                                }
+                            |||,
                         },
                     },
                     {
