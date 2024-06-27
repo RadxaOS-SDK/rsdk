@@ -98,7 +98,9 @@ update_repo() {
 			gh workflow run "$RSDK_OPTION_RUN_WORKFLOW"
 		fi
 		gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
-			"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/pages" -F "build_type=workflow"
+			"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/pages" -F "build_type=workflow" ||
+			gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/pages" -F "build_type=workflow"
 	else
 		echo "Set repository description as '$description'."
 		echo "Set repository homepage as '$homepage'."
