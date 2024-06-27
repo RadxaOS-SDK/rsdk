@@ -27,7 +27,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
         ],
         "setup-hooks"+: [
             'mkdir -p "$1/etc/rsdk/"',
-        ] + (if soc_specific_repo(product_soc(product)) && suite != "bullseye"
+        ] + (if soc_specific_repo(product_soc(product))
         then
             [
                 |||
