@@ -306,5 +306,14 @@
         "soc": "rk3588",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
+    },
+    {
+        "product": "rock-5-itx-6_1",
+        "override_product": "rock-5-itx",
+        "product_name": "ROCK 5 ITX",
+        "product_full_name": "ROCK 5 ITX Linux 6.1 Development Build",
+        "soc": "rk3588",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     }
 ]
