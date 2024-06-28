@@ -36,6 +36,20 @@ function(
                     {
                         name: "Checkout",
                         uses: "actions/checkout@v4",
+                        with: {
+                            "fetch-depth": 0,
+                            "fetch-tags": true,
+                        },
+                    },
+                    {
+                        name: "Check for existing releases",
+                        run: |||
+                            TAG="%(tag_name)s"
+                            if git show-ref --tags --verify --quiet "refs/tags/${TAG}"; then
+                                echo "Release ${TAG} exists."
+                                exit 1
+                            fi
+                        ||| % {tag_name: release_info(variant).tag_name},
                     },
                     {
                         name: "Generate changelog",
