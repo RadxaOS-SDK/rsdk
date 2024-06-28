@@ -1,5 +1,22 @@
 local product_data = import "../../../configs/product_data.libjsonnet";
 
+local release_info = function(variant) if variant == "release"
+then
+    {
+        name: "b${{ github.run_number }} (rsdk)",
+        tag_name: "rsdk-b${{ github.run_number }}",
+        body_path: "README.md",
+    }
+else if variant == "test"
+then
+    {
+        name: "t${{ github.run_number }} (rsdk)",
+        tag_name: "rsdk-t${{ github.run_number }}",
+        body: "This is a test build for internal development.\nOnly use when specifically instructed by Radxa support.\n",
+    }
+else
+    {};
+
 function(
     target,
     variant,
@@ -45,22 +62,7 @@ function(
                             draft: false,
                             prerelease: true,
                             files: ".changelog/changelog.md",
-                        } + if variant == "release"
-                        then
-                            {
-                                name: "b${{ github.run_number }} (rsdk)",
-                                tag_name: "rsdk-b${{ github.run_number }}",
-                                body_path: "README.md",
-                            }
-                        else if variant == "test"
-                        then
-                            {
-                                name: "t${{ github.run_number }} (rsdk)",
-                                tag_name: "rsdk-t${{ github.run_number }}",
-                                body: "This is a test build for internal development.\nOnly use when specifically instructed by Radxa support.\n",
-                            }
-                        else
-                            {},
+                        } + release_info(variant),
                     }
                 ],
                 outputs: {
