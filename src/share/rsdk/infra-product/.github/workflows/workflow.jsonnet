@@ -48,13 +48,15 @@ function(
                         } + if variant == "release"
                         then
                             {
-                                tag_name: "b${{ github.run_number }}",
+                                name: "b${{ github.run_number }} (rsdk)",
+                                tag_name: "rsdk-b${{ github.run_number }}",
                                 body_path: "README.md",
                             }
                         else if variant == "test"
                         then
                             {
-                                tag_name: "t${{ github.run_number }}",
+                                name: "t${{ github.run_number }} (rsdk)",
+                                tag_name: "rsdk-t${{ github.run_number }}",
                                 body: "This is a test build for internal development.\nOnly use when specifically instructed by Radxa support.\n",
                             }
                         else
