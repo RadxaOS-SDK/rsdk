@@ -2,10 +2,11 @@
 
 This is similar to how we build system images in the CI pipelines.
 
-First, install `npm` and the container backend:
+First, please install the required dependencies:
 
 ```bash
 sudo apt-get update
+sudo apt-get install git qemu-user-static binfmt-support
 sudo apt-get install npm docker.io
 sudo usermod -a -G docker $USER
 ```

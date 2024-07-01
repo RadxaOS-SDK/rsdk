@@ -5,7 +5,14 @@
 This is the preferred method to run `rsdk`.
 ```
 
-Please first follow Visual Studio Code's documentation to:
+First, please install the required dependencies:
+
+```bash
+sudo apt-get update
+sudo apt-get install git qemu-user-static binfmt-support
+```
+
+Then follow Visual Studio Code's documentation to:
 
 1. [Install Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview)
 2. [Setup devcontainer](https://code.visualstudio.com/docs/devcontainers/containers)
