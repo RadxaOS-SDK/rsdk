@@ -1,4 +1,4 @@
-# Running `rsdk` natively
+# Run `rsdk` natively
 
 ```admonish warning
 This is not a well supported or tested installation method.

@@ -1,24 +1,31 @@
-# Running `rsdk` with devcontainer
+# Run `rsdk` with devcontainer alone
 
+This is similar to how we build system images in the CI pipelines.
 
-```admonish info
-This is the preferred method to run `rsdk`.
+First, install `npm` and the container backend:
+
+```bash
+sudo apt-get update
+sudo apt-get install npm docker.io
+sudo usermod -a -G docker $USER
 ```
 
-Please first follow Visual Studio Code's documentation to:
+If you were not in the `docker` group before, you will need to log out and log back in.
 
-1. [Install Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-overview)
-2. [Setup devcontainer](https://code.visualstudio.com/docs/devcontainers/containers)
+For SSH, simple disconnect the current session and reconnect.
 
-Then clone the project with `git`:
+Then clone the project with `git` and install `devcontainer`:
 
 ```bash
 git clone --recurse-submodules https://github.com/RadxaOS-SDK/rsdk.git
+cd rsdk
+npm install @devcontainers/cli
+export PATH="$PWD/src/bin:$PWD/node_modules/.bin:$PATH"
+rsdk devcon up
+rsdk devcon
 ```
 
-Open the project in Visual Studio Code. A notification will pop up on the corner
-asking if you want to reopen in devcontainer. Click `yes` and wait for the container
-to be set up.
+You are now inside the `rsdk`'s `devcontainer` shell.
 
 ## Common issues
 

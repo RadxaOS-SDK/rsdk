@@ -1,3 +1,3 @@
-# Running `rsdk` using released Debian package
+# Run `rsdk` using released Debian package
 
 To be released.
