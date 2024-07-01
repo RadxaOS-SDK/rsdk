@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
 
-if [[ -f /.dockerenv ]]; then
-	echo "Already inside of container." >&2
-	exit 1
-fi
+main() {
+	local SCRIPT_DIR
+	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+	# shellcheck source=src/lib/rsdk/utils.sh
+	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
-case "${1:-}" in
-"build")
-	devcontainer "${1:-}" --workspace-folder "$DEVENV_ROOT"
-	;;
-"up")
-	devcontainer "${1:-}" --workspace-folder "$DEVENV_ROOT" --remove-existing-container
-	;;
-"exec" | "")
-	devcontainer exec --workspace-folder "$DEVENV_ROOT" bash
-	;;
-*)
-	echo "Unknown command ${1:-}." >&2
-	exit 1
-	;;
-esac
+	if [[ -f /.dockerenv ]]; then
+		echo "Already inside of container." >&2
+		exit 1
+	fi
+
+	local RSDK_ROOT="${DEVENV_ROOT:-$SCRIPT_DIR/../../../}"
+
+	case "${1:-}" in
+	"build")
+		devcontainer "${1:-}" --workspace-folder "$RSDK_ROOT"
+		;;
+	"up")
+		devcontainer "${1:-}" --workspace-folder "$RSDK_ROOT" --remove-existing-container
+		;;
+	"exec" | "")
+		devcontainer exec --workspace-folder "$RSDK_ROOT" bash
+		;;
+	*)
+		echo "Unknown command ${1:-}." >&2
+		exit 1
+		;;
+	esac
+}
+
+main "$@"
