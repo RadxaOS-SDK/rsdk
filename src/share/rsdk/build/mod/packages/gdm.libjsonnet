@@ -1,0 +1,14 @@
+function() {
+    mmdebstrap+: {
+        packages+: [ "gdm3" ],
+        "customize-hooks"+:
+        [
+            // Manually set gdm3 as the default display manager, as dpkg-reconfigure does not work under chroot
+            |||
+                echo "gdm3 shared/default-x-display-manager select gdm3" | chroot "$1" debconf-set-selections
+                echo "/usr/sbin/gdm3" > "$1/etc/X11/default-display-manager"
+                ln -sf "/lib/systemd/system/gdm3.service" "$1/etc/systemd/system/display-manager.service"
+            |||
+        ]
+    }
+}
