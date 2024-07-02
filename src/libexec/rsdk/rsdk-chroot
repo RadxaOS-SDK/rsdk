@@ -37,7 +37,11 @@ if [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
 	error "$EXIT_NOT_BLOCK_DEVICE" "$disk"
 fi
 
-if [[ -b "$disk"3 ]]; then
+if [[ -b "$disk"5 ]]; then
+	# legacy debos-radxa image
+	sudo mount "$disk"5 "$RSDK_TEMP"
+	sudo mount "$disk"4 "$RSDK_TEMP/boot"
+elif [[ -b "$disk"3 ]]; then
 	# latest rbuild/rsdk image
 	sudo mount "$disk"3 "$RSDK_TEMP"
 	sudo mount "$disk"2 "$RSDK_TEMP/boot/efi"
