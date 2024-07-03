@@ -32,6 +32,7 @@
         ],
         "soc_specific_repo": [
             "rk3528a",
+            "rk3582",
             "rk3588s2",
             "rk3588"
         ]
