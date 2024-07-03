@@ -200,6 +200,14 @@
         "supported_edition": ["xfce"]
     },
     {
+        "product": "radxa-e52c",
+        "product_name": "Radxa E52C",
+        "product_full_name": "Radxa E52C",
+        "soc": "rk3582",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
+    },
+    {
         "product": "radxa-cm5-io-6_1",
         "override_product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
