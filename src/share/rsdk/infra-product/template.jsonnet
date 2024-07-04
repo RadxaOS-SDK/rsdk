@@ -1,7 +1,7 @@
 local README_md = import "README.md.jsonnet";
 local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local workflow = import ".github/workflows/workflow.jsonnet";
-local dependabot_workflow = import ".github/workflows/dependabot.yaml.jsonnet";
+local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
 
 function(
     target,

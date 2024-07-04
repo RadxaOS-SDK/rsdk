@@ -36,5 +36,5 @@ function() std.manifestYamlDoc(
             },
         },
     },
-    quote_keys=false
+    quote_keys=false,
 )
