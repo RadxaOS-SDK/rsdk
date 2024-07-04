@@ -47,16 +47,20 @@ update_repo() {
 		fi
 	fi
 
-	echo "Remove existing content..."
-	local i file_exclusion=(
-		"!" "-name" ".git"
-	)
-	for i in "${RSDK_GIT_REPO_KEEP_FILES[@]}"; do
-		file_exclusion+=(
-			"!" "-name" "$i"
+	if [[ $RSDK_OPTION_PURGE_BEFORE_UPDATE == "true" ]]; then
+		echo "Remove existing content..."
+		local i file_exclusion=(
+			"!" "-name" ".git"
 		)
-	done
-	find "$OUTPUT" -mindepth 1 -maxdepth 1 "${file_exclusion[@]}" -exec rm -rf {} +
+		for i in "${RSDK_GIT_REPO_KEEP_FILES[@]}"; do
+			file_exclusion+=(
+				"!" "-name" "$i"
+			)
+		done
+		find "$OUTPUT" -mindepth 1 -maxdepth 1 "${file_exclusion[@]}" -exec rm -rf {} +
+	else
+		echo "Skip content removal."
+	fi
 
 	echo "Prepare folder structure..."
 	pushd "$RSDK_GIT_REPO_TEMPLATE"
@@ -137,6 +141,7 @@ main() {
 	export RSDK_OPTION_RUN_WORKFLOW="${RSDK_OPTION_RUN_WORKFLOW:-}"
 	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
 	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
+	export RSDK_OPTION_PURGE_BEFORE_UPDATE="${RSDK_OPTION_PURGE_BEFORE_UPDATE:-true}"
 
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
