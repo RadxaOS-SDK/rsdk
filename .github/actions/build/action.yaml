@@ -20,6 +20,9 @@ inputs:
   timestamp:
     required: false
     default: b${{ github.run_number }}
+  tag_name:
+    required: false
+    default: rsdk-b${{ github.run_number }}
   override-kernel:
     required: false
   override-firmware:
@@ -96,12 +99,12 @@ runs:
       if: inputs.release-id != '' && inputs.github-token != ''
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ inputs.timestamp }}
+        tag_name: ${{ inputs.tag_name }}
         append_body: true
         body: |
           ## ${{ steps.prep.outputs.BUILD_TUPLE }} 
 
-          [Download Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.timestamp }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output.img.xz)
+          [Download Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output.img.xz)
 
           ### SHA-512 Checksum
 
@@ -110,14 +113,14 @@ runs:
       if: inputs.release-id != '' && inputs.github-token != ''
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ inputs.timestamp }}
+        tag_name: ${{ inputs.tag_name }}
         append_body: true
         body_path: out/${{ steps.prep.outputs.BUILD_TUPLE }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.sha512sum
     - name: Append changelog footer
       if: inputs.release-id != '' && inputs.github-token != ''
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ inputs.timestamp }}
+        tag_name: ${{ inputs.tag_name }}
         append_body: true
         body: |
           ```

@@ -114,6 +114,7 @@ function(
                             {
                                 "test-repo": true,
                                 timestamp: "t${{ github.run_number }}",
+                                tag_name: release_info(variant).tag_name,
                             }
                         else
                             {},
