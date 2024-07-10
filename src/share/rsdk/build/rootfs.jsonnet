@@ -56,7 +56,7 @@ function(
                 mkdir -p "%(output_dir)s/seed"
                 cp "$1/etc/radxa_image_fingerprint" "%(output_dir)s/seed"
                 cp "$1/etc/rsdk/"* "%(output_dir)s/seed"
-                tar zvcf "%(output_dir)s/seed.tar.gz" -C "%(output_dir)s/seed" .
+                tar Jvcf "%(output_dir)s/seed.tar.xz" -C "%(output_dir)s/seed" .
                 rm -rf "%(output_dir)s/seed"
             ||| % { output_dir: output_dir },
         ]
