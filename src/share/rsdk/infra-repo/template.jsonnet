@@ -2,6 +2,7 @@ local LICENSE = import "../common/licenses/GPLv3.jsonnet";
 local CODEOWNERS = import "../common/codeowners/CODEOWNERS.jsonnet";
 local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
+local check_linked_issue_yaml = import "../common/check_linked_issue/check_linked_issue.yaml.jsonnet";
 local README_md = import "README.md.jsonnet";
 local pkgs_lock = import "pkgs.lock.jsonnet";
 local update_yaml = import ".github/workflows/update.yaml.jsonnet";
@@ -20,4 +21,5 @@ function(
     ".github/CODEOWNERS": CODEOWNERS(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/update.yaml": update_yaml(target, pkg_org, git_rev),
+    ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
 }
