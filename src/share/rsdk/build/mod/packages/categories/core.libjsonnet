@@ -44,8 +44,19 @@ else
             "bluetooth",
             "iw",
             "network-manager",
-            "wpasupplicant",
         ] +
+
+(if suite == "bullseye"
+then
+        [
+            "wpasupplicant/bullseye-backports",
+
+        ]
+else
+        [
+            "wpasupplicant",
+        ]
+) +
 
         [
             // Radxa
