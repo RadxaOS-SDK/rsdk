@@ -1,6 +1,9 @@
 {
   "customizations": {
     "vscode": {
+      "settings": {
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
       "extensions": [
         "mkhl.direnv",
         "github.vscode-github-actions",
