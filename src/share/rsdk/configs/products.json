@@ -181,7 +181,7 @@
         "product_full_name": "Radxa E25 Dual 2.5Gb Ethernet Carrier Board",
         "soc": "rk3568",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_edition": ["cli"]
     },
     {
         "product": "rock-3a",
