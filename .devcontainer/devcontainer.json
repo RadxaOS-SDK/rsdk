@@ -23,7 +23,8 @@
       ],
       "extraNixConfig": [
         "experimental-features = nix-command flakes",
-        "substituters = https://mirrors.ustc.edu.cn/nix-channels/store https://devenv.cachix.org https://cache.nixos.org",
+        // Uncomment below to speed up container building in China
+        // "substituters = https://mirrors.ustc.edu.cn/nix-channels/store https://devenv.cachix.org https://cache.nixos.org",
         "trusted-users = root vscode"
       ]
     }
