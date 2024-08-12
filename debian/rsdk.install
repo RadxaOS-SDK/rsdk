@@ -1,0 +1,6 @@
+src/bin/ /usr/
+src/lib/ /usr/
+src/libexec/ /usr/
+src/share/bash-completion/ /usr/share/
+src/share/rsdk/ /usr/share/
+src/share/man/man8/*.8 /usr/share/man/man8/

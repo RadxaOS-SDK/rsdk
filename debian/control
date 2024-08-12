@@ -1,0 +1,26 @@
+Source: rsdk
+Maintainer: "Radxa Computer Co., Ltd" <dev@radxa.com>
+Section: admin
+Priority: standard
+Standards-Version: 4.6.0
+Build-Depends: debhelper (>=12~),
+               devscripts,
+               lintian,
+               dh-exec,
+               pandoc,
+               shellcheck,
+
+Package: rsdk
+Architecture: all
+Section: admin
+Priority: standard
+Depends: bash-completion,
+         bdebstrap,
+         binfmt-support,
+         qemu-user-static,
+         debian-archive-keyring,
+         debian-ports-archive-keyring,
+         ${misc:Depends},
+Description: RadxaOS Software Development Kit
+ RadxaOS Software Development Kit (rsdk) provides the managed environment to
+ build system images and essential packages.

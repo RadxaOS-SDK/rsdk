@@ -1,0 +1,7 @@
+/.debhelper
+/debhelper-build-stamp
+/files
+/rsdk*/
+/*.debhelper.log
+/*.postrm.debhelper
+/*.substvars

@@ -1,0 +1,5 @@
+rsdk (0.1.0) UNRELEASED; urgency=medium
+
+  * Add initial Debian packaging support
+
+ -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Mon, 12 Aug 2024 16:00:41 +0800
