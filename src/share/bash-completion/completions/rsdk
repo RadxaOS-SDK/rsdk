@@ -157,6 +157,29 @@ _rsdk_infra-repo-build_completions() {
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
 
+_rsdk_infra-package-update_completions() {
+	# shellcheck source=src/lib/rsdk/stdlib.sh
+	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
+
+	local suggestions=(
+		"-d"
+		"--dry-run"
+		"-h"
+		"--help"
+		"-r"
+		"--run"
+		"-y"
+		"--yes"
+	)
+
+	local i
+	for i in "${COMP_WORDS[@]}"; do
+		array_remove "suggestions" "$i"
+	done
+
+	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
+}
+
 _rsdk_infra-product-update_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh
 	source "$(dirname "$(command -v "${COMP_WORDS[0]}")")/../lib/rsdk/stdlib.sh"
@@ -185,7 +208,6 @@ _rsdk_infra-product-update_completions() {
 
 	mapfile -t COMPREPLY < <(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[COMP_CWORD]}") && array_remove "COMPREPLY" ""
 }
-
 
 _rsdk_infra-repo-update_completions() {
 	# shellcheck source=src/lib/rsdk/stdlib.sh

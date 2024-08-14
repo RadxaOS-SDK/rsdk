@@ -9,6 +9,7 @@
             "config",
             "devcon",
             "help",
+            "infra-package-update",
             "infra-product-build",
             "infra-product-update",
             "infra-repo-build",

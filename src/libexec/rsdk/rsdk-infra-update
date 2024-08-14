@@ -149,6 +149,17 @@ main() {
 		echo "Please run one of its symbolic links instead." >&2
 		return 1
 		;;
+	"rsdk-infra-package-update")
+		RSDK_GIT_REPO_TYPE="package"
+		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-package"
+		RSDK_TARGET_ORGANIZATION="$RSDK_PACKAGE_ORG"
+		repo_desc() {
+			local desc
+			desc="$(gh repo view "$RSDK_TARGET_ORGANIZATION/$1" --json description --jq '.description')"
+			echo "${desc:-$1}"
+		}
+		RSDK_OPTION_PURGE_BEFORE_UPDATE="false"
+		;;
 	"rsdk-infra-product-update")
 		RSDK_GIT_REPO_TYPE="product"
 		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
