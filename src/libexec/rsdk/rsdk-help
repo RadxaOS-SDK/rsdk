@@ -15,9 +15,11 @@ rsdk-help-build() {
 rsdk-${FUNCNAME[0]##rsdk-help-}
 ====
 
+Build RadxaOS system image.
+
 ## Command usage
 
-    $ rsdk build <options> [product] <suite> <edition>
+    $ rsdk build [options] <product> [suite] [edition]
 
 ## Options
 
@@ -42,6 +44,65 @@ $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type 
         Set the system image name. (Default: $("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name))
     -h | --help
         Show this message.
+EOF
+}
+
+rsdk-help-chroot() {
+	echo "rsdk-${FUNCNAME[0]##rsdk-help-}"
+	cat <<'EOF'
+====
+
+Enter chroot environment for a given disk or disk image.
+
+Requires `systemd-nspawn` (provided by `systemd-container` package in Debian).
+
+## Command usage
+
+    $ rsdk chroot <target path>
+
+## Supported target type
+
+* Raw block devices (i.e. ordinary disks)
+* System image file
+  * Requires `kpartx` (provided by `multipath-tools` package in Debian)
+
+Following distributions may be used in addition to `rsdk` image:
+* `debox-radxa` image
+* `rbuild` image
+* `rsdk` image
+* `Armbian` image
+* Orange Pi image
+* Rockchip SDK image
+EOF
+}
+
+rsdk-help-install() {
+	echo "rsdk-${FUNCNAME[0]##rsdk-help-}"
+	cat <<'EOF'
+====
+
+Install a build artifacts to a given disk or disk image.
+
+Requires `systemd-nspawn` (provided by `systemd-container` package in Debian).
+
+## Command usage
+
+    $ rsdk install <target path> <artifact path>
+
+## Supported target type
+
+* Raw block devices (i.e. ordinary disks)
+* System image file
+  * Requires `kpartx` (provided by `multipath-tools` package in Debian)
+
+## Supported artifact type
+
+* `*.deb`: Debian package
+* `*.dtb`: Device tree file
+* `*.dtbo`: Device tree overlay file
+
+Only `rsdk` image supports all artifact types.
+Other distributions may have issues on some artifact types. 
 EOF
 }
 

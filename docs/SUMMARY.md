@@ -16,5 +16,7 @@
 # Command References
 
 - [rsdk](cmd/rsdk.md)
-- [rsdk-shell](cmd/rsdk-shell.md)
 - [rsdk-build](cmd/rsdk-build.md)
+- [rsdk-chroot](cmd/rsdk-chroot.md)
+- [rsdk-install](cmd/rsdk-install.md)
+- [rsdk-shell](cmd/rsdk-shell.md)
