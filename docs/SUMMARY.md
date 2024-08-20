@@ -11,6 +11,7 @@
   - [Native installation](install/native.md)
 - [Basic usage](tutorials/usage.md)
 - [Migrating from old toolchain](tutorials/migration.md)
+- [Build customization](tutorials/customize.md)
 
 # Command References
 

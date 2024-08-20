@@ -42,6 +42,12 @@ function(
         target: rootfs,
         variant: variant,
         hostname: product,
+        packages+:
+        [
+            // Adding additional packages to the system
+            // For example:
+            // "nano",
+        ]
         "customize-hooks"+:
         [
             'echo "127.0.1.1	%(product)s" >> "$1/etc/hosts"' % { product: product },

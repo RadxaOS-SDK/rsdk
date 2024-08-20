@@ -64,3 +64,5 @@ When it is run without any argument, `rsdk-tui` will be run instead.
 │                                           │
 └───────────────────────────────────────────┘
 ```
+
+Advanced build should use [`rsdk-build`](../cmd/rsdk-build.md) command instead.
