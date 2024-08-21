@@ -113,19 +113,5 @@ else
                 ),
             },
         ],
-
-        "customize-hooks"+:
-(if suite == "bookworm"
-then
-        // Install Debian 12 packages
-        [
-            'echo "copy_exec /usr/bin/grep /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
-            'echo "copy_exec /usr/bin/sed /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
-            'echo "copy_exec /usr/bin/rm /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
-            'echo "copy_exec /usr/bin/awk /bin" >> "$1/usr/share/initramfs-tools/hooks/growroot"',
-        ]
-else
-        []
-),
     },
 }
