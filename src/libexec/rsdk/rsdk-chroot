@@ -106,8 +106,12 @@ main() {
 		deb)
 			sudo cp "$file" "$RSDK_TEMP"
 			sudo systemd-nspawn -D "$RSDK_TEMP" bash -c \
-				"dpkg -i '/$(basename "$file")' && \
-					apt-get install -y --fix-missing  --allow-downgrades"
+				"if ! dpkg -i '/$(basename "$file")'; then
+					apt-get install -y --fix-missing --fix-broken --allow-downgrades || (
+						apt-get update;
+						apt-get install -y --fix-missing --fix-broken --allow-downgrades
+					);
+				fi"
 			;;
 		dtbo)
 			sudo cp "$file" "$RSDK_TEMP/boot/dtbo"
