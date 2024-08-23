@@ -43,17 +43,18 @@ else
             // Network
             "bluetooth",
             "iw",
-            "network-manager",
         ] +
 
 (if suite == "bullseye"
 then
         [
+            "network-manager/bullseye-backports",
             "wpasupplicant/bullseye-backports",
 
         ]
 else
         [
+            "network-manager",
             "wpasupplicant",
         ]
 ) +
