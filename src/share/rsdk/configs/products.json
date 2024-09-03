@@ -228,7 +228,7 @@
         "product_name": "Radxa NX5 IO",
         "product_full_name": "Radxa NX5 IO Board",
         "soc": "rk3588s2",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
