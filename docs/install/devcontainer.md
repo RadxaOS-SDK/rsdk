@@ -28,6 +28,10 @@ rsdk devcon
 
 You are now inside the `rsdk`'s `devcontainer` shell.
 
+The following recording demostates how to set up `rsdk` and build an image on a fresh Debian 12 install:
+
+[![asciicast](https://asciinema.org/a/A064TrKbZsXncNkEveIUFAGvp.svg)](https://asciinema.org/a/A064TrKbZsXncNkEveIUFAGvp)
+
 ## Common issues
 
 1. devcontainer setup paused with `You might be rate limited by GitHub.` message
