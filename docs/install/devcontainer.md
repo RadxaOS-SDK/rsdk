@@ -40,4 +40,4 @@ The following recording demostates how to set up `rsdk` and build an image on a 
 
 2. Failed to launch devcontainer.
 
-   Please edit `.devcintainer/devcontainer.json`, and adjust `runArgs` property.
+   Please edit `.devcontainer/devcontainer.json`, and adjust `runArgs` property.
