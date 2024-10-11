@@ -272,6 +272,14 @@
         "supported_edition": ["kde", "cli"]
     },
     {
+        "product": "rock-5t",
+        "product_name": "ROCK 5T",
+        "product_full_name": "ROCK 5T",
+        "soc": "rk3588",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "rock-5-itx",
         "product_name": "ROCK 5 ITX",
         "product_full_name": "ROCK 5 ITX",
