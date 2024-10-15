@@ -15,6 +15,7 @@
 - [Basic usage](tutorials/usage.md)
 - [Migrating from old toolchain](tutorials/migration.md)
 - [Build customization](tutorials/customize.md)
+- [Adding support for new device](tutorials/new_device.md)
 
 # Command References
 
