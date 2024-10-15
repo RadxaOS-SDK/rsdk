@@ -1,6 +1,7 @@
 # Summary
 
 - [Introduction](intro.md)
+- [Why rsdk?](why.md)
 
 # Installation
 
