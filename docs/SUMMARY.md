@@ -16,6 +16,7 @@
 - [Migrating from old toolchain](tutorials/migration.md)
 - [Build customization](tutorials/customize.md)
 - [Adding support for new device](tutorials/new_device.md)
+- [Global build options](tutorials/global_options.md)
 
 # Command References
 
