@@ -32,18 +32,26 @@ Build RadxaOS system image.
         examination.
     -T | --test-repo
         Build using Radxa APT test archives.
-    -m | --mirror [mirror_url]
+    -m | --mirror <mirror_url>
         Specify custom Debian / Ubuntu archive mirror URL.
-    -M [mirror_url]
+    -M <mirror_url>
         Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
         serve both Radxa archives as well as any other 3rd party archives.
 
         The following archives will use this mirror:
 $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type d ! -name debian -a ! -name ubuntu -printf "            %f\n")
-    -i | --image-name [image_name]
+    -i | --image-name <image_name>
         Set the system image name. (Default: $("$SCRIPT_DIR/../../bin/rsdk" config build.default_image_name))
     -h | --help
         Show this message.
+    -k | --override-kernel
+        Override the default kernel profile. Ex: latest, rockchip, rk2312, etc.
+    -f | --override-firmware
+        Override the default firmware profile. Ex: latest, rknext, etc.
+    -p | --override-product
+        Override the default product profile. Ex: rock-4se, radxa-zero, etc
+    --no-vendor-packages
+        Do not install the vendor package specified in product profile.
 EOF
 }
 
