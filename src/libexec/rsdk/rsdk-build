@@ -80,6 +80,13 @@ generate_rootfs() {
 	# Prepare keyrings
 	prepare_keyrings "$RSDK_TEMP/keyrings/"
 
+	# Prepare local apt archive
+	if [[ -d $RSDK_OPTION_LOCAL_APT_ARCHIVE ]]; then
+		cp -R "$RSDK_OPTION_LOCAL_APT_ARCHIVE/." "$RSDK_TEMP/debs"
+	else
+		mkdir -p "$RSDK_TEMP/debs"
+	fi
+
 	jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/rootfs.jsonnet" -o "$RSDK_TEMP/rootfs.json"
 	if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 		cat "$RSDK_TEMP/rootfs.json"
@@ -93,6 +100,7 @@ generate_rootfs() {
 			sudo chown -R "$UID:${GID:-$UID}" "$i"
 		fi
 	done
+	cp -R "$RSDK_TEMP/debs/." "$OUTPUT/debs"
 
 	rm -rf "$RSDK_TEMP"
 }
@@ -141,7 +149,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -158,6 +166,7 @@ main() {
 	local RSDK_OPTION_FIRMWARE_OVERRIDE="${RSDK_OPTION_FIRMWARE_OVERRIDE:-}"
 	local RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-}"
 	local RSDK_OPTION_VENDOR_PACKAGES="${RSDK_OPTION_VENDOR_PACKAGES:-true}"
+	local RSDK_OPTION_LOCAL_APT_ARCHIVE="${RSDK_OPTION_LOCAL_APT_ARCHIVE:-}"
 
 	while true; do
 		TEMP="$1"
@@ -207,6 +216,10 @@ main() {
 			;;
 		--no-vendor-packages)
 			RSDK_OPTION_VENDOR_PACKAGES="false"
+			;;
+		--debs)
+			RSDK_OPTION_LOCAL_APT_ARCHIVE="$1"
+			shift
 			;;
 		--)
 			break

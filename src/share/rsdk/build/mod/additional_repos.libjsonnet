@@ -24,9 +24,27 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
         packages+: [
             "radxa-archive-keyring",
             "vscodium-archive-keyring",
+            "local-apt-repository",
         ],
         "setup-hooks"+: [
             'mkdir -p "$1/etc/rsdk/"',
+            |||
+                set -e
+                mkdir -p "$1/srv/"
+                cp -R "%(temp_dir)s/debs/." "$1/srv/local-apt-repository"
+                pushd "$1/srv/local-apt-repository"
+                apt-ftparchive packages . > ./Packages
+                apt-ftparchive -o "APT::FTPArchive::Release::Origin=local-apt-repository" release . > ./Release
+                popd
+                echo "deb [trusted=yes] file://$1/srv/local-apt-repository ./" > "$1/etc/apt/sources.list.d/99-local-apt-repository.list"
+                cat << EOF > "$1/etc/apt/preferences.d/local-apt-repository"
+                Package: *
+                Pin: release o=local-apt-repository
+                Pin-Priority: 1999
+                EOF
+            ||| % {
+                temp_dir: temp_dir,
+            },
         ] + (if soc_specific_repo(product_soc(product))
         then
             [
@@ -74,6 +92,9 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
             'APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -oDPkg::Chroot-Directory="$1" -y --purge',
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/90-vscodium.list',
             'sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/*-radxa*.list',
+            'rm "$1/etc/apt/sources.list.d/99-local-apt-repository.list"',
+            'rm "$1/srv/local-apt-repository/Packages"',
+            'rm "$1/srv/local-apt-repository/Release"',
         ],
     }
 }

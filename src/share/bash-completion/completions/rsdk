@@ -23,6 +23,7 @@ _rsdk_build_completions() {
 		"-p"
 		"--override-product"
 		"--no-vendor-packages"
+		"--debs"
 	)
 
 	local products=() product_provided="false"
