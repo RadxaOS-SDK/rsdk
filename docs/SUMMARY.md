@@ -17,6 +17,7 @@
 - [Build customization](tutorials/customize.md)
 - [Adding support for new device](tutorials/new_device.md)
 - [Global build options](tutorials/global_options.md)
+- [Work with local packages](tutorials/local_pkg.md)
 
 # Command References
 

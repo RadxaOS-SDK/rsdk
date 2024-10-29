@@ -20,6 +20,8 @@ Module loading order matters, as that will determine [`*-hooks`](https://manpage
 
 You can also edit the `packages` field in `rootfs.jsonnet` to add additional packages to the system. `customize-hooks` will be run after `packages` are installed in the rootfs.
 
+Checkout [`Work with local packages`](local_pkg.md#rsdk-build---debs) if you have local packages to install.
+
 ## Disk image customization
 
 [`image.jsonnet`](https://github.com/RadxaOS-SDK/rsdk/tree/main/src/share/rsdk/build/rootfs.jsonnet) is the template for the deployment script. It is generally not necessary to change this part.
