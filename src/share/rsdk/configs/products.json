@@ -104,6 +104,14 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "radxa-medge-rk3528a-io",
+        "product_name": "Radxa mEdge RK3528A IO",
+        "product_full_name": "Radxa mEdge RK3528A IO",
+        "soc": "rk3528a",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["xfce"]
+    },
+    {
         "product": "rock-2",
         "product_name": "ROCK 2",
         "product_full_name": "ROCK 2 Series",
