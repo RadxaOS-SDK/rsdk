@@ -60,6 +60,16 @@ else
         ]
 ) +
 
+(if suite == "bookworm"
+then
+        [
+            "efibootmgr",
+            "systemd-boot",
+        ]
+else
+        []
+) +
+
         [
             // Radxa
             "radxa-firmware",
