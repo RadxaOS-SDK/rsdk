@@ -57,6 +57,13 @@ function(
             'echo "RSDK_REVISION=\'%(rsdk_rev)s\'" >> "$1/etc/radxa_image_fingerprint"' % { rsdk_rev: rsdk_rev },
             'echo "RSDK_CONFIG=\'/etc/rsdk/config.yaml\'" >> "$1/etc/radxa_image_fingerprint"',
             |||
+                cp -aR "$1/boot/efi" "$1/boot/efi2"
+                chmod 0755 "$1/boot/efi2"
+                umount "$1/boot/efi"
+                rmdir "$1/boot/efi"
+                mv "$1/boot/efi2" "$1/boot/efi"
+            |||,
+            |||
                 mkdir -p "%(output_dir)s/seed"
                 cp "$1/etc/radxa_image_fingerprint" "%(output_dir)s/seed"
                 cp "$1/etc/rsdk/"* "%(output_dir)s/seed"

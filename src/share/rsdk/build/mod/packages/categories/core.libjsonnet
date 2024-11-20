@@ -86,6 +86,9 @@ else
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 radxa-bootutils python-is-python3 initramfs-tools
 
+                mkdir -p "$1/boot/efi"
+                mount -t tmpfs rsdk "$1/boot/efi"
+
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 u-boot-%(u_boot_override)s linux-headers-%(linux_override)s
