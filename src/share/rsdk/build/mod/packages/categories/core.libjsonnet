@@ -88,6 +88,23 @@ else
 
                 mkdir -p "$1/boot/efi"
                 mount -t tmpfs rsdk "$1/boot/efi"
+            |||,
+(if suite == "bookworm" && std.extVar("sdboot")
+then
+            |||
+                set -e
+
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                systemd-boot
+                chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1 bootctl install --esp-path=/boot/efi/ --no-variables"
+            |||
+else
+            "echo 'Skip systemd-boot installation.'"
+),
+            |||
+                set -e
+                export SYSTEMD_RELAX_ESP_CHECKS=1
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \

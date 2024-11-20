@@ -26,7 +26,6 @@ function(
     vendor_packages = true,
     linux_override = "",
     u_boot_override = "",
-    sdboot = false,
 ) distro(suite, distro_mirror, architecture)
 + additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir)
 + packages(suite, edition, product, temp_dir, vendor_packages, linux_override, u_boot_override)
@@ -96,6 +95,6 @@ function(
         vendor_packages: vendor_packages,
         linux_override: linux_override,
         u_boot_override: u_boot_override,
-        sdboot: sdboot,
+        sdboot: std.extVar("sdboot"),
     },
 }

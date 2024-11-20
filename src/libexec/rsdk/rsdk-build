@@ -78,7 +78,7 @@ generate_rootfs() {
 	fi
 
 	if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
-		JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
+		JSONNET_ARGS+=("--ext-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
 	fi
 
 	# Prepare keyrings

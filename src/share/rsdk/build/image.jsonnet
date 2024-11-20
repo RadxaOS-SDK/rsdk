@@ -82,17 +82,32 @@ else
     echo "Copying content from rootfs..."
     !mkdir -p "%(temp_dir)s/u-boot"
     copy-out /usr/lib/u-boot/ "%(temp_dir)s"
-    copy-out /boot/extlinux/extlinux.conf "%(temp_dir)s/"
-
-    echo "Updating files with disk info..."
-    blkid /dev/sda1 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /config vfat defaults,x-systemd.automount 0 2\n" > "%(temp_dir)s/fstab"
-||| % {
+    copy-out /boot/extlinux/extlinux.conf "%(temp_dir)s"
+|||  % {
     deploy_method: (if std.endsWith(rootfs, ".tar")
     then
         "tar-in %(rootfs)s / xattrs:true" % { rootfs: rootfs }
     else
         "copy-in %(rootfs)s/. /" % { rootfs: rootfs }
     ),
+    temp_dir: temp_dir,
+}+
+(if sdboot
+then
+|||
+    !mkdir -p "%(temp_dir)s/entries"
+    copy-out /boot/efi/loader/entries "%(temp_dir)s"
+||| % {
+    temp_dir: temp_dir,
+}
+else
+    ""
+) +
+|||
+
+    echo "Updating files with disk info..."
+    blkid /dev/sda1 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /config vfat defaults,x-systemd.automount 0 2\n" > "%(temp_dir)s/fstab"
+||| % {
     temp_dir: temp_dir,
 } +
 (if efi
@@ -111,6 +126,22 @@ else
     !sed -i "s/root=[^[:space:]]*/root=UUID=$(cat "%(temp_dir)s/rootfs_uuid")/g" "%(temp_dir)s/extlinux.conf"
     copy-in "%(temp_dir)s/fstab" /etc/
     copy-in "%(temp_dir)s/extlinux.conf" /boot/extlinux/
+||| % {
+    temp_dir: temp_dir,
+    rootdev: rootdev(efi),
+} +
+(if sdboot
+then
+|||
+    !sed -i -E "s/(options[[:space:]]*)/\1root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" %(temp_dir)s/entries/*.conf
+    copy-in "%(temp_dir)s/entries" /boot/efi/loader/
+||| % {
+    temp_dir: temp_dir,
+}
+else
+    ""
+) +
+|||
 
     echo "Shrinking rootfs..."
     unmount-all
