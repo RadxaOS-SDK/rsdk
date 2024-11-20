@@ -77,6 +77,10 @@ generate_rootfs() {
 		JSONNET_ARGS+=("--tla-code" "vendor_packages=$RSDK_OPTION_VENDOR_PACKAGES")
 	fi
 
+	if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
+		JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
+	fi
+
 	# Prepare keyrings
 	prepare_keyrings "$RSDK_TEMP/keyrings/"
 
@@ -124,6 +128,10 @@ generate_image() {
 			JSONNET_ARGS+=("--tla-str" "output=$RSDK_OPTION_IMAGE_NAME")
 		fi
 
+		if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
+			JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
+		fi
+
 		jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image.jsonnet" -o "$OUTPUT/build-image"
 		chmod +x "$OUTPUT/build-image"
 	fi
@@ -149,7 +157,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -167,6 +175,7 @@ main() {
 	local RSDK_OPTION_PRODUCT_OVERRIDE="${RSDK_OPTION_PRODUCT_OVERRIDE:-}"
 	local RSDK_OPTION_VENDOR_PACKAGES="${RSDK_OPTION_VENDOR_PACKAGES:-true}"
 	local RSDK_OPTION_LOCAL_APT_ARCHIVE="${RSDK_OPTION_LOCAL_APT_ARCHIVE:-}"
+	local RSDK_OPTION_SYSTEMD_BOOT="${RSDK_OPTION_SYSTEMD_BOOT:-false}"
 
 	while true; do
 		TEMP="$1"
@@ -220,6 +229,9 @@ main() {
 		--debs)
 			RSDK_OPTION_LOCAL_APT_ARCHIVE="$1"
 			shift
+			;;
+		--sdboot)
+			RSDK_OPTION_SYSTEMD_BOOT="true"
 			;;
 		--)
 			break

@@ -24,6 +24,7 @@ _rsdk_build_completions() {
 		"--override-product"
 		"--no-vendor-packages"
 		"--debs"
+		"--sdboot"
 	)
 
 	local products=() product_provided="false"

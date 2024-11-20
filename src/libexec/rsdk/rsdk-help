@@ -57,7 +57,12 @@ $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type 
         The packages in this archive will be preferred over all other archives.
         Packages will be kept even after the build is completed, effectively
         disabling any future upgrades on the included packages.
-        WARNING: the entire content of <debs_dir> will be included! 
+        WARNING: the entire content of <debs_dir> will be included!
+    --sdboot
+        [EXPERIMENTAL] Enable systemd-boot.
+        This feature is off by default, as U-Boot will try EFI boot first before
+        Standard boot.
+        Only supported in some distros.
 EOF
 }
 
