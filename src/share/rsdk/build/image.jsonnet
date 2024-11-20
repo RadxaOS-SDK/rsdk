@@ -13,6 +13,7 @@ function(
     product,
     efi = true,
     partition_table_type = product_partition_table_type(product),
+    sdboot = false,
 ) |||
     #!/usr/bin/env -S guestfish -f
 
