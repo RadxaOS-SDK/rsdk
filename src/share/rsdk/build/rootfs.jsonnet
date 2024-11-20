@@ -56,8 +56,6 @@ function(
             'echo "RSDK_BUILD_DATE=\'$(date -R)\'" >> "$1/etc/radxa_image_fingerprint"',
             'echo "RSDK_REVISION=\'%(rsdk_rev)s\'" >> "$1/etc/radxa_image_fingerprint"' % { rsdk_rev: rsdk_rev },
             'echo "RSDK_CONFIG=\'/etc/rsdk/config.yaml\'" >> "$1/etc/radxa_image_fingerprint"',
-            'chroot "$1" update-initramfs -cvk all',
-            'chroot "$1" u-boot-update',
             |||
                 mkdir -p "%(output_dir)s/seed"
                 cp "$1/etc/radxa_image_fingerprint" "%(output_dir)s/seed"
