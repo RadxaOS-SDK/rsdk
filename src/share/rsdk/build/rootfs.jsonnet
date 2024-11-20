@@ -74,9 +74,28 @@ function(
         ]
     },
     metadata: {
+        architecture: architecture,
+        mode: mode,
+        rootfs: rootfs,
+        variant: variant,
+
+        temp_dir: temp_dir,
+        output_dir: output_dir,
+        rsdk_rev: rsdk_rev,
+
+        distro_mirror: distro_mirror,
+
+        radxa_mirror: radxa_mirror,
+        radxa_repo_suffix: radxa_repo_suffix,
+
         product: product,
         suite: suite,
         edition: edition,
         build_date: build_date,
-    }
+
+        vendor_packages: vendor_packages,
+        linux_override: linux_override,
+        u_boot_override: u_boot_override,
+        sdboot: sdboot,
+    },
 }
