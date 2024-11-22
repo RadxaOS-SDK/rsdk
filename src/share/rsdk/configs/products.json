@@ -208,6 +208,14 @@
         "supported_edition": ["cli"]
     },
     {
+        "product": "radxa-e54c",
+        "product_name": "Radxa E54C",
+        "product_full_name": "Radxa E54C",
+        "soc": "rk3582",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
+    },
+    {
         "product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
