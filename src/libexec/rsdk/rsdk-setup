@@ -9,6 +9,25 @@ rate_limited() {
 	exit 0
 }
 
+broken_nix_store() {
+	echo "You might have broken devcontainer Nix volume."
+	echo "Please stop and remove your current devcontainer container, then remove the Nix volume."
+	echo "You might need to use following commands:"
+	echo "    docker container ls"
+	echo "    docker container rm -f <devcontainer ID>"
+	echo "    docker volume ls"
+	echo "    docker volume rm <Nix volume>"
+	read -rp "Press Enter to continue..."
+	exit 0
+}
+
+broken_devenv_cache() {
+	echo "You might have broken devenv cache."
+	echo "Please reset the content in .devenv and .devcontainer/.devenv."
+	read -rp "Press Enter to continue..."
+	exit 0
+}
+
 get_distro_id() {
 	(source /etc/os-release && echo "$ID")
 }
@@ -87,9 +106,15 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=src/lib/rsdk/utils.sh
 source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
+if ! command -v direnv || ! command -v devenv; then
+	broken_nix_store
+fi
+
 if git status &>/dev/null && [[ -z "$(git submodule status)" ]]; then
 	echo "git submodule is missing. Fetching now..."
-	git submodule update --recursive --init
+	if ! git submodule update --recursive --init; then
+		rate_limited
+	fi
 fi
 
 direnv allow
@@ -98,17 +123,9 @@ echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 
 install_native_dependency
 
-trap "rate_limited" EXIT
-if ! nix profile list | grep cachix; then
-	nix profile install nixpkgs#cachix
+if ! devenv shell npm install @devcontainers/cli; then
+	broken_devenv_cache
 fi
-
-cachix use devenv
-nix registry add devenv github:cachix/devenv
-(yes || true) | nix profile install --accept-flake-config devenv#default
-
-devenv shell npm install @devcontainers/cli
-trap - EXIT
 
 RSDK_COMPLETION_DIR="${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions"
 mkdir -p "$RSDK_COMPLETION_DIR"

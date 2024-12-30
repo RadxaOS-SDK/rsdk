@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@devcontainers/cli": "^0.55.0"
+    "@devcontainers/cli": "^0.72.0"
   }
 }

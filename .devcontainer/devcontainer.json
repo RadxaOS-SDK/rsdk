@@ -18,8 +18,8 @@
     "ghcr.io/devcontainers/features/nix:1": {
       "version": "2.21.0",
       "packages": [
-        "cachix",
-        "direnv"
+        "direnv",
+        "devenv"
       ],
       "extraNixConfig": [
         "experimental-features = nix-command flakes",
