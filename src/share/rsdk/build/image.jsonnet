@@ -1,4 +1,5 @@
 local product_partition_table_type = import "../configs/product_partition_table_type.libjsonnet";
+local product_firmware_type = import "../configs/product_firmware_type.libjsonnet";
 local rootdev(efi) = (if efi
 then
     3
@@ -80,8 +81,7 @@ else
     %(deploy_method)s
 
     echo "Copying content from rootfs..."
-    !mkdir -p "%(temp_dir)s/u-boot"
-    copy-out /usr/lib/u-boot/ "%(temp_dir)s"
+    !mkdir -p "%(temp_dir)s"
     copy-out /boot/extlinux/extlinux.conf "%(temp_dir)s"
 |||  % {
     deploy_method: (if std.endsWith(rootfs, ".tar")
@@ -91,8 +91,19 @@ else
         "copy-in %(rootfs)s/. /" % { rootfs: rootfs }
     ),
     temp_dir: temp_dir,
-}+
-(if sdboot
+} +
+(if product_firmware_type(product) == "u-boot"
+then
+|||
+    !mkdir -p "%(temp_dir)s/u-boot"
+    copy-out /usr/lib/u-boot/ "%(temp_dir)s"
+||| % {
+    temp_dir: temp_dir,
+}
+else
+    ""
+) +
+(if sdboot || product_firmware_type(product) == "edk2"
 then
 |||
     !mkdir -p "%(temp_dir)s/entries"
@@ -130,7 +141,7 @@ else
     temp_dir: temp_dir,
     rootdev: rootdev(efi),
 } +
-(if sdboot
+(if sdboot || product_firmware_type(product) == "edk2"
 then
 |||
     !sed -i -E "s/(options[[:space:]]*)/\1root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" %(temp_dir)s/entries/*.conf
@@ -169,6 +180,8 @@ then
 else
     ""
 ) +
+(if product_firmware_type(product) == "u-boot"
+then
 |||
     !chmod +x "%(temp_dir)s/u-boot/%(product)s/setup.sh"
     !"%(temp_dir)s/u-boot/%(product)s/setup.sh" update_bootloader "%(output)s" 2> /dev/null
@@ -176,7 +189,10 @@ else
     output: output,
     temp_dir: temp_dir,
     product: product,
-} +
+}
+else
+    ""
+) +
 (if efi
 then
 |||
