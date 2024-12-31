@@ -1,4 +1,5 @@
 local distro_check = import "../../../../configs/distro_check.libjsonnet";
+local product_firmware_type = import "../../../../configs/product_firmware_type.libjsonnet";
 
 function(suite,
          product,
@@ -108,7 +109,7 @@ else
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
-                u-boot-%(firmware_override)s linux-headers-%(linux_override)s
+                %(firmware)s-%(firmware_override)s linux-headers-%(linux_override)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
@@ -130,6 +131,7 @@ else
                         "--no-install-recommends"
                 ),
                 product: product,
+                firmware: product_firmware_type(product),
                 firmware_override: (if std.isEmpty(firmware_override)
                     then
                         product

@@ -2,6 +2,7 @@
     {
         "soc_family": "amlogic",
         "partition_table_type": "mbr",
+        "firmware_type": "u-boot",
         "soc_list": [
             "a311d",
             "s905y2"
@@ -11,6 +12,7 @@
     {
         "soc_family": "rockchip",
         "partition_table_type": "gpt",
+        "firmware_type": "u-boot",
         "soc_list": [
             "rk3308",
             "rk3308bs",
