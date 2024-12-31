@@ -5,7 +5,7 @@ function(suite,
          temp_dir,
          vendor_packages,
          linux_override,
-         u_boot_override,
+         firmware_override,
 ) {
     mmdebstrap+: {
         packages+:
@@ -108,7 +108,7 @@ else
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
-                u-boot-%(u_boot_override)s linux-headers-%(linux_override)s
+                u-boot-%(firmware_override)s linux-headers-%(linux_override)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
@@ -130,11 +130,11 @@ else
                         "--no-install-recommends"
                 ),
                 product: product,
-                u_boot_override: (if std.isEmpty(u_boot_override)
+                firmware_override: (if std.isEmpty(firmware_override)
                     then
                         product
                     else
-                        u_boot_override
+                        firmware_override
                 ),
                 linux_override: (if std.isEmpty(linux_override)
                     then

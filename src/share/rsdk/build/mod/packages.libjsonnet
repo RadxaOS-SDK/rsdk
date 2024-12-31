@@ -5,23 +5,23 @@ local xfce_packages = import "packages/xfce.libjsonnet";
 local core_packages = import "packages/core.libjsonnet";
 local i3_packages = import "packages/i3.libjsonnet";
 
-function(suite, edition, product, temp_dir, vendor_packages, linux_override, u_boot_override,) (
+function(suite, edition, product, temp_dir, vendor_packages, linux_override, firmware_override,) (
 if edition == "cli"
 then
-    cli_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    cli_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 else if edition == "kde"
 then
-    kde_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    kde_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 else if edition == "xfce"
 then
-    xfce_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    xfce_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 else if edition == "sway"
 then
-    sway_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    sway_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 else if edition == "i3"
 then
-    i3_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    i3_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 else if edition == "core"
 then
-    core_packages(suite, product, temp_dir, vendor_packages, linux_override, u_boot_override,)
+    core_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 )

@@ -70,7 +70,7 @@ generate_rootfs() {
 	fi
 
 	if [[ -n $RSDK_OPTION_FIRMWARE_OVERRIDE ]]; then
-		JSONNET_ARGS+=("--tla-str" "u_boot_override=$RSDK_OPTION_FIRMWARE_OVERRIDE")
+		JSONNET_ARGS+=("--tla-str" "firmware_override=$RSDK_OPTION_FIRMWARE_OVERRIDE")
 	fi
 
 	if [[ -n $RSDK_OPTION_VENDOR_PACKAGES ]]; then

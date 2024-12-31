@@ -6,13 +6,13 @@ function(suite,
          temp_dir,
          vendor_packages,
          linux_override,
-         u_boot_override,
+         firmware_override,
 ) base_packages(suite,
                 product,
                 temp_dir,
                 vendor_packages,
                 linux_override,
-                u_boot_override,
+                firmware_override,
 ) + {
     mmdebstrap+: {
         packages+:
