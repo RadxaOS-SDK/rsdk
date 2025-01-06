@@ -70,6 +70,15 @@ function(
                 tar Jvcf "%(output_dir)s/seed.tar.xz" -C "%(output_dir)s/seed" .
                 rm -rf "%(output_dir)s/seed"
             ||| % { output_dir: output_dir },
+            // Adding additional customization commands
+            // $1 is the mounted rootfs than you can chroot into
+            // For example:
+            // |||
+            //     set -e
+            //     wget -O $1/tmp/your.deb https://example.com/your.deb
+            //     chroot "$1" dpkg -i /tmp/your.deb
+            //     rm $1/tmp/your.deb
+            // |||,
         ]
     },
     metadata: {
