@@ -42,6 +42,14 @@ else
     part-add /dev/sda primary 65536 -34
 |||
 ) +
+(if efi && partition_table_type == "gpt"
+then
+|||
+    part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B 
+|||
+else
+    ""
+) +
 |||
 
     echo "Formatting partitions..."
