@@ -175,6 +175,8 @@ else
 (if partition_table_type == "gpt"
 then
 |||
+    echo "Fixing partition table..."
+    echo "NOTICE: Some issues are expected result of shrinking the disk."
     !sgdisk -ge "%(output)s" > /dev/null 2>&1 || true
 |||
 else
