@@ -4,6 +4,7 @@ local kde_packages = import "packages/kde.libjsonnet";
 local xfce_packages = import "packages/xfce.libjsonnet";
 local core_packages = import "packages/core.libjsonnet";
 local i3_packages = import "packages/i3.libjsonnet";
+local gnome_packages = import "packages/gnome.libjsonnet";
 
 function(suite, edition, product, temp_dir, vendor_packages, linux_override, firmware_override,) (
 if edition == "cli"
@@ -24,4 +25,7 @@ then
 else if edition == "core"
 then
     core_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
+else if edition == "gnome"
+then
+    gnome_packages(suite, product, temp_dir, vendor_packages, linux_override, firmware_override,)
 )

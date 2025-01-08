@@ -1,0 +1,23 @@
+local distro_check = import "../../../configs/distro_check.libjsonnet";
+local desktop_packages = import "categories/desktop.libjsonnet";
+
+function(suite,
+         product,
+         temp_dir,
+         vendor_packages,
+         linux_override,
+         firmware_override,
+) desktop_packages(suite,
+                product,
+                temp_dir,
+                vendor_packages,
+                linux_override,
+                firmware_override,
+) + {
+    mmdebstrap+: {
+        packages+:
+        [
+            "task-gnome-desktop",
+        ],
+    },
+}
