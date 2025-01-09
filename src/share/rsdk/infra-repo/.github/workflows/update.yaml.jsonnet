@@ -153,6 +153,26 @@ function(
                             popd
                         |||,
                     },
+                    {
+                        name: "Download Pages artifact",
+                        uses: "actions/download-artifact@v4",
+                        with: {
+                            name: "github-pages",
+                        },
+                    },
+                    {
+                        name: "Release Pages artifact",
+                        "if": "steps.deploy.outcome == 'success'",
+                        uses: "softprops/action-gh-release@v2",
+                        with: {
+                            tag_name: "github-pages",
+                            body: "Rolling Pages artifact",
+                            files: "artifact.tar",
+                            draft: false,
+                            prerelease: false,
+                            token: "${{ secrets.GITHUB_TOKEN }}",
+                        },
+                    },
                 ],
             },
         },
