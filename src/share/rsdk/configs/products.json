@@ -302,5 +302,13 @@
         "soc": "rk3588",
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
+    },
+    {
+        "product": "orion-o6",
+        "product_name": "Orion O6",
+        "product_full_name": "Orion O6",
+        "soc": "cd8180",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["gnome"]
     }
 ]

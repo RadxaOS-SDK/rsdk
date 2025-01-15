@@ -40,5 +40,16 @@
             "rk3588s2",
             "rk3588"
         ]
+    },
+    {
+        "soc_family": "cix",
+        "partition_table_type": "gpt",
+        "firmware_type": "edk2",
+        "soc_list": [
+            "cd8180"
+        ],
+        "soc_specific_repo": [
+            "cd8180"
+        ]
     }
 ]
