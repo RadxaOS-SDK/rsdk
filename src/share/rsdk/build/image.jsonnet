@@ -15,6 +15,7 @@ function(
     efi = true,
     partition_table_type = product_partition_table_type(product),
     sdboot = false,
+    suite,
 ) |||
     #!/usr/bin/env -S guestfish -f
 
@@ -63,8 +64,19 @@ then
 else
     ""
 ) +
+(if suite == "bullseye"
+then
+|||
+    mkfs ext4 /dev/sda%(rootdev)d features:^orphan_file label:rootfs
+|||
+else
 |||
     mkfs ext4 /dev/sda%(rootdev)d label:rootfs
+|||
+) % {
+    rootdev: rootdev(efi),
+} +
+|||
 
     echo "Mounting partitions..."
     mount /dev/sda%(rootdev)d /
