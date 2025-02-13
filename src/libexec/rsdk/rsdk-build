@@ -132,6 +132,10 @@ generate_image() {
 			JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
 		fi
 
+		if [[ -n ${SUITE} ]]; then
+			JSONNET_ARGS+=("--tla-str" "suite=$SUITE")
+		fi
+
 		jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image.jsonnet" -o "$OUTPUT/build-image"
 		chmod +x "$OUTPUT/build-image"
 	fi
