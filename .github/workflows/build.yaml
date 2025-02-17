@@ -44,7 +44,7 @@ jobs:
           echo "products=$(jq -c '. | map(.product)' src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
   build-images:
     needs: [ query ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       max-parallel: 10
