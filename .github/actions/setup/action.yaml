@@ -16,6 +16,8 @@ runs:
         sudo udevadm trigger --name-match=kvm
     - name: Set up QEMU Emulation
       uses: docker/setup-qemu-action@v3
+      with:
+        image: tonistiigi/binfmt:qemu-v7.0.0-28
     - name: rsdk-welcome
       uses: devcontainers/ci@v0.3
       with:
