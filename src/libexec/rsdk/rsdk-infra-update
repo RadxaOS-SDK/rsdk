@@ -3,6 +3,7 @@
 update_repo() {
 	local TARGET="${1}"
 	local OUTPUT="$PWD/out/infra/$TARGET"
+	local NEW_REPO="false"
 
 	if [[ $RSDK_OPTION_DRY_RUN == "false" ]] && ! gh auth status &>/dev/null; then
 		echo "This operation requires GitHub authentication:"
@@ -44,6 +45,7 @@ update_repo() {
 				gh repo create "$RSDK_TARGET_ORGANIZATION/$TARGET" --clone --public
 				popd
 			fi
+			NEW_REPO="true"
 		fi
 	fi
 
@@ -77,6 +79,7 @@ update_repo() {
 		"--tla-str" "repo_org=$RSDK_APT_REPO_ORG"
 		"--tla-str" "pkg_org=$RSDK_PACKAGE_ORG"
 		"--tla-str" "git_rev=$RSDK_REV"
+		"--tla-code" "new_repo=$NEW_REPO"
 		"--multi" "$OUTPUT"
 	)
 	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"

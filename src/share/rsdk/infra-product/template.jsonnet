@@ -12,6 +12,7 @@ function(
     repo_org,
     pkg_org,
     git_rev,
+    new_repo,
 ) {
     "LICENSE": LICENSE(),
     "README.md": README_md(target, build_org),
