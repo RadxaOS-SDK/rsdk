@@ -1,6 +1,7 @@
 function(
     target,
 ) |||
+	-include .github/local/Makefile.local
 	PROJECT ?= %(target)s
 
 	KERNEL_FORK ?= %(fork)s
