@@ -1,0 +1,222 @@
+-include Makefile.custom
+PROJECT ?= u-boot-kwiboo
+
+UBOOT_FORK ?= kwiboo
+ARCH ?= arm
+CROSS_COMPILE ?= aarch64-linux-gnu-
+
+UMAKE ?= $(MAKE) -C "$(SRC-UBOOT)" -j$(shell nproc) \
+			ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) \
+			UBOOTVERSION=$(shell dpkg-parsechangelog -S Version)-$(UBOOT_FORK)
+
+S905Y2_PRODUCTS		:= radxa-zero
+A311D_PRODUCTS		:= radxa-zero2
+CV1800B_PRODUCTS	:= milkv_duo
+RK3188_PRODUCTS		:= rock
+RK3288_PRODUCTS		:= rock2 rock-pi-n8-rk3288
+RK3308_PRODUCTS		:= rock-pi-s rock-s0
+RK3328_PRODUCTS		:= rock-pi-e rock-pi-e-v3
+RK3399_PRODUCTS		:= rock960 rock-pi-4 rock-pi-4c rock-4se rock-4c-plus
+RK3399PRO_PRODUCTS	:= rock-pi-n10
+RK3528_PRODUCTS		:= radxa-e20c
+RK3566_PRODUCTS		:= radxa-cm3-io rock-3c radxa-zero-3
+RK3568_PRODUCTS		:= rock-3a rock-3b radxa-e25
+RK3588_PRODUCTS		:= rock-5-itx rock5b
+RK3588S_PRODUCTS	:= rock-5c rock5a
+
+.PHONY: all
+all: build
+
+#
+# Test
+#
+.PHONY: test
+test:
+
+#
+# Build
+#
+DIR-OUTPUT	:= out
+
+$(DIR-OUTPUT):
+	mkdir -p $@
+
+SRC-UBOOT		:=	src/u-boot
+RK3308_BL31		?= ../rkbin/bin/rk33/rk3308_bl31_v2.26.elf
+RK3308_TPL		?= ../rkbin/bin/rk33/rk3308_ddr_589MHz_uart2_m1_v2.10.bin
+RK3328_BL31		?= ../rkbin/bin/rk33/rk322xh_bl31_v1.49.elf
+RK3328_TPL		?= ../rkbin/bin/rk33/rk3328_ddr_400MHz_v1.21.bin
+RK3399_BL31		?= ../rkbin/bin/rk33/rk3399_bl31_v1.36.elf
+RK3399_TPL		?= ../rkbin/bin/rk33/rk3399_ddr_933MHz_v1.30.bin
+RK3399PRO_BL31	?= ../rkbin/bin/rk33/rk3399pro_bl31_v1.35.elf
+RK3399PRO_TPL	?= ../rkbin/bin/rk33/rk3399pro_ddr_933MHz_v1.30.bin
+RK3528_BL31		?= ../rkbin/bin/rk35/rk3528_bl31_v1.18.elf
+RK3528_TPL		?= ../rkbin/bin/rk35/rk3528_ddr_1056MHz_v1.10.bin
+RK3566_BL31		?= ../rkbin/bin/rk35/rk3568_bl31_v1.44.elf
+RK3566_TPL		?= ../rkbin/bin/rk35/rk3566_ddr_1056MHz_v1.23.bin
+RK3568_BL31		?= ../rkbin/bin/rk35/rk3568_bl31_v1.44.elf
+RK3568_TPL		?= ../rkbin/bin/rk35/rk3568_ddr_1560MHz_v1.23.bin
+RK3576_BL31		?= ../rkbin/bin/rk35/rk3576_bl31_v1.14.elf
+RK3576_TPL		?= ../rkbin/bin/rk35/rk3576_ddr_lp4_2112MHz_lp5_2736MHz_v1.09.bin
+RK3588_BL31		?= ../rkbin/bin/rk35/rk3588_bl31_v1.48.elf
+RK3588_TPL		?= ../rkbin/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.18.bin
+RK3588S_BL31	?= ../rkbin/bin/rk35/rk3588_bl31_v1.48.elf
+RK3588S_TPL		?= ../rkbin/bin/rk35/rk3588_ddr_lp4_2112MHz_lp5_2400MHz_v1.18.bin
+
+.PHONY: build
+build: $(DIR-OUTPUT) $(SRC-UBOOT)
+	# set -e; \
+	# for i in $(S905Y2_PRODUCTS); do \
+	# 	echo "Building $$i..."; \
+	# 	rm -f $(SRC-UBOOT)/.config; \
+	# 	$(UMAKE) $$i_defconfig all; \
+	# 	mkdir -p $(DIR-OUTPUT)/$$i; \
+	# 	mv $(SRC-UBOOT)/u-boot.bin $(SRC-UBOOT)/u-boot.bin.sd.bin $(DIR-OUTPUT)/$$i/ || true; \
+	# done
+
+	# set -e; \
+	# for i in $(A311D_PRODUCTS); do \
+	# 	echo "Building $$i..."; \
+	# 	rm -f $(SRC-UBOOT)/.config; \
+	# 	$(UMAKE) $$i_defconfig all; \
+	# 	mkdir -p $(DIR-OUTPUT)/$$i; \
+	# 	mv $(SRC-UBOOT)/u-boot.bin $(SRC-UBOOT)/u-boot.bin.sd.bin $(DIR-OUTPUT)/$$i/ || true; \
+	# done
+
+	# set -e; \
+	# for i in $(CV1800B_PRODUCTS); do \
+	# 	echo "Building $$i..."; \
+	# 	rm -f $(SRC-UBOOT)/.config; \
+	# 	$(UMAKE) $$i_defconfig all; \
+	# 	mkdir -p $(DIR-OUTPUT)/$$i; \
+	# 	mv $(SRC-UBOOT)/u-boot.bin $(DIR-OUTPUT)/$$i/ || true; \
+	# done
+
+	# set -e; \
+	# for i in $(RK3188_PRODUCTS); do \
+	# 	echo "Building $$i..."; \
+	# 	rm -f $(SRC-UBOOT)/.config; \
+	# 	$(UMAKE) $$i_defconfig all; \
+	# 	mkdir -p $(DIR-OUTPUT)/$$i; \
+	# 	mv $(SRC-UBOOT)/u-boot.bin $(DIR-OUTPUT)/$$i/ || true; \
+	# done
+
+	# set -e; \
+	# for i in $(RK3288_PRODUCTS); do \
+	# 	echo "Building $$i..."; \
+	# 	rm -f $(SRC-UBOOT)/.config; \
+	# 	$(UMAKE) $$i_defconfig all; \
+	# 	mkdir -p $(DIR-OUTPUT)/$$i; \
+	# 	mv $(SRC-UBOOT)/u-boot.bin $(DIR-OUTPUT)/$$i/ || true; \
+	# done
+
+	set -e; \
+	for i in $(RK3308_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3308_BL31) ROCKCHIP_TPL=$(RK3308_TPL) $$i-rk3308_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3328_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3328_BL31) ROCKCHIP_TPL=$(RK3328_TPL) $$i-rk3328_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3399_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3399_BL31) ROCKCHIP_TPL=$(RK3399_TPL) $$i-rk3399_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3399PRO_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3399PRO_BL31) ROCKCHIP_TPL=$(RK3399PRO_TPL) $$i-rk3399pro_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3528_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3528_BL31) ROCKCHIP_TPL=$(RK3528_TPL) $$i-rk3528_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3566_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3566_BL31) ROCKCHIP_TPL=$(RK3566_TPL) $$i-rk3566_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3568_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3568_BL31) ROCKCHIP_TPL=$(RK3568_TPL) $$i-rk3568_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3588_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3588_BL31) ROCKCHIP_TPL=$(RK3588_TPL) $$i-rk3588_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+	set -e; \
+	for i in $(RK3588S_PRODUCTS); do \
+		echo "Building $$i..."; \
+		rm -f $(SRC-UBOOT)/.config; \
+		$(UMAKE) BL31=$(RK3588S_BL31) ROCKCHIP_TPL=$(RK3588S_TPL) $$i-rk3588s_defconfig all; \
+		mkdir -p $(DIR-OUTPUT)/$$i; \
+		mv $(SRC-UBOOT)/u-boot.itb $(SRC-UBOOT)/idbloader.img $(SRC-UBOOT)/idbloader-spi.img $(DIR-OUTPUT)/$$i/ || true; \
+	done
+
+#
+# Clean
+#
+.PHONY: distclean
+distclean: clean
+	$(UMAKE) distclean
+
+.PHONY: clean
+clean: clean-deb
+	$(UMAKE) clean
+
+.PHONY: clean-deb
+clean-deb:
+	rm -rf $(DIR-OUTPUT) debian/.debhelper debian/${PROJECT}*/ debian/u-boot-*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.postrm.debhelper debian/*.substvars
+
+#
+# Release
+#
+.PHONY: dch
+dch: debian/changelog
+	EDITOR=true gbp dch --ignore-branch --multimaint-merge --commit --release --dch-opt=--upstream
+
+.PHONY: deb
+deb: debian
+	debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags bad-distribution-in-changes-file -- %p_%v_*.changes" --no-sign -b
+
+.PHONY: release
+release:
+	gh workflow run .github/workflows/new_version.yml --ref $(shell git branch --show-current)

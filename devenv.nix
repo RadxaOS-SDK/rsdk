@@ -67,6 +67,10 @@
         excludes = [
           "theme/highlight.js"
         ];
+        settings.ignored-words = [
+          "Synopsys"
+          "HSI"
+        ];
       };
     };
   };

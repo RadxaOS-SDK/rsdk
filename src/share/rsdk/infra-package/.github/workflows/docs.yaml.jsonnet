@@ -86,7 +86,6 @@ function(
                                 echo "::group::Building $po_lang translation as of $POT_CREATION_DATE"
                                 rm -r docs/
                                 git restore --source "$(git rev-list -n 1 --before "$POT_CREATION_DATE" @)" docs/
-
                                 # Set language and adjust site URL. Clear the redirects
                                 # since they are in sync with the source files, not the
                                 # translation.
