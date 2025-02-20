@@ -10,6 +10,7 @@ function(
 	DPKG_FLAGS ?= -d
 	KERNEL_DEFCONFIG ?= defconfig radxa.config
 	CUSTOM_MAKE_DEFINITIONS ?=
+	CUSTOM_DEBUILD_ENV ?= DEB_BUILD_OPTIONS='parallel=1'
 
 	KMAKE ?= $(MAKE) -C "$(SRC-KERNEL)" -j$(shell nproc) \
 				$(CUSTOM_MAKE_DEFINITIONS) \
@@ -85,7 +86,7 @@ function(
 
 	.PHONY: deb
 	deb: debian
-		debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags bad-distribution-in-changes-file -- %%p_%%v_*.changes" --no-sign -b
+		$(CUSTOM_DEBUILD_ENV) debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags bad-distribution-in-changes-file -- %%p_%%v_*.changes" --no-sign -b
 
 	.PHONY: release
 	release:
