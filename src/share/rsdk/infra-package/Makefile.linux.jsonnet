@@ -54,6 +54,10 @@ function(
 	build-dtbs: $(SRC-KERNEL)
 		$(KMAKE) dtbs
 
+	.PHONY: build-modules
+	build-modules: $(SRC-KERNEL)
+		$(KMAKE) modules
+
 	.PHONY: build-all
 	build-all: $(SRC-KERNEL)
 		$(KMAKE) all

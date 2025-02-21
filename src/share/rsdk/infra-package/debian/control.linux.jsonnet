@@ -20,6 +20,7 @@ function(
                 libc6:arm64 [!arm64],
                 libssl-dev:arm64,
                 cpio,
+                kmod:arm64,
 
     Package: linux-image
     Architecture: all
