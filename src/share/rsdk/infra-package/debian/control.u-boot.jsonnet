@@ -27,6 +27,16 @@ function(
     Depends: ${misc:Depends},
     Description: U-Boot based on %(fork)s
      This package provides the prebuilt U-Boot based on %(fork)s.
+
+    Package: u-boot-product
+    Architecture: all
+    Depends: %(target)s,
+             ${misc:Depends},
+    Section: admin
+    Priority: optional
+    Description: Radxa U-Boot meta-package for new product.
+     This package provides the prebuilt U-Boot for new product.
+
 ||| % {
     target: target,
     fork: std.splitLimitR(target, "-", 1)[1],
