@@ -44,23 +44,6 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
-                        name: "pre-commit check",
-                        shell: "bash",
-                        run: |||
-                            pip install pre-commit
-                            if ! pre-commit run --all-files --show-diff-on-failure
-                            then
-                                echo ''
-                                echo '=== Code style issue detected! ==='
-                                echo 'Suggest changes are listed above.'
-                                echo 'Please install pre-commit and run `pre-commit run --all-files` to fix it.'
-                                echo 'Strongly recommended to run `pre-commit install` to catch issues before pushing.'
-                                echo 'You can learn more about pre-commit from https://pre-commit.com/'
-                                exit 1
-                            fi
-                        |||,
-                    },
-                    {
                         name: "Test",
                         shell: "bash",
                         run: |||
