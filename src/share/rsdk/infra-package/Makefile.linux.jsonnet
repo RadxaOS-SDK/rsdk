@@ -72,9 +72,11 @@ function(
 	#
 	.PHONY: distclean
 	distclean: clean
+		$(KMAKE) distclean
 
 	.PHONY: clean
 	clean: clean-deb
+		$(KMAKE) clean
 
 	.PHONY: clean-deb
 	clean-deb:
