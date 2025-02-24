@@ -41,9 +41,9 @@ main() {
 	if [[ -f "$SCRIPT_DIR/../../lib/librtui/tui.sh" ]]; then
 		# shellcheck source=/dev/null
 		source "$SCRIPT_DIR/../../lib/librtui/tui.sh"
-	elif [[ -f "$SCRIPT_DIR/../../../externals/librtui/src/tui.sh" ]]; then
-		# shellcheck source=externals/librtui/src/tui.sh
-		source "$SCRIPT_DIR/../../../externals/librtui/src/tui.sh"
+	elif [[ -f "$SCRIPT_DIR/../../../externals/librtui/src/lib/librtui/tui.sh" ]]; then
+		# shellcheck source=externals/librtui/src/lib/librtui/tui.sh
+		source "$SCRIPT_DIR/../../../externals/librtui/src/lib/librtui/tui.sh"
 	elif [[ -f "/usr/lib/librtui/tui.sh" ]]; then
 		# shellcheck source=/dev/null
 		source "/usr/lib/librtui/tui.sh"
