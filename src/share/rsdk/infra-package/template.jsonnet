@@ -10,6 +10,7 @@ local copyright = import "debian/copyright.jsonnet";
 local lintian_overrides = import "debian/source/lintian-overrides.jsonnet";
 local README_md = import "README.md.jsonnet";
 local Makefile_linux = import "Makefile.linux.jsonnet";
+local Makefile_u_boot = import "Makefile.u-boot.jsonnet";
 local changelog = import "debian/changelog.jsonnet";
 local control_linux = import "debian/control.linux.jsonnet";
 local control_u_boot = import "debian/control.u-boot.jsonnet";
@@ -71,7 +72,7 @@ then
 else if std.startsWith(target, "u-boot")
 then
     {
-        "Makefile": importstr "Makefile.u-boot",
+        "Makefile": Makefile_u_boot(target),
     } + (if new_repo == true
     then
         {

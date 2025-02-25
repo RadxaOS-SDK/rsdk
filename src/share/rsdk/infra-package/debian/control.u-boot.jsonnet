@@ -19,6 +19,12 @@ function(
                    python3-pyelftools,
                    libncurses-dev,
                    crossbuild-essential-arm64 [!arm64],
+                   crossbuild-essential-armhf [!armhf],
+                   crossbuild-essential-armel [!armel],
+                   xxd,
+                   bc,
+                   lib32stdc++6 [!i386],
+                   lib32z1 [!i386],
 
     Package: %(target)s
     Architecture: all
