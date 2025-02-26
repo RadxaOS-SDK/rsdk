@@ -25,6 +25,7 @@ function(
                    bc,
                    lib32stdc++6 [!i386],
                    lib32z1 [!i386],
+                   dos2unix,
 
     Package: %(target)s
     Architecture: all
