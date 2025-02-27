@@ -58,7 +58,7 @@ function() std.manifestYamlDoc(
                             git branch -D main || true
                             git switch -c main || true
                             make dch
-                            make test all deb
+                            make test deb
                             git reset --hard HEAD~1
                         |||,
                     },
@@ -66,7 +66,7 @@ function() std.manifestYamlDoc(
                         name: "Build",
                         shell: "bash",
                         run: |||
-                            make all deb
+                            make deb
                         |||,
                     },
                     {

@@ -39,7 +39,7 @@ function() std.manifestYamlDoc(
                         shell: "bash",
                         run: |||
                             sudo apt-get build-dep --no-install-recommends -y .
-                            make all test deb
+                            make test deb
                         |||,
                     },
                     {
