@@ -4,7 +4,7 @@ function(
 ) |||
     # %(target)s
 
-    [![Release](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yml/badge.svg)](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yml)
+    [![Release](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yaml/badge.svg)](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yaml)
 
     Radxa %(type)s image for %(fork)s release
 
