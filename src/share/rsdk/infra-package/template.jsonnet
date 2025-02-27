@@ -40,7 +40,6 @@ function(
     "debian/source/format": importstr "debian/source/format",
     "debian/source/lintian-overrides": lintian_overrides(target),
     ".envrc": importstr ".envrc",
-    ".gitignore": importstr ".gitignore",
     "devenv.lock": importstr "devenv.lock",
     "devenv.nix": importstr "devenv.nix",
     "README.md": README_md(target, pkg_org),
@@ -49,6 +48,7 @@ then
     {
         "debian/.gitignore": importstr "debian/.gitignore",
         "debian/changelog": changelog(target),
+        ".gitignore": importstr ".gitignore",
     }
 else
     {}
