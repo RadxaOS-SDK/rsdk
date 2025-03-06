@@ -47,6 +47,7 @@ function() std.manifestYamlDoc(
                         name: "Test",
                         shell: "bash",
                         run: |||
+                            sudo dpkg --add-architecture arm64
                             sudo apt-get update
                             sudo apt-get build-dep --no-install-recommends -y .
                             sudo apt-get install --no-install-recommends -y git-buildpackage

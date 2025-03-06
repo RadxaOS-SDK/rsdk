@@ -25,6 +25,7 @@ function() std.manifestYamlDoc(
                         name: "Create release commit",
                         shell: "bash",
                         run: |||
+                            sudo dpkg --add-architecture arm64
                             sudo apt-get update
                             sudo apt-get install --no-install-recommends -y git-buildpackage
                             export DEBEMAIL="dev@radxa.com"
