@@ -1,6 +1,8 @@
 { pkgs, lib, config, ... }:
 
 {
+  imports = lib.optional (builtins.pathExists ./.github/local/devenv.nix) ./.github/local/devenv.nix;
+
   # https://devenv.sh/packages/
   packages = with pkgs; [
     bash-completion
@@ -25,6 +27,7 @@
       typos = {
         enable = true;
         excludes = [
+          "theme/highlight.js"
         ];
         settings.ignored-words = [
           "Synopsys"
