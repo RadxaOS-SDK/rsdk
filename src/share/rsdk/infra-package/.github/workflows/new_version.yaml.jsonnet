@@ -45,7 +45,7 @@ function() std.manifestYamlDoc(
                         name: "Test",
                         shell: "bash",
                         run: |||
-                            sudo apt-get build-dep --no-install-recommends -y .
+                            make devcontainer_setup
                             make test deb
                         |||,
                     },

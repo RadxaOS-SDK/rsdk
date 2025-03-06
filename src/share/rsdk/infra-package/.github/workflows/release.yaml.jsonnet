@@ -55,7 +55,6 @@ function() std.manifestYamlDoc(
                         shell: "bash",
                         run: |||
                             sudo apt-get update
-                            sudo apt-get build-dep --no-install-recommends -y .
                             sudo apt-get install --no-install-recommends -y git-buildpackage
                             export DEBEMAIL="dev@radxa.com"
                             export DEBFULLNAME='"Radxa Computer Co., Ltd"'
@@ -65,6 +64,7 @@ function() std.manifestYamlDoc(
                             git branch -D main || true
                             git switch -c main || true
                             make dch
+                            make devcontainer_setup
                             make test deb
                             git reset --hard HEAD~1
                         |||,
