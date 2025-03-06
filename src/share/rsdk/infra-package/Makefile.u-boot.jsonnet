@@ -21,6 +21,11 @@ function(
 	.PHONY: all
 	all: build
 
+	.PHONY: devcontainer_setup
+	devcontainer_setup:
+		sudo apt-get update
+		sudo apt-get build-dep . -y
+
 	#
 	# Test
 	#

@@ -44,5 +44,5 @@
     "--ulimit", "nofile=1024:524288"
   ],
   "overrideCommand": true,
-  "updateContentCommand": "sudo dpkg --add-architecture arm64 && sudo apt-get update && sudo apt-get build-dep . -y"
+  "updateContentCommand": "make devcontainer_setup"
 }

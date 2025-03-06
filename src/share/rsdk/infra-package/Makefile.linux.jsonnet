@@ -24,6 +24,12 @@ function(
 	.PHONY: all
 	all: build
 
+	.PHONY: devcontainer_setup
+	devcontainer_setup:
+		sudo dpkg --add-architecture arm64
+		sudo apt-get update
+		sudo apt-get build-dep . -y
+
 	#
 	# Test
 	#
