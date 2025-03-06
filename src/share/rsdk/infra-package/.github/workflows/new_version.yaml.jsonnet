@@ -22,10 +22,16 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
+                        name: "Enable Multiarch",
+                        uses: "RadxaYuntian/action-apt@master",
+                        with: {
+                            arch: "arm64",
+                        },
+                    },
+                    {
                         name: "Create release commit",
                         shell: "bash",
                         run: |||
-                            sudo dpkg --add-architecture arm64
                             sudo apt-get update
                             sudo apt-get install --no-install-recommends -y git-buildpackage
                             export DEBEMAIL="dev@radxa.com"
