@@ -23,7 +23,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Enable Multiarch",
-                        uses: "RadxaYuntian/action-apt@master",
+                        uses: "ryankurte/action-apt@master",
                         with: {
                             arch: "arm64",
                         },
