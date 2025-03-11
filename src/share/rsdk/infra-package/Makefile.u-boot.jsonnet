@@ -9,6 +9,7 @@ function(
 	CROSS_COMPILE ?= aarch64-linux-gnu-
 	CUSTOM_MAKE_DEFINITIONS ?=
 	CUSTOM_DEBUILD_ENV ?= DEB_BUILD_OPTIONS='parallel=1'
+	SUPPORT_CLEAN ?= true
 
 	UMAKE ?= $(MAKE) -C "$(SRC-UBOOT)" -j$(shell nproc) \
 				$(CUSTOM_MAKE_DEFINITIONS) \
@@ -61,11 +62,11 @@ function(
 
 	.PHONY: distclean
 	distclean: clean
-		$(UMAKE) distclean
+		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(UMAKE) distclean; fi
 
 	.PHONY: clean
 	clean: clean-deb
-		$(UMAKE) clean
+		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(UMAKE) clean; fi
 
 	.PHONY: clean-deb
 	clean-deb:
