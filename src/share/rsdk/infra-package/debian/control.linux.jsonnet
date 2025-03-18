@@ -21,6 +21,7 @@ function(
                 libssl-dev:arm64,
                 cpio,
                 kmod:arm64,
+                libyaml-dev:arm64,
 
     Package: linux-image
     Architecture: all
