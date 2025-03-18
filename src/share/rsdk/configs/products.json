@@ -109,7 +109,7 @@
         "product_full_name": "ROCK 2 Series",
         "soc": "rk3528a",
         "supported_suite": ["bookworm"],
-        "supported_edition": ["xfce", "cli"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-cm3-io",
