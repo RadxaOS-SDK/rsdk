@@ -224,6 +224,14 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "rock-4d",
+        "product_name": "ROCK 4D",
+        "product_full_name": "ROCK 4D",
+        "soc": "rk3576",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
