@@ -163,7 +163,7 @@ main() {
 		;;
 	"rsdk-infra-product-update")
 		RSDK_GIT_REPO_TYPE="product"
-		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
+		mapfile -t RSDK_GIT_REPO_ARRAY < <(jq -er '.[] | select(.override_product == null).product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "RSDK_GIT_REPO_ARRAY" ""
 		RSDK_GIT_REPO_TEMPLATE="$SCRIPT_DIR/../../share/rsdk/infra-product"
 		RSDK_TARGET_ORGANIZATION="$RSDK_BUILD_ORG"
 		repo_desc() {
