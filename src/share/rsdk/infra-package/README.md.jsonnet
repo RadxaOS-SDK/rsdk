@@ -6,8 +6,6 @@ function(
 
     [![Release](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yaml/badge.svg)](https://github.com/%(pkg_org)s/%(target)s/actions/workflows/release.yaml)
 
-    Radxa %(type)s image for %(fork)s release
-
     ## Build
 
     1. `git clone --recurse-submodules https://github.com/%(pkg_org)s/%(target)s.git`
@@ -16,6 +14,4 @@ function(
 ||| % {
     target: target,
     pkg_org: pkg_org,
-    type: std.splitLimitR(target, "-", 1)[0],
-    fork: std.splitLimitR(target, "-", 1)[1],
 }
