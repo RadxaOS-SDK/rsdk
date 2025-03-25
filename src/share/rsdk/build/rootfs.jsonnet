@@ -26,8 +26,9 @@ function(
     vendor_packages = true,
     linux_override = "",
     firmware_override = "",
+    install_vscodium = false,
 ) distro(suite, distro_mirror, architecture)
-+ additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir)
++ additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium)
 + packages(suite, edition, product, temp_dir, vendor_packages, linux_override, firmware_override)
 + cleanup()
 + {
@@ -104,6 +105,7 @@ function(
         vendor_packages: vendor_packages,
         linux_override: linux_override,
         firmware_override: firmware_override,
+        install_vscodium: install_vscodium,
         sdboot: std.extVar("sdboot"),
     },
 }

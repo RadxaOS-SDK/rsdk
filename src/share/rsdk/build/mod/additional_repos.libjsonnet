@@ -2,14 +2,7 @@ local soc_family = import "../../configs/soc_family.libjsonnet";
 local product_soc = import "../../configs/product_soc.libjsonnet";
 local soc_specific_repo = import "../../configs/soc_specific_repo.libjsonnet";
 local product_soc_family(product) = soc_family(product_soc(product));
-
-local vscodium_url(radxa_mirror) = (
-    if radxa_mirror == ""
-    then
-        "https://download.vscodium.com/"
-    else
-        radxa_mirror
-) + "debs";
+local vscodium = import "vscodium.libjsonnet";
 
 local radxa_url(radxa_mirror) = (
     if radxa_mirror == ""
@@ -19,11 +12,10 @@ local radxa_url(radxa_mirror) = (
         radxa_mirror
 );
 
-function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
+function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium) {
     mmdebstrap+: {
         packages+: [
             "radxa-archive-keyring",
-            "vscodium-archive-keyring",
             "local-apt-repository",
         ],
         "setup-hooks"+: [
@@ -76,10 +68,6 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
                     radxa_url: radxa_url(radxa_mirror),
                     suite: suite + radxa_repo_suffix,
                 },
-            'echo deb %(vscodium_url)s vscodium main > "$1/etc/apt/sources.list.d/90-vscodium.list"'
-                % {
-                    vscodium_url: vscodium_url(radxa_mirror)
-                },
             'curl -L -o "$1/etc/radxa_apt_snapshot" %(radxa_url)s%(suite)s/pkgs.json'
                 % {
                     radxa_url: radxa_url(radxa_mirror),
@@ -94,7 +82,6 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" apt-get update -oDPkg::Chroot-Directory="$1"
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y --allow-downgrades
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove -oDPkg::Chroot-Directory="$1" -y --purge
-                sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/vscodium-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/90-vscodium.list
                 sed -i "s|^deb|deb [signed-by=\"/usr/share/keyrings/radxa-archive-keyring.gpg\"]|g" "$1"/etc/apt/sources.list.d/*-radxa*.list
                 rm "$1/etc/apt/sources.list.d/99-local-apt-repository.list"
                 rm "$1/srv/local-apt-repository/Packages"
@@ -102,4 +89,9 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir) {
             |||,
         ],
     }
-}
+} + (if install_vscodium
+then
+    vscodium(suite, radxa_mirror)
+else
+    {}
+)
