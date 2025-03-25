@@ -27,7 +27,6 @@ function(
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
     ".devcontainer/devcontainer.json": importstr ".devcontainer/devcontainer.json",
-    ".github/CODEOWNERS": CODEOWNERS(),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/docs.yaml": docs_yaml(target),
@@ -37,7 +36,6 @@ function(
     "debian/compat": importstr "debian/compat",
     "debian/copyright": copyright(target),
     "debian/rules": importstr "debian/rules",
-    "debian/source/format": importstr "debian/source/format",
     "debian/source/lintian-overrides": lintian_overrides(target),
     ".envrc": importstr ".envrc",
     "devenv.lock": importstr "devenv.lock",
@@ -48,6 +46,8 @@ then
     {
         "debian/.gitignore": importstr "debian/.gitignore",
         "debian/changelog": changelog(target),
+        "debian/source/format": importstr "debian/source/format",
+        ".github/CODEOWNERS": CODEOWNERS(),
         ".gitignore": importstr ".gitignore",
     }
 else
