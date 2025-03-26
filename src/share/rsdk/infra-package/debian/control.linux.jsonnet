@@ -22,6 +22,7 @@ function(
                 cpio,
                 kmod:arm64,
                 libyaml-dev:arm64,
+                rsync,
 
     Package: linux-image
     Architecture: all
