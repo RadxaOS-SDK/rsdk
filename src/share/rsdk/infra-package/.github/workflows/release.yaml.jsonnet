@@ -44,37 +44,43 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
-                        name: "Enable Multiarch",
-                        uses: "ryankurte/action-apt@master",
+                        name: "Set up QEMU Emulation",
+                        uses: "docker/setup-qemu-action@v3",
                         with: {
-                            arch: "arm64",
+                            image: "tonistiigi/binfmt:latest",
                         },
                     },
                     {
                         name: "Test",
-                        shell: "bash",
-                        run: |||
-                            sudo apt-get update
-                            sudo apt-get install --no-install-recommends -y git-buildpackage
-                            export DEBEMAIL="dev@radxa.com"
-                            export DEBFULLNAME='"Radxa Computer Co., Ltd"'
-                            git config user.name "github-actions[bot]"
-                            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                            git branch -m GITHUB_RUNNER || true
-                            git branch -D main || true
-                            git switch -c main || true
-                            make dch
-                            make devcontainer_setup
-                            make test deb
-                            git reset --hard HEAD~1
-                        |||,
+                        uses: "devcontainers/ci@v0.3",
+                        with: {
+                            push: "never",
+                            runCmd: |||
+                                sudo apt-get update
+                                sudo apt-get install --no-install-recommends -y git-buildpackage
+                                export DEBEMAIL="dev@radxa.com"
+                                export DEBFULLNAME='"Radxa Computer Co., Ltd"'
+                                git config user.name "github-actions[bot]"
+                                git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                                git branch -m GITHUB_RUNNER || true
+                                git branch -D main || true
+                                git switch -c main || true
+                                make dch
+                                make test deb
+                                git reset --hard HEAD~1
+                                rm ../*.deb
+                            |||,
+                        },
                     },
                     {
                         name: "Build",
-                        shell: "bash",
-                        run: |||
-                            make deb
-                        |||,
+                        uses: "devcontainers/ci@v0.3",
+                        with: {
+                            push: "never",
+                            runCmd: |||
+                                make deb
+                            |||,
+                        },
                     },
                     {
                         name: "Workaround actions/upload-artifact#176",
