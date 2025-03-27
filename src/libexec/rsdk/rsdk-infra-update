@@ -107,6 +107,14 @@ update_repo() {
 			gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
 				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/pages" -F "build_type=workflow"
 		fi
+		if ! gh api --method POST -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+			"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/rulesets" --input "$SCRIPT_DIR/../../share/rsdk/common/repo_rulesets/default.json"; then
+			local RULESET_ID
+			RULESET_ID="$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/rulesets" --jq '.[] | select(.name = "default").id')"
+			gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" \
+				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/rulesets/$RULESET_ID" --input "$SCRIPT_DIR/../../share/rsdk/common/repo_rulesets/default.json"
+		fi
 	else
 		echo "Set repository description as '$description'."
 		echo "Set repository homepage as '$homepage'."
