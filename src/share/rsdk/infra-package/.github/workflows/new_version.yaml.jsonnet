@@ -1,7 +1,7 @@
 function() std.manifestYamlDoc(
     {
         name: "Create release",
-        "run-name": "${{ inputs.update && 'Update submodule' }}${{ inputs.update && inputs.release && ' & ' }}${{ inputs.release && 'Release new version' }}",
+        "run-name": "${{ inputs.update && 'Update submodule' || '' }}${{ inputs.update && inputs.release && ' & ' || '' }}${{ inputs.release && 'Release new version' }}",
         on: {
             workflow_dispatch: {
                 inputs: {
