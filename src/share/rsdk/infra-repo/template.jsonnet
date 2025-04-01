@@ -6,6 +6,7 @@ local check_linked_issue_yaml = import "../common/check_linked_issue/check_linke
 local README_md = import "README.md.jsonnet";
 local pkgs_lock = import "pkgs.lock.jsonnet";
 local update_yaml = import ".github/workflows/update.yaml.jsonnet";
+local build_yaml = import ".github/workflows/build.yaml.jsonnet";
 
 function(
     target,
@@ -21,6 +22,7 @@ function(
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/CODEOWNERS": CODEOWNERS(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
-    ".github/workflows/update.yaml": update_yaml(target, pkg_org, git_rev),
+    ".github/workflows/update.yaml": update_yaml(git_rev),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
+    ".github/workflows/build.yaml": build_yaml(target, pkg_org, git_rev),
 }
