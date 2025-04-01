@@ -106,5 +106,5 @@ function(
 		gh workflow run .github/workflows/new_version.yaml --ref $(shell git branch --show-current)
 ||| % {
     target: target,
-    fork: std.splitLimitR(target, "-", 1)[1],
+    fork: std.splitLimit(target, "-", 1)[1],
 }

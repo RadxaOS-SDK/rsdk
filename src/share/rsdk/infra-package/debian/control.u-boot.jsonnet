@@ -46,5 +46,5 @@ function(
 
 ||| % {
     target: target,
-    fork: std.splitLimitR(target, "-", 1)[1],
+    fork: std.splitLimit(target, "-", 1)[1],
 }
