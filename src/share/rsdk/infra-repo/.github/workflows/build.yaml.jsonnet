@@ -35,6 +35,7 @@ function(
                 permissions: {
                     pages: "write",             // for pages
                     "id-token": "write",        // for pages
+                    contents: "write",          // for release
                 },
                 steps: [
                     {
