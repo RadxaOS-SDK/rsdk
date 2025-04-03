@@ -7,7 +7,6 @@ local docs_yaml = import ".github/workflows/docs.yaml.jsonnet";
 local new_version_yaml = import ".github/workflows/new_version.yaml.jsonnet";
 local release_yaml = import ".github/workflows/release.yaml.jsonnet";
 local copyright = import "debian/copyright.jsonnet";
-local lintian_overrides = import "debian/source/lintian-overrides.jsonnet";
 local README_md = import "README.md.jsonnet";
 local Makefile_linux = import "Makefile.linux.jsonnet";
 local Makefile_u_boot = import "Makefile.u-boot.jsonnet";
@@ -36,7 +35,7 @@ function(
     "debian/compat": importstr "debian/compat",
     "debian/copyright": copyright(target),
     "debian/rules": importstr "debian/rules",
-    "debian/source/lintian-overrides": lintian_overrides(target),
+    "debian/common-lintian-overrides": importstr "debian/common-lintian-overrides",
     ".envrc": importstr ".envrc",
     "devenv.lock": importstr "devenv.lock",
     "devenv.nix": importstr "devenv.nix",
@@ -60,9 +59,6 @@ then
     } + (if new_repo == true
     then
         {
-            "debian/linux-headers.lintian-overrides": importstr "debian/linux-headers.lintian-overrides",
-            "debian/linux-image.lintian-overrides": importstr "debian/linux-image.lintian-overrides",
-            "debian/linux-libc-dev.lintian-overrides": importstr "debian/linux-libc-dev.lintian-overrides",
             "debian/patches/series": importstr "debian/patches/series.linux",
             "debian/control": control_linux(target),
         }
@@ -77,7 +73,6 @@ then
     then
         {
             "debian/u-boot.install": importstr "debian/u-boot.install",
-            "debian/u-boot.lintian-overrides": importstr "debian/u-boot.lintian-overrides",
             "debian/control": control_u_boot(target),
         }
     else
