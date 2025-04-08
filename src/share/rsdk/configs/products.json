@@ -180,24 +180,24 @@
         "product_name": "Radxa ZERO 3",
         "product_full_name": "Radxa ZERO 3",
         "soc": "rk3566",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "rock-3c",
         "product_name": "ROCK 3C",
         "product_full_name": "ROCK 3C",
         "soc": "rk3566",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-cm3i-io",
         "product_name": "Radxa CM3I IO",
         "product_full_name": "Radxa CM3I IO Board",
         "soc": "rk3568",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-cm3j-rpi-cm4-io",
@@ -212,7 +212,7 @@
         "product_name": "Radxa E25",
         "product_full_name": "Radxa E25 Dual 2.5Gb Ethernet Carrier Board",
         "soc": "rk3568",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
     {
