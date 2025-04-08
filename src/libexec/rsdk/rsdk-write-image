@@ -41,6 +41,10 @@ env sudo -v
 		echo "Writing Zstd image..." >&2
 		zstdcat "$IMAGE"
 		;;
+	*"RAR archive data"*)
+		echo "Writing RAR image..." >&2
+		7z e -so "$IMAGE"
+		;;
 	*)
 		echo "Writing raw image..." >&2
 		cat "$IMAGE"
