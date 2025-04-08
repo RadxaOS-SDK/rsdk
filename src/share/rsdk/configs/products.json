@@ -112,6 +112,38 @@
         "supported_edition": ["kde", "cli"]
     },
     {
+        "product": "rock-2a",
+        "override_product": "radxa-rk3528",
+        "product_full_name": "ROCK 2A",
+        "soc": "rk3528a",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
+        "product": "rock-2f",
+        "override_product": "radxa-rk3528",
+        "product_full_name": "ROCK 2F",
+        "soc": "rk3528a",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
+        "product": "radxa-e20c",
+        "override_product": "radxa-rk3528",
+        "product_full_name": "Radxa E20C",
+        "soc": "rk3528a",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["cli"]
+    },
+    {
+        "product": "radxa-rk3528",
+        "product_name": "Generic RK3528 Image",
+        "product_full_name": "Generic RK3528 Image for Radxa product",
+        "soc": "rk3528a",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde", "cli"]
+    },
+    {
         "product": "radxa-cm3-io",
         "product_name": "Radxa CM3 IO",
         "product_full_name": "Radxa ROCK 3 Compute Module IO Board",
