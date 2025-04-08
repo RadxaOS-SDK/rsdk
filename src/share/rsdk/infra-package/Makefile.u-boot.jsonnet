@@ -70,7 +70,7 @@ function(
 
 	.PHONY: clean-deb
 	clean-deb:
-		rm -rf $(DIR-OUTPUT) debian/.debhelper debian/${PROJECT}*/ debian/u-boot-*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.postrm.debhelper debian/*.substvars
+		rm -rf $(DIR-OUTPUT) debian/.debhelper debian/${PROJECT}*/ debian/u-boot-*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.*.debhelper debian/*.substvars
 
 	#
 	# Release

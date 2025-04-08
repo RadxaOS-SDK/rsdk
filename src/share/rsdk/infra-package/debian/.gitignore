@@ -4,6 +4,6 @@
 /linux-*/
 /u-boot-*/
 /*.debhelper.log
-/*.postrm.debhelper
+/*.*.debhelper
 /*.substvars
 /tmp

@@ -87,7 +87,7 @@ function(
 
 	.PHONY: clean-deb
 	clean-deb:
-		rm -rf debian/.debhelper debian/${PROJECT}*/ debian/linux-*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.postrm.debhelper debian/*.substvars
+		rm -rf debian/.debhelper debian/${PROJECT}*/ debian/linux-*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.*.debhelper debian/*.substvars
 		rm -f linux-*_arm64.deb linux-upstream*_arm64.changes linux-upstream*_arm64.buildinfo
 
 	#
