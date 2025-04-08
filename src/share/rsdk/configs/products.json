@@ -264,6 +264,14 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "radxa-rk3576",
+        "product_name": "Generic RK3576 Image",
+        "product_full_name": "Generic RK3576 Image for Radxa product",
+        "soc": "rk3576",
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "radxa-cm5-io",
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
