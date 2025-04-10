@@ -98,6 +98,7 @@ then
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 systemd-boot
                 chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1 bootctl install --esp-path=/boot/efi/ --no-variables"
+                sed -i "s/#timeout/timeout/" "$1/boot/efi/loader/loader.conf"
             |||
 else
             "echo 'Skip systemd-boot installation.'"
