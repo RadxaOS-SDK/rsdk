@@ -11,7 +11,11 @@ function(
 
     This repo is the central location for Radxa-built system images for %(product_full_name)s.
 
-    ## What images are provided?
+    ## Which image should I use?
+
+    For most systems, Radxa now only supports the Debian Desktop image.
+
+    Other variants that were previously provided AS-IS are no longer provided. Interested users need to build those by themselves.
 
     Please also always use [the latest release](https://github.com/%(build_org)s/%(product)s/releases/latest) instead of any pre-release / test builds. Those will not be supported.
 
