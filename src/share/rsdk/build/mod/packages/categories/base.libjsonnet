@@ -35,6 +35,7 @@ else
             "bc",
             "binutils",
             "curl",
+            "dmidecode",
             "eject",
             "exfat-fuse",
             "file",
