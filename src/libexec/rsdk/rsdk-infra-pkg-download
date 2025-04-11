@@ -38,8 +38,12 @@ download_pkgs() {
 
 			if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
 				gh release download "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"
-				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]] && [[ $RSDK_OPTION_DEFAULT_DISTRO == "true" ]]; then
-					cp "$RSDK_TEMP/$pkg"/*.deb "$OUTPUT/${DISTROS[0]}"
+				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]]; then
+					if [[ $RSDK_OPTION_DEFAULT_DISTRO == "true" ]]; then
+						cp "$RSDK_TEMP/$pkg"/*.deb "$OUTPUT/${DISTROS[0]}"
+					else
+						echo "No pkg.conf found when policy requires explicit distro."
+					fi
 				else
 					for j in "$RSDK_TEMP/$pkg"/*.deb; do
 						mapfile -t targets < <(find_target_distros "$(basename "$j")" "$RSDK_TEMP/$pkg/pkg.conf" "${DISTROS[@]}") && array_remove "targets" ""
