@@ -138,14 +138,14 @@ else
 |||
 
     echo "Updating files with disk info..."
-    blkid /dev/sda1 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /config vfat defaults,x-systemd.automount 0 2\n" > "%(temp_dir)s/fstab"
+    blkid /dev/sda1 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /config vfat defaults,x-systemd.automount,fmask=0077,dmask=0077 0 2\n" > "%(temp_dir)s/fstab"
 ||| % {
     temp_dir: temp_dir,
 } +
 (if efi
 then
 |||
-    blkid /dev/sda2 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /boot/efi vfat defaults,x-systemd.automount 0 2\n" >> "%(temp_dir)s/fstab"
+    blkid /dev/sda2 | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s /boot/efi vfat defaults,x-systemd.automount,fmask=0077,dmask=0077 0 2\n" >> "%(temp_dir)s/fstab"
 ||| % {
     temp_dir: temp_dir,
 }
