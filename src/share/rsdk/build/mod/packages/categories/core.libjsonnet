@@ -97,7 +97,7 @@ then
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 systemd-boot
-                chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1 bootctl install --esp-path=/boot/efi/ --no-variables"
+                chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1 bootctl install --esp-path=/boot/efi/ --no-variables --entry-token=literal:RadxaOS"
                 sed -i "s/#timeout/timeout/" "$1/boot/efi/loader/loader.conf"
             |||
 else
