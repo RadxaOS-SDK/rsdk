@@ -188,7 +188,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Update Test repos",
-                        uses: "radxa-repo/update-repo-action@main",
+                        uses: "RadxaOS-SDK/rsdk/.github/actions/infra-repo-update@main",
                         with: {
                             token: "${{ secrets.RADXA_APT_TEST_REPO_TOKEN }}",
                             "test-repo": true,
