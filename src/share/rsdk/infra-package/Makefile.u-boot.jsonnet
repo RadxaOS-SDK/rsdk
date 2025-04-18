@@ -77,7 +77,7 @@ function(
 	#
 	.PHONY: dch
 	dch: debian/changelog
-		EDITOR=true gbp dch --ignore-branch --multimaint-merge --commit --git-log='--no-merges --perl-regexp --author ^((?!github-actions\[bot\]).*)$$' --release --dch-opt=--upstream
+		EDITOR=true gbp dch --ignore-branch --multimaint-merge --commit --git-log='--no-merges --perl-regexp --invert-grep --grep=^(chore:\stemplates\sgenerated)' --release --dch-opt=--upstream
 
 	.PHONY: deb
 	deb: debian
