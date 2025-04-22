@@ -20,28 +20,50 @@ fi
 # Prepopulate sudo token, so echo message won't be mixed with password prompt
 env sudo -v
 (
+	EXT="${IMAGE##*.}"
 	case "$(file "$IMAGE")" in
 	*"XZ compressed"*)
+		EXT="xz"
+		;;
+	*"gzip compressed data"*)
+		EXT="gz"
+		;;
+	*"Zip archive"*)
+		EXT="zip"
+		;;
+	*"7-zip archive data"*)
+		EXT="7z"
+		;;
+	*"Zstandard compressed data"*)
+		EXT="zstd"
+		;;
+	*"RAR archive data"*)
+		EXT="rar"
+		;;
+	esac
+
+	case "$EXT" in
+	"xz")
 		echo "Writing xz image..." >&2
 		xzcat "$IMAGE"
 		;;
-	*"gzip compressed data"*)
+	"gz")
 		echo "Writing gz image..." >&2
 		zcat "$IMAGE"
 		;;
-	*"Zip archive"*)
+	"zip")
 		echo "Writing zip image..." >&2
 		unzip -p "$IMAGE"
 		;;
-	*"7-zip archive data"*)
+	"7z")
 		echo "Writing 7-zip image..." >&2
 		7z e -so "$IMAGE"
 		;;
-	*"Zstandard compressed data"*)
+	"zstd")
 		echo "Writing Zstd image..." >&2
 		zstdcat "$IMAGE"
 		;;
-	*"RAR archive data"*)
+	"rar")
 		echo "Writing RAR image..." >&2
 		7z e -so "$IMAGE"
 		;;
