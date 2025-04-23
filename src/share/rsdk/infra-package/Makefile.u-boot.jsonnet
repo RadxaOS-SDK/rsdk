@@ -7,11 +7,12 @@ function(
 	UBOOT_FORK ?= %(fork)s
 	ARCH ?= arm
 	CROSS_COMPILE ?= aarch64-linux-gnu-
+	CUSTOM_ENV_DEFINITIONS ?=
 	CUSTOM_MAKE_DEFINITIONS ?=
 	CUSTOM_DEBUILD_ENV ?= DEB_BUILD_OPTIONS='parallel=1'
 	SUPPORT_CLEAN ?= true
 
-	UMAKE ?= $(MAKE) -C "$(SRC-UBOOT)" -j$(shell nproc) \
+	UMAKE ?= $(CUSTOM_ENV_DEFINITIONS) $(MAKE) -C "$(SRC-UBOOT)" -j$(shell nproc) \
 				$(CUSTOM_MAKE_DEFINITIONS) \
 				ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) \
 				UBOOTVERSION=$(shell dpkg-parsechangelog -S Version)-$(UBOOT_FORK)
