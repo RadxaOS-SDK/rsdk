@@ -22,7 +22,8 @@ function(
     !echo "Image generation started at $(date)."
     echo "Allocating image file..."
     !rm -f "%(output)s"
-    sparse "%(output)s" 7G
+    disk-create "%(output)s" raw 7G
+    add-drive "%(output)s" format:raw discard:besteffort blocksize:512
     run
 
     echo "Creating partition table..."
