@@ -49,7 +49,7 @@ else
 (if efi && partition_table_type == "gpt"
 then
 |||
-    part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B 
+    part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
 |||
 else
     ""
@@ -99,7 +99,7 @@ else
     ""
 ) +
 |||
-    
+
     echo "Deploying rootfs..."
     %(deploy_method)s
 
