@@ -16,6 +16,7 @@ function(
     partition_table_type = product_partition_table_type(product),
     sdboot = false,
     suite,
+    sector_size = 512,
 ) |||
     #!/usr/bin/env -S guestfish -f
 
@@ -23,7 +24,7 @@ function(
     echo "Allocating image file..."
     !rm -f "%(output)s"
     disk-create "%(output)s" raw 7G
-    add-drive "%(output)s" format:raw discard:besteffort blocksize:512
+    add-drive "%(output)s" format:raw discard:besteffort blocksize:%(sector_size)d
     run
 
     echo "Creating partition table..."
@@ -32,6 +33,7 @@ function(
 ||| % {
     output: output,
     partition_table_type: partition_table_type,
+    sector_size: sector_size,
 } +
 (if efi
 then
@@ -183,18 +185,19 @@ else
     resize2fs-M /dev/sda%(rootdev)d
     tune2fs-l /dev/sda%(rootdev)d | cat > "%(temp_dir)s/tune2fs"
     !echo "resizepart %(rootdev)d" > "%(temp_dir)s/parted"
-    !echo "$(( $(sgdisk -i %(rootdev)d "%(output)s" | grep "First sector:" | cut -d " " -f 3) * 512 + $(grep "Block count:" %(temp_dir)s/tune2fs | cut -d " " -f 3) * $(grep "Block size:" %(temp_dir)s/tune2fs | cut -d " " -f 3) ))B" >> "%(temp_dir)s/parted"
+    !echo "$(( $(sgdisk -i %(rootdev)d "%(output)s" | grep "First sector:" | cut -d " " -f 3) * %(sector_size)d + $(grep "Block count:" %(temp_dir)s/tune2fs | cut -d " " -f 3) * $(grep "Block size:" %(temp_dir)s/tune2fs | cut -d " " -f 3) ))B" >> "%(temp_dir)s/parted"
     !echo "yes" >> "%(temp_dir)s/parted"
     sync
 
     echo "Installing bootloader..."
     shutdown
     !cat "%(temp_dir)s/parted" | parted ---pretend-input-tty "%(output)s" > /dev/null 2>&1
-    !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * 512 ))" "%(output)s"
+    !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * %(sector_size)d ))" "%(output)s"
 ||| % {
     output: output,
     temp_dir: temp_dir,
     rootdev: rootdev(efi),
+    sector_size: sector_size,
 } +
 (if partition_table_type == "gpt"
 then
@@ -237,7 +240,7 @@ else
 |||
 
     echo "Enlarging rootfs to the underlying block device..."
-    add "%(output)s"
+    add-drive "%(output)s" format:raw discard:besteffort blocksize:%(sector_size)d
     run
     resize2fs /dev/sda%(rootdev)d
     shutdown
@@ -251,5 +254,6 @@ else
     output: output,
     rootdev: rootdev(efi),
     temp_dir: temp_dir,
+    sector_size: sector_size,
 } +
 '!echo "Image generation finished at $(date)."'
