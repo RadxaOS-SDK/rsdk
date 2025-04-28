@@ -39,17 +39,22 @@ function(
 then
 |||
     part-add /dev/sda primary 65536 679935
+    part-set-bootable /dev/sda 2 true
     part-add /dev/sda primary 679936 -34
+    part-set-bootable /dev/sda 3 true
 |||
 else
 |||
     part-add /dev/sda primary 65536 -34
+    part-set-bootable /dev/sda 2 true
 |||
 ) +
 (if efi && partition_table_type == "gpt"
 then
 |||
     part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+    part-set-gpt-attributes /dev/sda 2 2
+    part-set-gpt-attributes /dev/sda 3 2
 |||
 else
     ""
@@ -222,21 +227,6 @@ then
 else
     ""
 ) +
-(if efi
-then
-|||
-    !sgdisk -A 2:set:2 -A 3:set:2 "%(output)s" > /dev/null || true
-    !sfdisk -A "%(output)s" 2 3 > /dev/null
-||| % {
-    output: output,
-}
-else
-|||
-    !sgdisk -A 2:set:2 "%(output)s" > /dev/null || true
-    !sfdisk -A "%(output)s" 2 > /dev/null
-||| % {
-    output: output,
-}) +
 |||
 
     echo "Enlarging rootfs to the underlying block device..."
