@@ -23,7 +23,7 @@ function(
     !echo "Image generation started at $(date)."
     echo "Allocating image file..."
     !rm -f "%(output)s"
-    disk-create "%(output)s" raw 7G
+    disk-create "%(output)s" raw 9G
     add-drive "%(output)s" format:raw discard:besteffort blocksize:%(sector_size)d
     run
 
@@ -53,8 +53,8 @@ else
 then
 |||
     part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
-    part-set-gpt-attributes /dev/sda 2 2
-    part-set-gpt-attributes /dev/sda 3 2
+    part-set-gpt-attributes /dev/sda 2 4
+    part-set-gpt-attributes /dev/sda 3 4
 |||
 else
     ""
@@ -183,6 +183,8 @@ then
 else
     ""
 ) +
+(if sector_size == 512
+then
 |||
 
     echo "Shrinking rootfs..."
@@ -193,8 +195,6 @@ else
     !echo "$(( $(sgdisk -i %(rootdev)d "%(output)s" | grep "First sector:" | cut -d " " -f 3) * %(sector_size)d + $(grep "Block count:" %(temp_dir)s/tune2fs | cut -d " " -f 3) * $(grep "Block size:" %(temp_dir)s/tune2fs | cut -d " " -f 3) ))B" >> "%(temp_dir)s/parted"
     !echo "yes" >> "%(temp_dir)s/parted"
     sync
-
-    echo "Installing bootloader..."
     shutdown
     !cat "%(temp_dir)s/parted" | parted ---pretend-input-tty "%(output)s" > /dev/null 2>&1
     !truncate "--size=$(( ( $(sgdisk -i %(rootdev)d "%(output)s" | grep "Last sector:" | cut -d " " -f 3) + 34 ) * %(sector_size)d ))" "%(output)s"
@@ -207,16 +207,25 @@ else
 (if partition_table_type == "gpt"
 then
 |||
+
     echo "Fixing partition table..."
     echo "NOTICE: Some issues are expected result of shrinking the disk."
     !sgdisk -ge "%(output)s" > /dev/null 2>&1 || true
-|||
+||| % {
+    output: output,
+}
 else
     ""
-) +
+)
+else
+    ""
+)+
 (if product_firmware_type(product) == "u-boot"
 then
 |||
+
+    echo "Installing bootloader..."
+    shutdown
     !chmod +x "%(temp_dir)s/u-boot/%(product)s/setup.sh"
     !"%(temp_dir)s/u-boot/%(product)s/setup.sh" update_bootloader "%(output)s" %(sector_size)d 2> /dev/null
 ||| % {
@@ -231,6 +240,7 @@ else
 |||
 
     echo "Enlarging rootfs to the underlying block device..."
+    shutdown
     add-drive "%(output)s" format:raw discard:besteffort blocksize:%(sector_size)d
     run
     resize2fs /dev/sda%(rootdev)d
