@@ -96,7 +96,9 @@ function(
 	#
 	.PHONY: dch
 	dch: debian/changelog
-		EDITOR=true gbp dch --ignore-branch --multimaint-merge --git-log='--no-merges --perl-regexp --invert-grep --grep=^(chore:\stemplates\sgenerated)' --release --dch-opt=--upstream --commit
+		gbp dch --ignore-branch --multimaint-merge --release --spawn-editor=never \
+		--git-log='--no-merges --perl-regexp --invert-grep --grep=^(chore:\stemplates\sgenerated)' \
+		--dch-opt=--upstream --commit --commit-msg="feat: release %%(version)s"
 
 	.PHONY: deb
 	deb: debian
