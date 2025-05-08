@@ -63,6 +63,14 @@ $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type 
         This feature is off by default, as U-Boot will try EFI boot first before
         Standard boot.
         Only supported in some distros.
+    -s | --sector-size <sector_size>
+        Override image's sector size. Ex: 512 (default), 4096, etc.
+        This is used when the local storage has a different sector size compared
+        to the target storage.
+        By default, rsdk assumes running on a 512-byte sector storage, building
+        512B system image. This option can be used to create 4096B image that is
+        needed for UFS boot.
+        Building 512B image on non-512B storage is currently not supported.
 EOF
 }
 

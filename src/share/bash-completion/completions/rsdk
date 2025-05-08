@@ -25,6 +25,8 @@ _rsdk_build_completions() {
 		"--no-vendor-packages"
 		"--debs"
 		"--sdboot"
+		"-s"
+		"--sector-size"
 	)
 
 	local products=() product_provided="false"
