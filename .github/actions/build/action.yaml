@@ -65,7 +65,13 @@ runs:
         push: never
         runCmd: |
           src/bin/rsdk setup
-          src/bin/rsdk shell rsdk build ${{ env.options }} ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
+          sector_sizes=( $(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[] | if has("sector_size") then .sector_size[] else 512 end' src/share/rsdk/configs/products.json) )
+          for size in "${sector_sizes[@]}"; do
+            src/bin/rsdk shell rsdk build ${{ env.options }} --sector-size "$size" --image-name "output_$size.img" ${{ inputs.product }} ${{ inputs.suite }} ${{ inputs.edition }}
+            pushd out/${{ inputs.product }}*
+              mv build-image "build-$size-image"
+            popd
+          done
     - name: Prepare for release
       id: prep
       shell: bash
@@ -104,7 +110,11 @@ runs:
         body: |
           ## ${{ steps.prep.outputs.BUILD_TUPLE }} 
 
-          [Download Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output.img.xz)
+          [Download standard Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_512.img.xz)
+
+          [Download UFS Image*](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_4096.img.xz)
+
+          Note: only selected systems support UFS and have UFS image.
 
           ### SHA-512 Checksum
 
