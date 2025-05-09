@@ -165,7 +165,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:s:" -l "no-efi,help,debug,test-repo,mirror:,image-name,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:s:" -l "no-efi,help,debug,test-repo,mirror:,image-name:,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
