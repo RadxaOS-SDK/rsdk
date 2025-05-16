@@ -76,11 +76,15 @@ runs:
       id: prep
       shell: bash
       run: |
+        src/bin/rsdk setup
+        sector_sizes=( $(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[] | if has("sector_size") then .sector_size[] else 512 end' src/share/rsdk/configs/products.json) )
         cd out/${{ inputs.product }}*
         sudo chown -R $USER:$GROUPS .
         BUILD_TUPLE="$(basename "$(realpath .)")"
         echo "BUILD_TUPLE=$BUILD_TUPLE" >> $GITHUB_OUTPUT
-        sed -i "s/rootfs.tar/${BUILD_TUPLE}_${{ inputs.timestamp }}.rootfs.tar/" build-image
+        for size in "${sector_sizes[@]}"; do
+          sed -i "s/rootfs.tar/${BUILD_TUPLE}_${{ inputs.timestamp }}.rootfs.tar/" build-$size-image
+        done
         for i in *
         do
           mv "$i" "${BUILD_TUPLE}_${{ inputs.timestamp }}.$i"
