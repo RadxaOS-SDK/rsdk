@@ -80,7 +80,7 @@ runs:
         sudo chown -R $USER:$GROUPS .
         BUILD_TUPLE="$(basename "$(realpath .)")"
         echo "BUILD_TUPLE=$BUILD_TUPLE" >> $GITHUB_OUTPUT
-        sed -i "s/rootfs.tar/${BUILD_TUPLE}_${{ inputs.timestamp }}.rootfs.tar/" build-image
+        sed -i "s/rootfs.tar/${BUILD_TUPLE}_${{ inputs.timestamp }}.rootfs.tar/" build-*-image
         for i in *
         do
           mv "$i" "${BUILD_TUPLE}_${{ inputs.timestamp }}.$i"
