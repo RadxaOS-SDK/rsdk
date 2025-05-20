@@ -2,8 +2,8 @@
   "customizations": {
     "vscode": {
       "settings": {
-				"terminal.integrated.defaultProfile.linux": "bash"
-			},
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
       "extensions": [
         "mkhl.direnv",
         "github.vscode-github-actions",
@@ -13,7 +13,7 @@
       ]
     }
   },
-  "image": "mcr.microsoft.com/devcontainers/base:jammy",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
   "features": {
     "ghcr.io/devcontainers/features/nix:1": {
       "version": "2.21.0",
@@ -41,6 +41,7 @@
       "type": "bind"
     }
   ],
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces,type=bind,consistency=cached",
   "runArgs": [
     // https://github.com/moby/moby/issues/27195#issuecomment-1410745778
     "--ulimit", "nofile=1024:524288",
@@ -67,7 +68,5 @@
   ],
   "overrideCommand": true,
   "updateContentCommand": "command -v devenv && devenv test || true",
-  "postCreateCommand": "src/bin/rsdk setup"
+  "postCreateCommand": "src/bin/rsdk setup && make devcontainer_setup"
 }
-
-
