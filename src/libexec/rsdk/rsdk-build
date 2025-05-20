@@ -96,7 +96,7 @@ generate_rootfs() {
 		cat "$RSDK_TEMP/rootfs.json"
 	fi
 	# Everything in $OUTPUT will be removed, so we cannot generate build-image first
-	sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$RSDK_TEMP/rootfs.json" --name "$OUTPUT" --force
+	sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$RSDK_TEMP/rootfs.json" --name "$OUTPUT" --force --aptopt "--allow-downgrades"
 
 	sudo chown "$UID:${GID:-$UID}" "$OUTPUT"
 	for i in "$OUTPUT"/*; do
