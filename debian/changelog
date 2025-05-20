@@ -128,7 +128,7 @@ rsdk (0.1.0) UNRELEASED; urgency=medium
   * fix: force creating initramfs
   * fix: replace hardcoded sector size
   * fix: remove spaces at the end of line
-  * refactor: use guestfish to set bootable flages
+  * refactor: use guestfish to set bootable flags
   * feat: override firmware setup sector size
   * feat: support 4096 sector size
   * feat: use custom release commit message
