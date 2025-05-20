@@ -132,13 +132,13 @@ else
                 ),
                 product: product,
                 firmware: product_firmware_type(product),
-                firmware_override: (if std.isEmpty(firmware_override)
+                firmware_override: (if std.length(firmware_override) == 0
                     then
                         product
                     else
                         firmware_override
                 ),
-                linux_override: (if std.isEmpty(linux_override)
+                linux_override: (if std.length(linux_override) == 0
                     then
                         product
                     else
