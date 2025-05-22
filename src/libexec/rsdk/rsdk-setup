@@ -45,8 +45,7 @@ install_native_dependency() {
 
 	case "$(get_distro_id)" in
 	"ubuntu")
-		if [[ "$(get_distro_version_codename)" == "jammy" ]]; then
-			cat <<EOF | sudo tee /etc/apt/sources.list
+		cat <<EOF | sudo tee /etc/apt/sources.list
 deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename) main restricted
 deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename)-updates main restricted
 deb [arch-=arm64,riscv64] http://archive.ubuntu.com/ubuntu/ $(get_distro_version_codename) universe
@@ -58,9 +57,6 @@ deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_versio
 deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_version_codename)-security universe
 deb [arch-=arm64,riscv64] http://security.ubuntu.com/ubuntu/ $(get_distro_version_codename)-security multiverse
 EOF
-		else
-			sudo sed -i '/^Signed-By:/a Architectures-Remove: arm64 riscv64' /etc/apt/sources.list.d/ubuntu.sources
-		fi
 		cat <<EOF | sudo tee /etc/apt/sources.list.d/ubuntu-ports.list
 deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename) main restricted universe multiverse
 deb [arch=arm64,riscv64] http://ports.ubuntu.com/ubuntu-ports/ $(get_distro_version_codename)-updates main restricted universe multiverse
