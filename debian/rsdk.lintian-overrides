@@ -1,2 +1,10 @@
 # Small bug number is very probable for us.
 rsdk: improbable-bug-number-in-closes
+
+# src/share/rsdk/infra-package/debian/rules have shebang.
+# However, this file is only for the template and will not actually run.
+rsdk: missing-dep-for-interpreter
+
+# src/share/rsdk/infra-package/ have .gitignore
+# However, this file is only for the template.
+rsdk: package-contains-vcs-control-file
