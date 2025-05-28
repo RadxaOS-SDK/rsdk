@@ -41,6 +41,7 @@
       "type": "bind"
     }
   ],
+  "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspaces,type=bind,consistency=cached",
   "runArgs": [
     // https://github.com/moby/moby/issues/27195#issuecomment-1410745778
     "--ulimit", "nofile=1024:524288",
@@ -67,7 +68,5 @@
   ],
   "overrideCommand": true,
   "updateContentCommand": "command -v devenv && devenv test || true",
-  "postCreateCommand": "src/bin/rsdk setup"
+  "postCreateCommand": "src/bin/rsdk setup && make devcontainer_setup"
 }
-
-

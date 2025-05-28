@@ -3,6 +3,12 @@ include Makefile.custom
 .PHONY: all
 all: build
 
+.PHONY: devcontainer_setup
+devcontainer_setup:
+	sudo dpkg --add-architecture arm64
+	sudo apt-get update
+	sudo apt-get build-dep . -y
+
 #
 # Test
 #
@@ -85,7 +91,9 @@ clean-deb:
 #
 .PHONY: dch
 dch: debian/changelog
-	EDITOR=true gbp dch --ignore-branch --multimaint-merge --commit --release --dch-opt=--upstream
+	gbp dch --ignore-branch --multimaint-merge --release --spawn-editor=never \
+	--git-log='--no-merges --perl-regexp --invert-grep --grep=^(chore:\stemplates\sgenerated)' \
+	--dch-opt=--upstream --commit --commit-msg="feat: release %(version)s"
 
 .PHONY: deb
 deb: debian
