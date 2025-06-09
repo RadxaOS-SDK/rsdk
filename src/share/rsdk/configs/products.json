@@ -44,7 +44,7 @@
         "product_name": "ROCK 4C+",
         "product_full_name": "ROCK 4C+",
         "soc": "rk3399t",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -52,7 +52,7 @@
         "product_name": "ROCK 4SE",
         "product_full_name": "ROCK 4SE",
         "soc": "rk3399t",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -60,7 +60,7 @@
         "product_name": "ROCK Pi 4A",
         "product_full_name": "ROCK Pi 4A",
         "soc": "rk3399",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -68,7 +68,7 @@
         "product_name": "ROCK Pi 4B",
         "product_full_name": "ROCK Pi 4B",
         "soc": "rk3399",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -76,7 +76,7 @@
         "product_name": "ROCK Pi 4C",
         "product_full_name": "ROCK Pi 4C",
         "soc": "rk3399",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -84,7 +84,7 @@
         "product_name": "ROCK Pi 4A+",
         "product_full_name": "ROCK Pi 4A+",
         "soc": "op1",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -92,7 +92,7 @@
         "product_name": "ROCK Pi 4B+",
         "product_full_name": "ROCK Pi 4B+",
         "soc": "op1",
-        "supported_suite": ["bullseye"],
+        "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
     {
@@ -359,5 +359,13 @@
         "soc": "cd8180",
         "supported_suite": ["bookworm"],
         "supported_edition": ["gnome"]
+    },
+    {
+        "product": "radxa-cubie-a5e",
+        "product_name": "Radxa Cubie A5E",
+        "product_full_name": "Radxa Cubie A5E",
+        "soc": "a527",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     }
 ]
