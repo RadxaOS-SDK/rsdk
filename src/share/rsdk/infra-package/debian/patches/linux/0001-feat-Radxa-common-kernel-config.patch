@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,942 @@
+@@ -0,0 +1,947 @@
 +# KEYBOARD_GPIO_POLLED: Used by Radxa Zero 2's power button
 +CONFIG_KEYBOARD_GPIO_POLLED=m
 +
@@ -216,6 +216,11 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_NET_VENDOR_MICROCHIP=y
 +CONFIG_ENC28J60=m
 +CONFIG_ENCX24J600=m
++
++# Enable WIZnet Ethernet devices
++CONFIG_NET_VENDOR_WIZNET=y
++CONFIG_WIZNET_W5100=m
++CONFIG_WIZNET_W5100_SPI=m
 +
 +# Disable debug kernel
 +CONFIG_DEBUG_INFO_NONE=y
