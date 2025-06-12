@@ -80,11 +80,11 @@ function(
 	#
 	.PHONY: distclean
 	distclean: clean
-		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(KMAKE) distclean; fi
+		if [ "$(SUPPORT_CLEAN)" = "true" ]; then $(KMAKE) distclean; fi
 
 	.PHONY: clean
 	clean: clean-deb
-		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(KMAKE) clean; fi
+		if [ "$(SUPPORT_CLEAN)" = "true" ]; then $(KMAKE) clean; fi
 
 	.PHONY: clean-deb
 	clean-deb:

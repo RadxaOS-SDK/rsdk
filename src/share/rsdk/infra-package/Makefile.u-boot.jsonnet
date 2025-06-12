@@ -63,11 +63,11 @@ function(
 
 	.PHONY: distclean
 	distclean: clean
-		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(UMAKE) distclean; fi
+		if [ "$(SUPPORT_CLEAN)" = "true" ]; then $(UMAKE) distclean; fi
 
 	.PHONY: clean
 	clean: clean-deb
-		if [ "$(SUPPORT_CLEAN)" == "true" ]; then $(UMAKE) clean; fi
+		if [ "$(SUPPORT_CLEAN)" = "true" ]; then $(UMAKE) clean; fi
 
 	.PHONY: clean-deb
 	clean-deb:
