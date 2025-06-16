@@ -15,7 +15,7 @@
     ncurses
   ];
 
-  pre-commit = {
+  git-hooks = {
     hooks = {
       commitizen.enable = true;
       shellcheck = {

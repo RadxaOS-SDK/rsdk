@@ -53,7 +53,7 @@
   };
   languages.jsonnet.enable = true;
 
-  pre-commit = {
+  git-hooks = {
     hooks = {
       commitizen.enable = true;
       shellcheck = {
