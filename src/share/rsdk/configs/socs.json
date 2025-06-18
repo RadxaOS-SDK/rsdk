@@ -54,5 +54,16 @@
         "soc_specific_repo": [
             "cd8180"
         ]
+    },
+    {
+        "soc_family": "allwinner",
+        "partition_table_type": "gpt",
+        "firmware_type": "u-boot",
+        "soc_list": [
+            "a527"
+        ],
+        "soc_specific_repo": [
+            "a527"
+        ]
     }
 ]
