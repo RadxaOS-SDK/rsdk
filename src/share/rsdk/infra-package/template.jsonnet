@@ -8,6 +8,7 @@ local new_version_yaml = import ".github/workflows/new_version.yaml.jsonnet";
 local release_yaml = import ".github/workflows/release.yaml.jsonnet";
 local copyright = import "debian/copyright.jsonnet";
 local README_md = import "README.md.jsonnet";
+local Makefile = import "Makefile.jsonnet";
 local Makefile_linux = import "Makefile.linux.jsonnet";
 local Makefile_u_boot = import "Makefile.u-boot.jsonnet";
 local changelog = import "debian/changelog.jsonnet";
@@ -23,6 +24,8 @@ function(
     new_repo,
 ) {
     "LICENSE": LICENSE(),
+    ".devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
+    ".direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
     ".devcontainer/devcontainer.json": importstr ".devcontainer/devcontainer.json",
@@ -39,6 +42,7 @@ function(
     ".envrc": importstr ".envrc",
     "devenv.lock": importstr "devenv.lock",
     "devenv.nix": importstr "devenv.nix",
+    "Makefile": Makefile(target),
     "README.md": README_md(target, pkg_org),
 } + (if new_repo == true
 then
@@ -55,7 +59,7 @@ else
 then
     {
         "debian/patches/linux/0001-feat-Radxa-common-kernel-config.patch": importstr "debian/patches/linux/0001-feat-Radxa-common-kernel-config.patch",
-        "Makefile": Makefile_linux(target),
+        "Makefile.extra": Makefile_linux(target),
     } + (if new_repo == true
     then
         {
@@ -68,7 +72,7 @@ then
 else if std.startsWith(target, "u-boot")
 then
     {
-        "Makefile": Makefile_u_boot(target),
+        "Makefile.extra": Makefile_u_boot(target),
     } + (if new_repo == true
     then
         {
