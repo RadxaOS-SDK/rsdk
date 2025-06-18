@@ -24,8 +24,8 @@ function(
     new_repo,
 ) {
     "LICENSE": LICENSE(),
-    ".devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
-    ".direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
+    ".devenv/.gitignore": importstr ".devenv/.gitignore",
+    ".direnv/.gitignore": importstr ".direnv/.gitignore",
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
     ".devcontainer/devcontainer.json": importstr ".devcontainer/devcontainer.json",
