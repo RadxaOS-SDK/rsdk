@@ -163,8 +163,8 @@ else
 |||
     blkid /dev/sda%(rootdev)d | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s / ext4 defaults 0 1\n" >> "%(temp_dir)s/fstab"
     blkid /dev/sda%(rootdev)d | grep "^UUID:" | cut -d " " -f 2 > "%(temp_dir)s/rootfs_uuid"
-    !sed -i "s/root=[^[:space:]]*/root=UUID=$(cat "%(temp_dir)s/rootfs_uuid")/g" "%(temp_dir)s/extlinux.conf"
-    !sed -i "s/$/ root=UUID=$(cat "%(temp_dir)s/rootfs_uuid")/g" "%(temp_dir)s/cmdline"
+    !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/(append[[:space:]]+)/append root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/extlinux.conf"
+    !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/^/root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/cmdline"
     copy-in "%(temp_dir)s/fstab" /etc/
     copy-in "%(temp_dir)s/extlinux.conf" /boot/extlinux/
     copy-in "%(temp_dir)s/cmdline" /etc/kernel/
@@ -175,7 +175,7 @@ else
 (if sdboot || product_firmware_type(product) == "edk2"
 then
 |||
-    !sed -i -E "s/(options[[:space:]]*)/\1root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" %(temp_dir)s/entries/*.conf
+    !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/(options[[:space:]]*)/options root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" %(temp_dir)s/entries/*.conf
     copy-in "%(temp_dir)s/entries" /boot/efi/loader/
 ||| % {
     temp_dir: temp_dir,
