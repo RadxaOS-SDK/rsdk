@@ -385,5 +385,14 @@
         "sector_size": [512, 4096],
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
+    },
+    {
+        "product": "radxa-dragon-q6a",
+        "product_name": "Radxa Dragon Q6A",
+        "product_full_name": "Radxa Dragon Q6A",
+        "soc": "qcs6490",
+        "sector_size": [512, 4096],
+        "supported_suite": ["noble"],
+        "supported_edition": ["kde"]
     }
 ]
