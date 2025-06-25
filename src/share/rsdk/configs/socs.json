@@ -68,5 +68,16 @@
         "soc_specific_repo": [
             "a527"
         ]
+    },
+    {
+        "soc_family": "dragon",
+        "partition_table_type": "gpt",
+        "firmware_type": "edk2",
+        "soc_list": [
+            "qcs6490"
+        ],
+        "soc_specific_repo": [
+            "qcs6490"
+        ]
     }
 ]
