@@ -153,6 +153,9 @@ main() {
 	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
 	export RSDK_OPTION_PURGE_BEFORE_UPDATE="${RSDK_OPTION_PURGE_BEFORE_UPDATE:-true}"
 
+	# `gh`` will block execution if stdout cannot fit all content
+	export GH_PAGER=
+
 	case "$BASE_NAME" in
 	"rsdk-infra-update")
 		echo "'$BASE_NAME' cannot be run directly." >&2
