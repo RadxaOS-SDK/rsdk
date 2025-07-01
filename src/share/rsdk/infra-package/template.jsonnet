@@ -14,6 +14,7 @@ local Makefile_u_boot = import "Makefile.u-boot.jsonnet";
 local changelog = import "debian/changelog.jsonnet";
 local control_linux = import "debian/control.linux.jsonnet";
 local control_u_boot = import "debian/control.u-boot.jsonnet";
+local control = import "debian/control.jsonnet";
 
 function(
     target,
@@ -83,5 +84,13 @@ then
         {}
     )
 else
-    {}
+    {
+    } + (if new_repo == true
+    then
+        {
+            "debian/control": control(target),
+        }
+    else
+        {}
+    )
 )
