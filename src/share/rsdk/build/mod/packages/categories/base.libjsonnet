@@ -113,6 +113,8 @@ else
             "libmraa2",
             "libmraa-dev",
             "libopencv-dev",
+            "foot-terminfo",
+            "kitty-terminfo",
         ],
 
         "customize-hooks"+:
