@@ -103,7 +103,7 @@ function(
                                 cp "$OLDPWD/pkgs.json" ./
                                 pandoc --from gfm --to html --standalone "$OLDPWD/README.md" --output index.html
                                 find . > files.list
-                                echo "pages=$(realpath .)" >> $GITHUB_OUTPUT
+                                echo "pages=$(realpath .)" | tee -a $GITHUB_OUTPUT
                             popd
 
                             popd

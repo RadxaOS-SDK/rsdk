@@ -87,7 +87,7 @@ function() std.manifestYamlDoc(
                         id: "artifacts_path",
                         shell: "bash",
                         run: |||
-                            echo "artifacts_path=$(realpath ..)" >> "$GITHUB_OUTPUT"
+                            echo "artifacts_path=$(realpath ..)" | tee -a "$GITHUB_OUTPUT"
                         |||,
                     },
                     {
@@ -109,10 +109,10 @@ function() std.manifestYamlDoc(
                             version="${version//\~/.}"
                             if [[ -n "$(git tag -l "$version")" ]]
                             then
-                                echo "distro=UNRELEASED" >> "$GITHUB_OUTPUT"
+                                echo "distro=UNRELEASED"
                             else
-                                echo "distro=$(dpkg-parsechangelog -S Distribution)" >> "$GITHUB_OUTPUT"
-                            fi
+                                echo "distro=$(dpkg-parsechangelog -S Distribution)"
+                            fi | tee -a "$GITHUB_OUTPUT"
                         |||,
                     },
                 ],
@@ -143,16 +143,18 @@ function() std.manifestYamlDoc(
                         run: |||
                             version="$(dpkg-parsechangelog -S Version)"
                             version="${version//\~/.}"
-                            echo "version=$version" >> $GITHUB_ENV
-                            echo "changes<<EOF" >> $GITHUB_ENV
-                            echo '```' >> $GITHUB_ENV
-                            echo "$(dpkg-parsechangelog -S Changes)" >> $GITHUB_ENV
-                            echo '```' >> $GITHUB_ENV
-                            echo "EOF" >> $GITHUB_ENV
-                            echo "$version" > VERSION
+                            {
+                                echo "version=$version"
+                                echo "changes<<EOF"
+                                echo '```'
+                                echo "$(dpkg-parsechangelog -S Changes)"
+                                echo '```'
+                                echo "EOF"
+                            } | tee -a "$GITHUB_ENV"
+                            echo "$version" | tee VERSION
                             if [[ -f pkg.conf.template ]]
                             then
-                                sed "s/VERSION/$version/g" pkg.conf.template > pkg.conf
+                                sed "s/VERSION/$version/g" pkg.conf.template | tee pkg.conf
                             fi
                         |||,
                     },
