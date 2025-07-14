@@ -16,8 +16,11 @@ update_repo() {
 		echo "Found existing repository. Updating..."
 		pushd "$OUTPUT"
 		if git remote show -n origin &>/dev/null; then
-			git fetch origin main
-			git pull origin main
+			if git fetch origin main; then
+				git pull origin main
+			else
+				echo "Remote repository does not have 'main' branch. Continue..."
+			fi
 		fi
 		popd
 	else
