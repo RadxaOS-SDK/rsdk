@@ -34,7 +34,7 @@ function(
             "cancel-in-progress": true,
         },
         jobs: {
-            build: {
+            "build-doc": {
                 "runs-on": "ubuntu-latest",
                 permissions: {
                     pages: "write",
