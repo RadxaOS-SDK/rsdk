@@ -41,6 +41,32 @@ function(
 	post_build:
 
 	#
+	# Documentation
+	#
+	.PHONY: serve
+	serve:
+		mdbook serve
+
+	.PHONY: serve_zh-CN
+	serve_zh-CN:
+		MDBOOK_BOOK__LANGUAGE=zh-CN mdbook serve -d book/zh-CN
+
+	PO_LOCALE := zh-CN
+	.PHONY: translate
+	translate:
+		MDBOOK_OUTPUT='{"xgettext": {"pot-file": "messages.pot"}}' mdbook build -d po
+		cd po; \
+		for i in $(PO_LOCALE); \
+		do \
+			if [ ! -f $$i.po ]; \
+			then \
+				msginit -l $$i --no-translator; \
+			else \
+				msgmerge --update $$i.po messages.pot; \
+			fi \
+		done
+
+	#
 	# Clean
 	#
 	.PHONY: distclean
