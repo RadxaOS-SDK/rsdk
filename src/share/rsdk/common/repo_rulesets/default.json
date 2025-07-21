@@ -29,7 +29,7 @@
         "max_entries_to_merge": 5,
         "min_entries_to_merge_wait_minutes": 5,
         "grouping_strategy": "HEADGREEN",
-        "check_response_timeout_minutes": 120
+        "check_response_timeout_minutes": 180
       }
     },
     {
