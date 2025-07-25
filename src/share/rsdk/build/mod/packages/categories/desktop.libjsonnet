@@ -57,8 +57,12 @@ function(suite,
 then
         [
             "firefox-esr",
-            "maliit-keyboard",
-        ]
+        ] +
+        if suite != "bullseye"
+        then
+            [ "maliit-keyboard", ]
+        else
+            []
 else if distro_check(suite) == "ubuntu"
 then
         [
