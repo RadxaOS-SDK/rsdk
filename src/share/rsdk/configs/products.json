@@ -367,5 +367,21 @@
         "soc": "a527",
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde"]
+    },
+    {
+        "product": "radxa-cubie-a7a",
+        "product_name": "Radxa Cubie A7A",
+        "product_full_name": "Radxa Cubie A7A",
+        "soc": "a733",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
+    },
+    {
+        "product": "radxa-cubie-a7z",
+        "product_name": "Radxa Cubie A7Z",
+        "product_full_name": "Radxa Cubie A7Z",
+        "soc": "a733",
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
     }
 ]
