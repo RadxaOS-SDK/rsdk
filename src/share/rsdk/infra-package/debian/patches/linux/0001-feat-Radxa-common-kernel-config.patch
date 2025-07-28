@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 972 ++++++++++++++++++++++++++++
- 1 file changed, 972 insertions(+)
+ src/arch/arm64/configs/radxa.config | 975 ++++++++++++++++++++++++++++
+ 1 file changed, 975 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,972 @@
+@@ -0,0 +1,975 @@
 +# KEYBOARD_GPIO_POLLED: Used by Radxa Zero 2's power button
 +CONFIG_KEYBOARD_GPIO_POLLED=m
 +
@@ -955,6 +955,10 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_USBIP_HOST=m
 +CONFIG_USBIP_VUDC=m
 +
++# Build serial 8280 as module
++# This also helps us to have consistent serial naming on Allwinner platform
++CONFIG_SERIAL_8250=m
++
 +# Prefer r8125-dkms
 +CONFIG_R8125=n
 +
@@ -986,7 +990,6 @@ index 000000000000..f5bca1bdaf69
 +
 +# Disable BCMDHD
 +CONFIG_BCMDHD=n
-+
 -- 
 2.47.1
 
