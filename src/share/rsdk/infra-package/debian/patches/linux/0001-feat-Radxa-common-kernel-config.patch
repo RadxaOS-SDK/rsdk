@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 979 ++++++++++++++++++++++++++++
- 1 file changed, 979 insertions(+)
+ src/arch/arm64/configs/radxa.config | 984 ++++++++++++++++++++++++++++
+ 1 file changed, 984 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,979 @@
+@@ -0,0 +1,984 @@
 +# KEYBOARD_GPIO_POLLED: Used by Radxa Zero 2's power button
 +CONFIG_KEYBOARD_GPIO_POLLED=m
 +
@@ -121,6 +121,8 @@ index 000000000000..f5bca1bdaf69
 +
 +# Enable network features
 +CONFIG_NET_EGRESS=y
++CONFIG_NETFILTER=y
++CONFIG_NETFILTER_ADVANCED=y
 +CONFIG_BRIDGE_NETFILTER=m
 +CONFIG_NF_CONNTRACK_PROCFS=y
 +CONFIG_NF_NAT_IPV6=y
@@ -954,6 +956,9 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_USBIP_VHCI_HCD=m
 +CONFIG_USBIP_HOST=m
 +CONFIG_USBIP_VUDC=m
++
++# Enable User namespace support
++CONFIG_USER_NS=y
 +
 +# Build serial 8280 as module
 +# This also helps us to have consistent serial naming on Allwinner platform
