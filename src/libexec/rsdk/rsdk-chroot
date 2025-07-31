@@ -97,7 +97,7 @@ main() {
 
 	case "$SCRIPT_NAME" in
 	rsdk-chroot)
-		sudo systemd-nspawn -D "$RSDK_TEMP" "$@"
+		sudo systemd-nspawn -D "$RSDK_TEMP" /usr/bin/bash -c "PATH=/usr/bin:/usr/sbin:/bin:/sbin bash"
 		;;
 	rsdk-install)
 		file="${1:-}"
@@ -105,8 +105,9 @@ main() {
 		case "$ext" in
 		deb)
 			sudo cp "$file" "$RSDK_TEMP"
-			sudo systemd-nspawn -D "$RSDK_TEMP" bash -c \
-				"if ! dpkg -i '/$(basename "$file")'; then
+			sudo systemd-nspawn -D "$RSDK_TEMP" /usr/bin/bash -c \
+				"export PATH=/usr/bin:/usr/sbin:/bin:/sbin;
+				if ! dpkg -i '/$(basename "$file")'; then
 					apt-get install -y --fix-missing --allow-downgrades || (
 						apt-get update;
 						apt-get install -y --fix-missing --fix-broken --allow-downgrades
@@ -115,7 +116,7 @@ main() {
 			;;
 		dtbo)
 			sudo cp "$file" "$RSDK_TEMP/boot/dtbo"
-			sudo systemd-nspawn -D "$RSDK_TEMP" u-boot-update
+			sudo systemd-nspawn -D "$RSDK_TEMP" /usr/bin/bash -c "PATH=/usr/bin:/usr/sbin:/bin:/sbin bash -c u-boot-update"
 			;;
 		dtb)
 			sudo find "$RSDK_TEMP/usr/lib/"linux-image-*/ -name "$(basename "$file")" -exec mv "{}" "{}.bak" \; -exec cp "$file" "{}" \;
