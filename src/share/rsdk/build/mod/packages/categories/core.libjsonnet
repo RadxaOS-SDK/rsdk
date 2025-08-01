@@ -1,6 +1,5 @@
 local distro_check = import "../../../../configs/distro_check.libjsonnet";
 local product_firmware_type = import "../../../../configs/product_firmware_type.libjsonnet";
-local suite_backports = import "../../suite_backports.libjsonnet";
 
 function(suite,
          product,
@@ -49,9 +48,9 @@ else
 (if suite == "bullseye"
 then
         [
-            "libnm0" % {suite_backports: suite_backports(suite),},
-            "network-manager" % {suite_backports: suite_backports(suite),},
-            "wpasupplicant" % {suite_backports: suite_backports(suite),},
+            "libnm0/bullseye-backports",
+            "network-manager/bullseye-backports",
+            "wpasupplicant/bullseye-backports",
 
         ]
 else

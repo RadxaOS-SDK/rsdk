@@ -1,6 +1,0 @@
-function(suite)
-    if suite == "bullseye"
-    then
-        "bookworm-updates"
-    else
-        suite
