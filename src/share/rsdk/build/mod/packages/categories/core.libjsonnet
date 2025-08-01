@@ -51,7 +51,6 @@ then
             "libnm0/bullseye-backports",
             "network-manager/bullseye-backports",
             "wpasupplicant/bullseye-backports",
-
         ]
 else
         [
