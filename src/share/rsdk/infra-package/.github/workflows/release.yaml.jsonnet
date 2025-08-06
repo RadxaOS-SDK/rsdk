@@ -131,7 +131,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Download generated debs",
-                        uses: "actions/download-artifact@v4",
+                        uses: "actions/download-artifact@v5",
                         with: {
                             name: "${{ github.event.repository.name }}",
                             path: ".artifacts",

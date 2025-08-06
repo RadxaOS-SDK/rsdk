@@ -128,7 +128,7 @@ function(
                     },
                     {
                         name: "Download Pages artifact",
-                        uses: "actions/download-artifact@v4",
+                        uses: "actions/download-artifact@v5",
                         with: {
                             name: "github-pages",
                         },
