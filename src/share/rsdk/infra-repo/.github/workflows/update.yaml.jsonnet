@@ -10,6 +10,11 @@ function(
                 ],
             },
             workflow_dispatch: {},
+            pull_request: {
+                paths: [
+                    ".github/workflows/update.yaml",
+                ]
+            },
         },
         permissions: {},
         concurrency: {
@@ -82,6 +87,7 @@ function(
                     },
                     {
                         name: "Commit package snapshot",
+                        "if": "github.event_name != 'pull_request'",
                         shell: "bash",
                         run: |||
                             pushd .infra-repo

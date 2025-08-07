@@ -15,12 +15,14 @@ function(
                 paths: [
                     "pkgs.json",
                     "pkgs.lock",
+                    ".github/workflows/build.yaml",
                 ],
             },
             pull_request: {
                 paths: [
                     "pkgs.json",
                     "pkgs.lock",
+                    ".github/workflows/build.yaml",
                 ]
             },
         },
