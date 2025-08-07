@@ -9,7 +9,7 @@ include /usr/share/dpkg/architecture.mk
 -include .github/local/rules.local
 
 %:
-	dh $@
+	dh $@ $(EXTRA_DH_OPTIONS)
 
 override_dh_builddeb:
 	dh_builddeb -- -Zxz
