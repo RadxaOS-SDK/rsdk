@@ -7,6 +7,7 @@ local README_md = import "README.md.jsonnet";
 local pkgs_lock = import "pkgs.lock.jsonnet";
 local update_yaml = import ".github/workflows/update.yaml.jsonnet";
 local build_yaml = import ".github/workflows/build.yaml.jsonnet";
+local install_sh = import "install.sh.jsonnet";
 
 function(
     target,
@@ -18,6 +19,7 @@ function(
 ) {
     "LICENSE": LICENSE(),
     "README.md": README_md(target, repo_org, pkg_org),
+    "install.sh": install_sh(target, repo_org, pkg_org),
     //"pkgs.lock": pkgs_lock(),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/CODEOWNERS": CODEOWNERS(),
