@@ -31,19 +31,20 @@ local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_defa
                 mv "$1/etc/apt/sources.list" "$1/etc/apt/sources.list.d/50-%(suite)s.list"
             ||| % {
                 suite: suite
-            },
-
+            }
+        ] + 
 (if suite == "bullseye"
 then
+        [
             |||
                 sed -i "s|https*://.*/|http://archive.debian.org/|" "$1/etc/apt/sources.list.d/50-%(suite)s-backports.list"
             ||| % {
                 suite: suite
             }
+        ]
 else
-            ""
+        []
 ),
-        ],
         suite+: suite,
     }
 };
