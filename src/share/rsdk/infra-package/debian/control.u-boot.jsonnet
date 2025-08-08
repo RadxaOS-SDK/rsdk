@@ -18,7 +18,6 @@ function(
                    libgnutls28-dev,
                    python3-pyelftools,
                    libncurses-dev,
-                   crossbuild-essential-arm64 [!arm64],
                    crossbuild-essential-armhf [!armhf],
                    crossbuild-essential-armel [!armel],
                    xxd,

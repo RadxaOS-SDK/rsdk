@@ -14,14 +14,10 @@ function(
                    bison,
                    bc,
                    libncurses-dev,
-                   crossbuild-essential-arm64 [!arm64],
-                   binfmt-support [!arm64],
-                   qemu-user-static [!arm64],
-                   libc6:arm64 [!arm64],
-                   libssl-dev:arm64,
+                   libssl-dev,
                    cpio,
-                   kmod:arm64,
-                   libyaml-dev:arm64,
+                   kmod,
+                   libyaml-dev,
                    rsync,
 
     Package: linux-image
