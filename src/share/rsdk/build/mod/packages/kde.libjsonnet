@@ -37,7 +37,6 @@ function(suite,
             "kwin-x11",
             "libkf5kdelibs4support5",
             "libkf5kdelibs4support5-bin",
-            "phonon4qt5-backend-gstreamer",
             "phonon4qt5settings",
             "plasma-discover",
             "plasma-nm",
@@ -85,6 +84,21 @@ then
         ]
 else
         []
+) +
+
+(if product_soc(product) == "a733"
+then
+        // Allwinner A733 GPU driver only support OpenGL ES,
+        // so use libqt5gui5-gles instead of libqt5gui5
+        // to make KDE use hardware acceleration, but it
+        // conflicts with phonon4qt5-backend-gstreamer's dependency
+        [
+            "libqt5gui5-gles",
+        ]
+else
+        [
+            "phonon4qt5-backend-gstreamer",
+        ]
 ),
     },
 } + (if suite == "bookworm"
