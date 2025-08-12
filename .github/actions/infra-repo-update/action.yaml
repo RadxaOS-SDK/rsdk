@@ -12,7 +12,7 @@ runs:
       id: query
       uses: RadxaOS-SDK/rsdk/.github/actions/query@main
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: RadxaOS-SDK/rsdk
         path: .tmp/rsdk

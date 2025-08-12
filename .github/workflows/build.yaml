@@ -37,7 +37,7 @@ jobs:
       products: ${{ steps.query.outputs.products }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Query available board configs
         id: query
         run: |
@@ -52,7 +52,7 @@ jobs:
         products: ${{ fromJSON(needs.query.outputs.products) }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Build ${{ matrix.products }}
         uses: ./.github/actions/build
         with:

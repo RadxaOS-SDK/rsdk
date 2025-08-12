@@ -43,7 +43,7 @@ function(
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v4",
+                        uses: "actions/checkout@v5",
                         with: {
                             "fetch-depth": 0,
                         },
