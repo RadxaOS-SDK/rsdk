@@ -56,6 +56,7 @@ function() std.manifestYamlDoc(
                         with: {
                             push: "never",
                             runCmd: |||
+                                set -euo pipefail
                                 sudo apt-get update
                                 sudo apt-get install --no-install-recommends -y git-buildpackage
                                 export DEBEMAIL="dev@radxa.com"
@@ -78,6 +79,7 @@ function() std.manifestYamlDoc(
                         with: {
                             push: "never",
                             runCmd: |||
+                                set -euo pipefail
                                 make deb
                             |||,
                         },

@@ -23,4 +23,5 @@ runs:
       with:
         push: never
         runCmd: |
+          set -euo pipefail
           src/bin/rsdk welcome
