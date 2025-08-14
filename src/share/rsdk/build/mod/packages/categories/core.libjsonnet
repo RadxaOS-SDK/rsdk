@@ -88,7 +88,7 @@ else
                 mkdir -p "$1/boot/efi"
                 mount -t tmpfs rsdk "$1/boot/efi"
             |||,
-(if suite == "bookworm" && (std.extVar("sdboot") || product_firmware_type(product) == "edk2")
+(if std.extVar("sdboot") || product_firmware_type(product) == "edk2"
 then
             |||
                 set -e
