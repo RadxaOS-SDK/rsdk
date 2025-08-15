@@ -47,6 +47,9 @@ update_repo() {
 				pushd "$OUTPUT/.."
 				gh repo create "$RSDK_TARGET_ORGANIZATION/$TARGET" --clone --public
 				popd
+				pushd "$OUTPUT"
+				git branch -m main
+				popd
 			fi
 			NEW_REPO="true"
 		fi
