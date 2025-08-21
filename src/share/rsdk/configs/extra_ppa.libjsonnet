@@ -1,0 +1,20 @@
+local product_soc = import "product_soc.libjsonnet";
+local soc_list = import "socs.json";
+
+function(product)
+  local soc = product_soc(product);
+  local matching_families = [
+    family
+    for family in soc_list
+    if std.member(family.soc_list, soc)
+  ];
+  
+  if std.length(matching_families) > 0 then
+    local family = matching_families[0];
+    
+    if std.objectHas(family, "extra_ppa") then
+      family.extra_ppa
+    else
+      []
+  else
+    []

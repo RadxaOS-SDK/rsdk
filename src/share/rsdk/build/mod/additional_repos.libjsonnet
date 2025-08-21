@@ -2,6 +2,7 @@ local soc_family = import "../../configs/soc_family.libjsonnet";
 local product_soc = import "../../configs/product_soc.libjsonnet";
 local soc_specific_repo = import "../../configs/soc_specific_repo.libjsonnet";
 local product_soc_family(product) = soc_family(product_soc(product));
+local extra_ppa = import "../../configs/extra_ppa.libjsonnet";
 local vscodium = import "vscodium.libjsonnet";
 
 local radxa_url(radxa_mirror) = (
@@ -74,6 +75,24 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                     suite: suite + radxa_repo_suffix,
                 },
         ],
+        "essential-hooks"+: [
+            |||
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get install -oDPkg::Chroot-Directory="$1" -y \
+                software-properties-common
+            |||
+        ] + (if std.length(extra_ppa(product)) > 0
+        then
+        [
+            |||
+                chroot $1 add-apt-repository -y -n "ppa:%(ppa)s"
+            ||| % {
+                ppa: ppa,
+            } for ppa in extra_ppa(product)
+        ]
+        else 
+            []
+        ),
         "customize-hooks"+: [
             |||
                 set -e
