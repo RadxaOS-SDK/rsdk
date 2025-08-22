@@ -80,6 +80,9 @@
         ],
         "soc_specific_repo": [
             "qcs6490"
+        ],
+        "extra_ppa": [
+            "ubuntu-qcom-iot/qcom-ppa"
         ]
     }
 ]
