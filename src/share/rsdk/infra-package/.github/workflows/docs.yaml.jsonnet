@@ -104,7 +104,7 @@ function(
                     },
                     {
                         name: "Upload artifact",
-                        uses: "actions/upload-pages-artifact@v3",
+                        uses: "actions/upload-pages-artifact@v4",
                         with: {
                             path: "./book/html",
                         },
