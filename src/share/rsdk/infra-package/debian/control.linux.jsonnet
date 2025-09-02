@@ -19,6 +19,7 @@ function(
                    kmod,
                    libyaml-dev,
                    rsync,
+                   zstd,
 
     Package: linux-image
     Architecture: all
