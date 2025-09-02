@@ -95,8 +95,17 @@ function(
 		--dch-opt=--upstream --commit --commit-msg="feat: release %%(version)s"
 
 	.PHONY: deb
-	deb: debian
+	deb: debian pre_debuild debuild post_debuild
+
+	.PHONY: pre_debuild
+	pre_debuild:
+
+	.PHONY: debuild
+	debuild:
 		$(CUSTOM_DEBUILD_ENV) debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags-from-file $(PWD)/debian/common-lintian-overrides -- %%p_%%v_*.changes" --no-sign -b
+
+	.PHONY: post_debuild
+	post_debuild:
 
 	.PHONY: release
 	release:
