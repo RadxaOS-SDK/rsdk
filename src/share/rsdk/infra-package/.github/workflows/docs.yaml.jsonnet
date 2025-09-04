@@ -49,34 +49,25 @@ function(
                         },
                     },
                     {
-                        name: "Setup mdBook",
-                        uses: "peaceiris/actions-mdbook@v2",
+                        name: "Install Nix",
+                        uses: "cachix/install-nix-action@v26",
+                    },
+                    {
+                        name: "Use cachix",
+                        uses: "cachix/cachix-action@v14",
                         with: {
-                            "mdbook-version": "latest",
+                            name: devenv,
                         },
                     },
                     {
-                        name: "Install mdbook plugins",
-                        shell: "bash",
-                        run: |||
-                            plugins=(
-                                mdbook-admonish
-                                mdbook-linkcheck
-                                mdbook-i18n-helpers
-                                mdbook-toc
-                                mdbook-cmdrun
-                            )
-                            for i in "${plugins[@]}"
-                            do
-                                cargo install "$i"
-                            done
-                        |||,
+                        name: "Install devenv.sh",
+                        run: "nix profile install nixpkgs#devenv",
                     },
                     {
                         name: "Build",
                         shell: "bash",
                         run: |||
-                            mdbook build
+                            devenv shell mdbook build
                             for po_lang in zh-CN
                             do
                                 POT_CREATION_DATE=$(grep --max-count 1 '^"POT-Creation-Date:' po/$po_lang.po | sed -E 's/".*: (.*)\\n"/\1/')
@@ -92,7 +83,7 @@ function(
                                 MDBOOK_BOOK__LANGUAGE=$po_lang \
                                 MDBOOK_OUTPUT__HTML__SITE_URL=/%(target)s/$po_lang/ \
                                 MDBOOK_OUTPUT__HTML__REDIRECT='{}' \
-                                mdbook build -d book/$po_lang
+                                devenv shell mdbook build -d book/$po_lang
                                 mv book/$po_lang/html book/html/$po_lang
                                 echo "::endgroup::"
                             done
