@@ -30,7 +30,7 @@ function(
                 steps: [
                     {
                         name: "Secret tests",
-                        uses: "actions/github-script@v7",
+                        uses: "actions/github-script@v8",
                         env: {
                             SECRETS: "${{ toJSON(secrets) }}",
                         },
