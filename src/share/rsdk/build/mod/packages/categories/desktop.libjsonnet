@@ -22,6 +22,7 @@ function(suite,
             "breeze-cursor-theme",
             "clinfo",
             "cups",
+            "firefox-esr",
             "fonts-noto-cjk",
             "fprintd",
             "fwupd",
@@ -55,13 +56,7 @@ function(suite,
 (if distro_check(suite) == "debian"
 then
         [
-            "firefox-esr",
             "maliit-keyboard",
-        ]
-else if distro_check(suite) == "ubuntu"
-then
-        [
-            "firefox",
         ]
 else
         []
