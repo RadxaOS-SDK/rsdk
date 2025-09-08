@@ -102,7 +102,12 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
         ]
         else 
             []
-        ),
+        ) + [
+            |||
+                APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                apt-get update -oDPkg::Chroot-Directory="$1"
+            |||,
+        ],
         "customize-hooks"+: [
             |||
                 set -e
