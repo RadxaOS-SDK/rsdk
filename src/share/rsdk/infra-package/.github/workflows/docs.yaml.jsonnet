@@ -54,7 +54,7 @@ function(
                     },
                     {
                         name: "Use cachix",
-                        uses: "cachix/cachix-action@v14",
+                        uses: "cachix/cachix-action@v16",
                         with: {
                             name: "devenv",
                         },
