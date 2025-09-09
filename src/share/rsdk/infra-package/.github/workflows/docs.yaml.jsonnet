@@ -50,7 +50,7 @@ function(
                     },
                     {
                         name: "Install Nix",
-                        uses: "cachix/install-nix-action@v26",
+                        uses: "cachix/install-nix-action@v31",
                     },
                     {
                         name: "Use cachix",
