@@ -3,8 +3,8 @@ local product_data = import "../../../configs/product_data.libjsonnet";
 local release_info = function(variant) if variant == "release"
 then
     {
-        name: "b${{ github.run_number }} (rsdk)",
-        tag_name: "rsdk-b${{ github.run_number }}",
+        name: "r${{ github.run_number }} (rsdk)",
+        tag_name: "rsdk-r${{ github.run_number }}",
         body_path: "README.md",
     }
 else if variant == "test"

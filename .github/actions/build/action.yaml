@@ -19,10 +19,10 @@ inputs:
     default: false
   timestamp:
     required: false
-    default: b${{ github.run_number }}
+    default: r${{ github.run_number }}
   tag_name:
     required: false
-    default: rsdk-b${{ github.run_number }}
+    default: rsdk-r${{ github.run_number }}
   override-kernel:
     required: false
   override-firmware:
