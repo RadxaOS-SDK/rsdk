@@ -36,6 +36,7 @@ else
             "binutils",
             "curl",
             "dmidecode",
+            "dosfstools",
             "eject",
             "exfat-fuse",
             "file",
