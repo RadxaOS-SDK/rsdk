@@ -78,7 +78,7 @@ else
             "alsa-utils",
         ] +
 
-(if suite == "bookworm"
+(if suite == "bookworm" || suite == "noble"
 then
         [
             "pipewire-audio",
