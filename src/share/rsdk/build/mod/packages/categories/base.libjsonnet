@@ -54,12 +54,20 @@ else
             "python3-pip",
             "software-properties-common",
             "tmux",
-            "util-linux-extra",
             "vim",
             "wget",
             "xz-utils",
             "zstd",
         ] +
+
+(if suite == "bookworm" || suite == "noble"
+then
+        [
+            "util-linux-extra",
+        ]
+else
+        []
+) +
 
         [
             // Network
