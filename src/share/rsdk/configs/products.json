@@ -378,6 +378,15 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "radxa-cubie-a7s",
+        "product_name": "Radxa Cubie A7S",
+        "product_full_name": "Radxa Cubie A7S",
+        "soc": "a733",
+        "sector_size": [512, 4096],
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "radxa-cubie-a7z",
         "product_name": "Radxa Cubie A7Z",
         "product_full_name": "Radxa Cubie A7Z",
