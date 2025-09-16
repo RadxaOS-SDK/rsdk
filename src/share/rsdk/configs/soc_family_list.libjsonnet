@@ -1,0 +1,13 @@
+local soc_list = import "socs.json";
+
+function(soc)
+  local matching_families = [
+    family
+    for family in soc_list
+    if std.member(family.soc_list, soc)
+  ];
+  
+  if std.length(matching_families) > 0 then
+    matching_families[0]
+  else
+    {}
