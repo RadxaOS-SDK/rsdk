@@ -1,5 +1,7 @@
 local distro_check = import "../../../../configs/distro_check.libjsonnet";
 local product_firmware_type = import "../../../../configs/product_firmware_type.libjsonnet";
+local product_soc = import "../../../../configs/product_soc.libjsonnet";
+local soc_install_recommends = import "../../../../configs/soc_install_recommends.libjsonnet";
 
 function(suite,
          product,
@@ -123,7 +125,7 @@ else
                 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew --allow-downgrades
             ||| % {
-                recommends: (if distro_check(suite) == "debian" && vendor_packages
+                recommends: (if soc_install_recommends(product_soc(product), suite) && vendor_packages
                     then
                         "--install-recommends"
                     else

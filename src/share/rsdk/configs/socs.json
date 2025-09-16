@@ -3,6 +3,9 @@
         "soc_family": "amlogic",
         "partition_table_type": "mbr",
         "firmware_type": "u-boot",
+        "soc_install_recommends": [
+            "bookworm"
+        ],
         "soc_list": [
             "a311d",
             "s905y2"
@@ -13,6 +16,10 @@
         "soc_family": "rockchip",
         "partition_table_type": "gpt",
         "firmware_type": "u-boot",
+        "soc_install_recommends": [
+            "bookworm",
+            "bullseye"
+        ],
         "soc_list": [
             "rk3308",
             "rk3308bs",
@@ -51,6 +58,9 @@
         "soc_family": "cix",
         "partition_table_type": "gpt",
         "firmware_type": "edk2",
+        "soc_install_recommends": [
+            "bookworm"
+        ],
         "soc_list": [
             "cd8180"
         ],
@@ -62,6 +72,9 @@
         "soc_family": "allwinner",
         "partition_table_type": "gpt",
         "firmware_type": "u-boot",
+        "soc_install_recommends": [
+            "bullseye"
+        ],
         "soc_list": [
             "a527",
             "a733"
@@ -75,6 +88,9 @@
         "soc_family": "qualcomm",
         "partition_table_type": "gpt",
         "firmware_type": "edk2",
+        "soc_install_recommends": [
+            "noble"
+        ],
         "soc_list": [
             "qcs6490"
         ],

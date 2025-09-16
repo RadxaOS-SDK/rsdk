@@ -1,0 +1,8 @@
+local soc_family_list = import "soc_family_list.libjsonnet";
+local soc_list = import "socs.json";
+
+function(soc, suite)
+  local family = soc_family_list(soc);
+
+  std.objectHas(family, "soc_install_recommends") &&
+  std.member(family.soc_install_recommends, suite)
