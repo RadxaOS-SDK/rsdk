@@ -49,23 +49,10 @@ function(suite,
             "sddm-theme-breeze",
             "sonnet-plugins",
             "systemsettings",
+            "task-kde-desktop",
             "yakuake",
             "xdg-desktop-portal-kde",
         ] +
-
-(if distro_check(suite) == "debian"
-then
-        [
-            "task-kde-desktop",
-        ]
-else if distro_check(suite) == "ubuntu"
-then
-        [
-            "kubuntu-desktop",
-        ]
-else
-        []
-) +
 
 (if suite != "focal"
 then
