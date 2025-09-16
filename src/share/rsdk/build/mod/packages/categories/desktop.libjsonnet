@@ -22,6 +22,7 @@ function(suite,
             "breeze-cursor-theme",
             "clinfo",
             "cups",
+            "desktop-base",
             "firefox-esr",
             "fonts-noto-cjk",
             "fprintd",
@@ -83,15 +84,6 @@ else
         [
             "xiccd",
         ]
-) + 
-
-(if suite != "noble"
-then
-        [
-            "desktop-base",
-        ]
-else
-        []
-),
+)
     },
 }
