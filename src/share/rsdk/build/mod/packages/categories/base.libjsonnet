@@ -43,6 +43,7 @@ else
             "gpg",
             "haveged",
             "htop",
+            "irqbalance",
             "lbzip2",
             "less",
             "locales",
