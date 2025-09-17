@@ -357,6 +357,7 @@
         "product_name": "Orion O6",
         "product_full_name": "Orion O6",
         "soc": "cd8180",
+        "sector_size": [512, 4096],
         "supported_suite": ["bookworm"],
         "supported_edition": ["gnome"]
     },
