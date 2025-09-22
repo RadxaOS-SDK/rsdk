@@ -113,7 +113,7 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_USB_CONFIGFS_F_UAC2=y
 +
 +# Enable additional input support
-+CONFIG_INPUT_JOYSTICK=y
++CONFIG_INPUT_SOC_BUTTON_ARRAY=m
 +CONFIG_INPUT_TABLET=y
 +
 +# Enable Device Tree overlay
