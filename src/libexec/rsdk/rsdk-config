@@ -57,6 +57,11 @@ main() {
 	2)
 		local RSDK_TEMP_JSON VALUE="$2"
 		RSDK_TEMP_JSON="$(mktemp)"
+
+		if ! [[ -f .rsdk.json ]]; then
+			echo "{}" > .rsdk.json
+		fi
+
 		jq -er --arg field "$FIELD" --arg value "$VALUE" 'setpath($field / "."; $value)' .rsdk.json >"$RSDK_TEMP_JSON"
 		mv "$RSDK_TEMP_JSON" .rsdk.json
 		;;
