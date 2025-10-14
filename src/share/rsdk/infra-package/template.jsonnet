@@ -24,7 +24,6 @@ function(
     git_rev,
     new_repo,
 ) {
-    "LICENSE": LICENSE(),
     ".devenv/.gitignore": importstr ".devenv/.gitignore",
     ".direnv/.gitignore": importstr ".direnv/.gitignore",
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
@@ -37,7 +36,6 @@ function(
     ".github/workflows/release.yaml": release_yaml(),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
     "debian/compat": importstr "debian/compat",
-    "debian/copyright": copyright(target),
     "debian/rules": importstr "debian/rules",
     "debian/common-lintian-overrides": importstr "debian/common-lintian-overrides",
     ".envrc": importstr ".envrc",
@@ -48,8 +46,10 @@ function(
 } + (if new_repo == true
 then
     {
+        "LICENSE": LICENSE(),
         "debian/.gitignore": importstr "debian/.gitignore",
         "debian/changelog": changelog(target),
+        "debian/copyright": copyright(target),
         "debian/source/format": importstr "debian/source/format",
         ".github/CODEOWNERS": CODEOWNERS(),
         ".gitignore": importstr ".gitignore",
