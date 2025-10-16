@@ -85,7 +85,7 @@ else
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
-                rsetup radxa-bootutils python-is-python3 initramfs-tools
+                rsetup radxa-bootutils python-is-python3 initramfs-tools zstd
 
                 mkdir -p "$1/boot/efi"
                 mount -t tmpfs rsdk "$1/boot/efi"

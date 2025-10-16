@@ -58,7 +58,6 @@ else
             "vim",
             "wget",
             "xz-utils",
-            "zstd",
         ] +
 
 (if suite == "bookworm" || suite == "noble"
