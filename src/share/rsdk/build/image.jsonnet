@@ -42,7 +42,6 @@ then
     part-set-bootable /dev/sda 2 true
     part-add /dev/sda primary 679936 -34
     part-set-bootable /dev/sda 3 true
-    part-set-gpt-guid /dev/sda 3 8300
 |||
 else
 |||
