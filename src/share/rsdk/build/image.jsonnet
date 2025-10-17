@@ -53,6 +53,7 @@ else
 then
 |||
     part-set-gpt-type /dev/sda 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B
+    part-set-gpt-type /dev/sda 3 0FC63DAF-8483-4772-8E79-3D69D8477DE4
     part-set-gpt-attributes /dev/sda 2 4
     part-set-gpt-attributes /dev/sda 3 4
 |||
