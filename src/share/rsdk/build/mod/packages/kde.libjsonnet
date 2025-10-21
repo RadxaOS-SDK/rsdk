@@ -89,7 +89,7 @@ else
         ]
 ),
     },
-} + (if suite == "bookworm"
+} + (if suite == "bookworm" || suite == "noble"
 then
     // Debian 12's sddm has issue handling screen hotplug, as well as screen wake up
     // https://applink.feishu.cn/client/message/link/open?token=AmY%2FRdMxxQABZoS475OOwAQ%3D
