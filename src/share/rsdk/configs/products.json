@@ -388,6 +388,15 @@
         "supported_edition": ["kde"]
     },
     {
+        "product": "radxa-a733",
+        "product_name": "Generic A733 Image",
+        "product_full_name": "Generic A733 Image for Radxa products",
+        "soc": "a733",
+        "sector_size": [512, 4096],
+        "supported_suite": ["bullseye"],
+        "supported_edition": ["kde"]
+    },
+    {
         "product": "radxa-dragon-q6a",
         "product_name": "Radxa Dragon Q6A",
         "product_full_name": "Radxa Dragon Q6A",
