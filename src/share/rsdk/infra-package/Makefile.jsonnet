@@ -10,6 +10,7 @@ function(
 
 	PROJECT ?= %(target)s
 	CUSTOM_DEBUILD_ENV ?= DEB_BUILD_OPTIONS='parallel=1'
+	CUSTOM_DEBUILD_ARG ?=
 
 	.DEFAULT_GOAL := all
 	.PHONY: all
@@ -102,7 +103,7 @@ function(
 
 	.PHONY: debuild
 	debuild:
-		$(CUSTOM_DEBUILD_ENV) debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags-from-file $(PWD)/debian/common-lintian-overrides -- %%p_%%v_*.changes" --no-sign -b
+		$(CUSTOM_DEBUILD_ENV) debuild --no-lintian --lintian-hook "lintian --fail-on error,warning --suppress-tags-from-file $(PWD)/debian/common-lintian-overrides -- %%p_%%v_*.changes" --no-sign -b $(CUSTOM_DEBUILD_ARG)
 
 	.PHONY: post_debuild
 	post_debuild:
