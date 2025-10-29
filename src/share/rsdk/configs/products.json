@@ -404,5 +404,14 @@
         "sector_size": [512, 4096],
         "supported_suite": ["noble"],
         "supported_edition": ["kde"]
+    },
+    {
+        "product": "radxa-airbox-q900",
+        "product_name": "Radxa AIRbox Q900",
+        "product_full_name": "Radxa AIRbox Q900",
+        "soc": "qcs9075",
+        "sector_size": [512, 4096],
+        "supported_suite": ["noble"],
+        "supported_edition": ["kde"]
     }
 ]
