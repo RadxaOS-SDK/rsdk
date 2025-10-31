@@ -21,6 +21,7 @@
         "direnv",
         "devenv"
       ],
+      "useAttributePath": true,
       "extraNixConfig": [
         "experimental-features = nix-command flakes",
         // Uncomment below to speed up container building in China
