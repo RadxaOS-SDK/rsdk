@@ -92,10 +92,12 @@
             "noble"
         ],
         "soc_list": [
-            "qcs6490"
+            "qcs6490",
+            "qcs9075"
         ],
         "soc_specific_repo": [
-            "qcs6490"
+            "qcs6490",
+            "qcs9075"
         ],
         "extra_ppa": [
             "ubuntu-qcom-iot/qcom-ppa"
