@@ -19,6 +19,7 @@ function(suite,
         [
             "task-gnome-desktop",
             "malcontent",
+            "cracklib-runtime",
         ],
     },
 }
