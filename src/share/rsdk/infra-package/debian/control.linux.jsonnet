@@ -46,8 +46,7 @@ function(
     Architecture: all
     Section: kernel
     Priority: optional
-    Provides: linux-libc-dev
-    Depends: linux-libc-dev-${binary:Version}-%(fork)s,
+    Depends: linux-libc-dev (= ${binary:Version}),
              ${misc:Depends},
     Description: Radxa Linux libc-dev meta-package for new product
      This is the meta-package for Linux libc-dev.
