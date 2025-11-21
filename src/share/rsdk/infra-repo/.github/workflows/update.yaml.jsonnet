@@ -45,7 +45,7 @@ function(
                     },
                     {
                         name: "Checkout rsdk",
-                        uses: "actions/checkout@v5",
+                        uses: "actions/checkout@v6",
                         with: {
                             repository: "RadxaOS-SDK/rsdk",
                             ref: "%(git_rev)s" % {git_rev: git_rev},
@@ -53,7 +53,7 @@ function(
                     },
                     {
                         name: "Checkout current repo",
-                        uses: "actions/checkout@v5",
+                        uses: "actions/checkout@v6",
                         with: {
                             path: ".infra-repo",
                             token: "${{secrets.GIT_PUSH_TOKEN}}",
