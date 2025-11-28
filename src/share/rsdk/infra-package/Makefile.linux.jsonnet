@@ -22,6 +22,8 @@ function(
 				KERNELRELEASE=$(shell dpkg-parsechangelog -S Version)-$(KERNEL_FORK) \
 				KDEB_PKGVERSION=$(shell dpkg-parsechangelog -S Version)
 
+	post_build_dep: arm64_crossbuild_dep
+
 	#
 	# Build
 	#
