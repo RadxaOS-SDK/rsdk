@@ -65,9 +65,9 @@ else
         []
 ) +
 
-(if suite == "bookworm"
+(if suite == "bookworm" || suite == "noble"
 then
-        // Install Debian 12 packages
+        // Install kwin-wayland for bookworm and noble
         [
             "plasma-workspace-wayland",
             "qml-module-org-kde-pipewire",
