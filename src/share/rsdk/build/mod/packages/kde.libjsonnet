@@ -71,6 +71,7 @@ then
         [
             "plasma-workspace-wayland",
             "qml-module-org-kde-pipewire",
+            "mesa-vulkan-drivers",
         ]
 else
         []
