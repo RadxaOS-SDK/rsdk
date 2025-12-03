@@ -89,12 +89,13 @@ Requires `systemd-nspawn` (provided by `systemd-container` package in Debian).
 
 ## Supported target type
 
-* Raw block devices (i.e. ordinary disks)
+* Raw block device (i.e. ordinary disk)
 * System image file
   * Requires `kpartx` (provided by `multipath-tools` package in Debian)
+* Existing rootfs directory
 
 Following distributions may be used in addition to `rsdk` image:
-* `debox-radxa` image
+* `debos-radxa` image
 * `rbuild` image
 * `rsdk` image
 * `Armbian` image

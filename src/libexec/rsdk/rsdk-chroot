@@ -63,7 +63,7 @@ main() {
 		disk="${disk%p*}p"
 	fi
 
-	if [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
+	if [[ ! -d $disk ]] && [[ ! -b $disk ]] && [[ $disk != /dev/mapper/loop* ]]; then
 		error "$EXIT_NOT_BLOCK_DEVICE" "$disk"
 	fi
 
@@ -91,6 +91,9 @@ main() {
 	elif [[ -b "$disk"1 ]]; then
 		# old armbian image
 		sudo mount "$disk"1 "$RSDK_TEMP"
+	elif [[ -d $disk ]]; then
+		# actually a rootfs directory
+		sudo mount --bind "$disk" "$RSDK_TEMP"
 	else
 		error "$EXIT_BLKDEV_NO_ROOTDEV" "$disk"
 	fi

@@ -61,11 +61,12 @@ _rsdk_chroot_completions() {
 	case "$COMP_CWORD" in
 	2)
 		local i suggestions=()
-		for i in out/*/output.img \
-			"${COMP_WORDS[COMP_CWORD]%/}"/out/*/output.img \
-			"${COMP_WORDS[COMP_CWORD]%/}"/*/output.img \
-			"${COMP_WORDS[COMP_CWORD]%/}"/output.img; do
-			if [[ -f $i ]]; then
+		for i in \
+			out/*/{output.img,rootfs/} \
+			"${COMP_WORDS[COMP_CWORD]%/}"/out/*/{output.img,rootfs/} \
+			"${COMP_WORDS[COMP_CWORD]%/}"/*/{output.img,rootfs/} \
+			"${COMP_WORDS[COMP_CWORD]%/}"/{output.img,rootfs/}; do
+			if [[ -f "$i" ]] || [[ -d "$i" ]]; then
 				suggestions+=("$i")
 			fi
 		done
