@@ -91,6 +91,9 @@ generate_rootfs() {
 		mkdir -p "$RSDK_TEMP/debs"
 	fi
 
+	# Copy additional helpers
+	cp -R "$SCRIPT_DIR/../../libexec/rsdk/build/." "$RSDK_TEMP/build"
+
 	jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/rootfs.jsonnet" -o "$RSDK_TEMP/rootfs.json"
 	if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 		cat "$RSDK_TEMP/rootfs.json"

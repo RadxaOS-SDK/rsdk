@@ -26,6 +26,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                 set -e
                 mkdir -p "$1/srv/"
                 cp -R "%(temp_dir)s/debs/." "$1/srv/local-apt-repository"
+                cp -R "%(temp_dir)s/build/." "$1/"
                 cd "$1/srv/local-apt-repository"
                 apt-ftparchive packages . > ./Packages
                 apt-ftparchive -o "APT::FTPArchive::Release::Origin=local-apt-repository" release . > ./Release
@@ -120,6 +121,7 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                 rm "$1/etc/apt/sources.list.d/99-local-apt-repository.list"
                 rm "$1/srv/local-apt-repository/Packages"
                 rm "$1/srv/local-apt-repository/Release"
+                rm "$1"/fixup-*
             |||,
         ],
     }

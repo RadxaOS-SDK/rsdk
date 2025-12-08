@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+#
+# This is a debug helper script to fix up
+# apt sources from interrupted rsdk build.
+#
+# It can be safely removed from a normal system.
+#
+
+apt update
+apt install -y curl
+
+keyring="$(mktemp)"
+version="$(curl -L https://github.com/radxa-pkg/radxa-archive-keyring/releases/latest/download/VERSION)"
+curl -L --output "$keyring" \
+	"https://github.com/radxa-pkg/radxa-archive-keyring/releases/latest/download/radxa-archive-keyring_${version}_all.deb"
+dpkg -i "$keyring"
+rm -f "$keyring"
+
+sed -i 's|^deb|deb [signed-by="/usr/share/keyrings/radxa-archive-keyring.gpg"]|g' "$1"/etc/apt/sources.list.d/*-radxa*.list
+echo "deb [trusted=yes] file:///srv/local-apt-repository ./" >"/etc/apt/sources.list.d/99-local-apt-repository.list"
+
+apt update

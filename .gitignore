@@ -22,3 +22,7 @@
 
 # Local rsdk config
 .rsdk.json
+
+# Log files
+/*.log
+/wget-log*
