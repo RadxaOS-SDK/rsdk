@@ -11,6 +11,7 @@
         "supported_suites": [
             "bullseye",
             "bookworm",
+            "trixie",
             "sid"
         ]
     },
@@ -22,7 +23,6 @@
             "noble"
         ],
         "supported_suites": [
-            "jammy",
             "noble"
         ]
     }
