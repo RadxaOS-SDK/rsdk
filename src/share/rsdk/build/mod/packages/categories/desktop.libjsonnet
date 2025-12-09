@@ -86,6 +86,21 @@ else
         [
             "xiccd",
         ]
+) +
+(if suite == "bookworm"
+then
+        // Using the latest GPU user level driver, 
+        // can avoid memory leaks in certain scenarios.
+        [
+            "mesa-va-drivers/bookworm-backports",
+            "mesa-vdpau-drivers/bookworm-backports",
+            "mesa-vulkan-drivers/bookworm-backports",
+            "libegl-mesa0/bookworm-backports",
+            "libgl1-mesa-dri/bookworm-backports",
+            "libglx-mesa0/bookworm-backports",
+        ]
+else
+        []
 )
     },
 }
