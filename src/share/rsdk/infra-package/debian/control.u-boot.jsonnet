@@ -40,7 +40,7 @@ function(
              ${misc:Depends},
     Section: admin
     Priority: optional
-    Description: Radxa U-Boot meta-package for new product.
+    Description: Radxa U-Boot meta-package for new product
      This package provides the prebuilt U-Boot for new product.
 ||| % {
     target: target,
