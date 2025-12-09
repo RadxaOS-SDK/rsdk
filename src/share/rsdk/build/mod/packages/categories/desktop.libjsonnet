@@ -72,9 +72,11 @@ else
         []
 ) + 
 
-(if suite == "bookworm"
+(if suite != "bullseye"
 then
-        // Install Debian 12 packages
+        // Due to incomplete support, 
+        // Debian 11 does not install software packages 
+        // related to Wayland and PipeWire
         [
             "wayland-utils",
             "gstreamer1.0-pipewire",
