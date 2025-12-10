@@ -5,7 +5,7 @@
         "product_full_name": "Radxa Cubie A5E",
         "soc": "a527",
         "supported_suite": ["bullseye"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["kde", "cli"]
     },
     {
         "product": "radxa-a733",

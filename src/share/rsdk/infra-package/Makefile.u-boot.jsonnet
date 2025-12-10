@@ -45,6 +45,7 @@ function(
 	.PHONY: clean
 	clean: clean-deb
 		if [ "$(SUPPORT_CLEAN)" = "true" ]; then $(UMAKE) clean; fi
+		rm -rf $(DIR-OUTPUT)
 
 	.PHONE: clean-build
 	clean-build:
