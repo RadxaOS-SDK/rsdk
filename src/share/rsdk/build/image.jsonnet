@@ -6,6 +6,15 @@ then
 else
     2
 );
+// part_size unit is MiB
+local efi_part_end_sector_internal(part_size, start_sector, sector_size) =
+    (part_size * 1024 * 1024 / sector_size) + start_sector - 1;
+local efi_part_end_sector(efi_boot, start_sector, sector_size) = (if efi_boot
+then
+    efi_part_end_sector_internal(1024, start_sector, sector_size)
+else
+    efi_part_end_sector_internal(300, start_sector, sector_size)
+);
 
 function(
     output = "output.img",
@@ -23,7 +32,7 @@ function(
     !echo "Image generation started at $(date)."
     echo "Allocating image file..."
     !rm -f "%(output)s"
-    disk-create "%(output)s" raw 9G
+    disk-create "%(output)s" raw 10G
     add-drive "%(output)s" format:raw discard:besteffort blocksize:%(sector_size)d
     run
 
@@ -38,11 +47,14 @@ function(
 (if efi
 then
 |||
-    part-add /dev/sda primary 65536 679935
+    part-add /dev/sda primary 65536 %(efi_part_end_sector)d
     part-set-bootable /dev/sda 2 true
-    part-add /dev/sda primary 679936 -34
+    part-add /dev/sda primary %(root_part_start_sector)d -34
     part-set-bootable /dev/sda 3 true
-|||
+||| % {
+    efi_part_end_sector: efi_part_end_sector(sdboot || product_firmware_type(product) == "edk2", 65536, sector_size),
+    root_part_start_sector: efi_part_end_sector(sdboot || product_firmware_type(product) == "edk2", 65536, sector_size) + 1,
+}
 else
 |||
     part-add /dev/sda primary 65536 -34
