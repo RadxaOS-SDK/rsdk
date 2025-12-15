@@ -30,6 +30,9 @@ Build RadxaOS system image.
     -d | --debug
         Enable debug output. This will also build rootfs into a folder for easier
         examination.
+    --dry-run
+        Generate all build metadatas into a temporary folder and exit. The temporary
+        folder path will be printed to standard output.
     -T | --test-repo
         Build using Radxa APT test archives.
     -m | --mirror <mirror_url>

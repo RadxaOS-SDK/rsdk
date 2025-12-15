@@ -27,10 +27,6 @@ prepare_keyrings() {
 }
 
 generate_rootfs() {
-	local RSDK_TEMP
-	RSDK_TEMP="$(mktemp -d "/tmp/rsdk.${PRODUCT}_${SUITE}_${EDITION}.XXXXXXXX")"
-	# Need the temp folder to be viewable for apt-key to access
-	chmod 0755 "$RSDK_TEMP"
 	if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 		echo "rsdk temp dir: $RSDK_TEMP"
 	fi
@@ -98,6 +94,11 @@ generate_rootfs() {
 	if [[ $RSDK_OPTION_DEBUG == "true" ]]; then
 		cat "$RSDK_TEMP/rootfs.json"
 	fi
+
+	if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
+		return
+	fi
+
 	# Everything in $OUTPUT will be removed, so we cannot generate build-image first
 	sudo bdebstrap "${BDEBSTRAP_ARGS[@]}" -c "$RSDK_TEMP/rootfs.json" --name "$OUTPUT" --force
 
@@ -108,43 +109,47 @@ generate_rootfs() {
 		fi
 	done
 	cp -R "$RSDK_TEMP/debs/." "$OUTPUT/debs"
-
-	rm -rf "$RSDK_TEMP"
 }
 
 generate_image() {
+	local JSONNET_ARGS=(
+		"-S"
+		"--tla-str" "product=${RSDK_OPTION_PRODUCT_OVERRIDE:-$PRODUCT}"
+	)
+
+	if [[ -n ${RSDK_OPTION_EFI} ]]; then
+		JSONNET_ARGS+=("--tla-code" "efi=$RSDK_OPTION_EFI")
+	fi
+
+	if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
+		JSONNET_ARGS+=("--tla-str" "rootfs=$RSDK_OPTION_ROOTFS")
+	fi
+
+	if [[ -n ${RSDK_OPTION_IMAGE_NAME} ]]; then
+		JSONNET_ARGS+=("--tla-str" "output=$RSDK_OPTION_IMAGE_NAME")
+	fi
+
+	if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
+		JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
+	fi
+
+	if [[ -n $RSDK_OPTION_SECTOR_SIZE ]]; then
+		JSONNET_ARGS+=("--tla-code" "sector_size=$RSDK_OPTION_SECTOR_SIZE")
+	fi
+
+	if [[ -n ${SUITE} ]]; then
+		JSONNET_ARGS+=("--tla-str" "suite=$SUITE")
+	fi
+
+	jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image.jsonnet" -o "$RSDK_TEMP/build-image"
+	chmod +x "$RSDK_TEMP/build-image"
+
+	if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
+		return
+	fi
+
 	if [[ ! -e "$OUTPUT/build-image" ]]; then
-		local JSONNET_ARGS=(
-			"-S"
-			"--tla-str" "product=${RSDK_OPTION_PRODUCT_OVERRIDE:-$PRODUCT}"
-		)
-
-		if [[ -n ${RSDK_OPTION_EFI} ]]; then
-			JSONNET_ARGS+=("--tla-code" "efi=$RSDK_OPTION_EFI")
-		fi
-
-		if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
-			JSONNET_ARGS+=("--tla-str" "rootfs=$RSDK_OPTION_ROOTFS")
-		fi
-
-		if [[ -n ${RSDK_OPTION_IMAGE_NAME} ]]; then
-			JSONNET_ARGS+=("--tla-str" "output=$RSDK_OPTION_IMAGE_NAME")
-		fi
-
-		if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
-			JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
-		fi
-
-		if [[ -n $RSDK_OPTION_SECTOR_SIZE ]]; then
-			JSONNET_ARGS+=("--tla-code" "sector_size=$RSDK_OPTION_SECTOR_SIZE")
-		fi
-
-		if [[ -n ${SUITE} ]]; then
-			JSONNET_ARGS+=("--tla-str" "suite=$SUITE")
-		fi
-
-		jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image.jsonnet" -o "$OUTPUT/build-image"
-		chmod +x "$OUTPUT/build-image"
+		cp "$RSDK_TEMP/build-image" "$OUTPUT/build-image"
 	fi
 
 	pushd "$OUTPUT"
@@ -168,7 +173,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:s:" -l "no-efi,help,debug,test-repo,mirror:,image-name:,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:s:" -l "no-efi,help,debug,dry-run,test-repo,mirror:,image-name:,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -188,6 +193,7 @@ main() {
 	local RSDK_OPTION_LOCAL_APT_ARCHIVE="${RSDK_OPTION_LOCAL_APT_ARCHIVE:-}"
 	local RSDK_OPTION_SYSTEMD_BOOT="${RSDK_OPTION_SYSTEMD_BOOT:-false}"
 	local RSDK_OPTION_SECTOR_SIZE="${RSDK_OPTION_SECTOR_SIZE:-512}"
+	local RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
 
 	while true; do
 		TEMP="$1"
@@ -202,6 +208,9 @@ main() {
 		-d | --debug)
 			RSDK_OPTION_DEBUG="true"
 			RSDK_OPTION_ROOTFS="rootfs"
+			;;
+		--dry-run)
+			RSDK_OPTION_DRY_RUN="true"
 			;;
 		-T | --test-repo)
 			RSDK_OPTION_REPO_SUFFIX="-test"
@@ -290,11 +299,23 @@ main() {
 		sudo rm -rf "$OUTPUT/$RSDK_OPTION_ROOTFS"
 	fi
 
+	local RSDK_TEMP
+	RSDK_TEMP="$(mktemp -d "/tmp/rsdk.${PRODUCT}_${SUITE}_${EDITION}.XXXXXXXX")"
+	# Need the temp folder to be viewable for apt-key to access
+	chmod 0755 "$RSDK_TEMP"
+
 	if [[ ! -e "$OUTPUT/$RSDK_OPTION_ROOTFS" ]]; then
 		generate_rootfs
 	fi
 
 	generate_image
+
+	if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
+		echo "Dry run enabled. You can find generated files under '$RSDK_TEMP'."
+		return
+	else
+		rm -rf "$RSDK_TEMP"
+	fi
 }
 
 main "$@"
