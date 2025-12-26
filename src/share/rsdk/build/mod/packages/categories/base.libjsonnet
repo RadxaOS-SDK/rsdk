@@ -59,7 +59,7 @@ else
             "xz-utils",
         ] +
 
-(if suite == "bookworm" || suite == "noble"
+(if suite != "bullseye"
 then
         [
             "util-linux-extra",
@@ -87,7 +87,7 @@ else
             "alsa-utils",
         ] +
 
-(if suite == "bookworm" || suite == "noble"
+(if suite != "bullseye"
 then
         [
             "pipewire-audio",
