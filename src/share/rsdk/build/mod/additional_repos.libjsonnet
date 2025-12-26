@@ -77,13 +77,17 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                     suite: suite + radxa_repo_suffix,
                 },
         ],
-        "essential-hooks"+: [
+        "essential-hooks"+: (if suite != "trixie"
+        then
+        [
             |||
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 software-properties-common
             |||
-        ] + (if distro_check(suite) == "ubuntu"
+        ]else
+                []
+        ) + (if distro_check(suite) == "ubuntu"
             then
                 [
                     |||
