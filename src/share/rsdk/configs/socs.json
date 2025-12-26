@@ -4,13 +4,16 @@
         "partition_table_type": "mbr",
         "firmware_type": "u-boot",
         "soc_install_recommends": [
-            "bookworm"
+            "trixie"
         ],
         "soc_list": [
             "a311d",
             "s905y2"
         ],
-        "soc_specific_repo": []
+        "soc_specific_repo": [
+            "a311d",
+            "s905y2"
+        ]
     },
     {
         "soc_family": "rockchip",
