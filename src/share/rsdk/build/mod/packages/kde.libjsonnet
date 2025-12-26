@@ -28,7 +28,6 @@ function(suite,
             "kde-config-screenlocker",
             "kde-config-sddm",
             "kdeconnect",
-            "khotkeys",
             "kinfocenter",
             "kio-extras",
             "konqueror",
@@ -36,10 +35,6 @@ function(suite,
             "kscreen",
             "kup-backup",
             "kwin-x11",
-            "libkf5kdelibs4support5",
-            "libkf5kdelibs4support5-bin",
-            "phonon4qt5-backend-vlc",
-            "phonon4qt5settings",
             "plasma-discover",
             "plasma-nm",
             "powerdevil",
@@ -55,15 +50,24 @@ function(suite,
             "xdg-desktop-portal-kde",
         ] +
 
-(if suite != "focal"
+(if suite != "trixie"
 then
+        // Debian 13 KDE uses Qt 6,
+        // These packages will be useless.
         [
             "kde-config-systemd",
+            "khotkeys",
+            "libkf5kdelibs4support5",
+            "libkf5kdelibs4support5-bin",
+            "phonon4qt5-backend-vlc",
+            "phonon4qt5settings",
         ]
 else
         []
 ) +
 
+// In Debian 13, plasma-workspace-wayland has been merged into plasma-workspace, 
+// qml6-module-org-kde-pipewire is also a dependency of plasma-workspace and has been automatically installed.
 (if suite == "bookworm" || suite == "noble"
 then
         // Install kwin-wayland for bookworm and noble
@@ -84,10 +88,14 @@ then
         [
             "libqt5gui5-gles",
         ]
-else
+else if suite != "trixie"
+then
+        // Debian 13 KDE uses Qt 6, and phonon4qt6 no longer supports GStreamer backend.
         [
             "phonon4qt5-backend-gstreamer",
         ]
+else
+        []
 ),
     },
 } + (if suite != "bullseye"
