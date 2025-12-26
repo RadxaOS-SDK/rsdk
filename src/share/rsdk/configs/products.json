@@ -4,7 +4,7 @@
         "product_name": "Radxa ZERO 2PRO",
         "product_full_name": "Radxa ZERO 2 PRO",
         "soc": "a311d",
-        "supported_suite": ["bookworm"],
+        "supported_suite": ["trixie"],
         "supported_edition": ["kde"]
     },
     {
@@ -12,7 +12,7 @@
         "product_name": "Radxa ZERO",
         "product_full_name": "Radxa ZERO",
         "soc": "s905y2",
-        "supported_suite": ["bookworm"],
+        "supported_suite": ["trixie"],
         "supported_edition": ["kde"]
     },
     {
