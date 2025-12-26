@@ -114,17 +114,13 @@ else
         [
             // Radxa
             "android-tools-adbd",
+            "libreelec-alsa-utils",
             "radxa-otgutils",
         ] +
 
 (if suite != "trixie"
 then
         // These packages are not compatible with Debian 13
-        [
-            // Radxa
-            "libreelec-alsa-utils",
-        ] +
-
         [
             // Misc
             "libmraa2",
