@@ -118,10 +118,20 @@ else
             "radxa-otgutils",
         ] +
 
+(if suite != "trixie"
+then
+        // These packages are not compatible with Debian 13
         [
             // Misc
             "libmraa2",
             "libmraa-dev",
+        ]
+else
+        []
+) +
+
+        [
+            // Misc
             "libopencv-dev",
             "foot-terminfo",
             "kitty-terminfo",
