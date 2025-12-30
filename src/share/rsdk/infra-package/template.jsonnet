@@ -53,6 +53,7 @@ then
         "debian/source/format": importstr "debian/source/format",
         ".github/CODEOWNERS": CODEOWNERS(),
         ".gitignore": importstr ".gitignore",
+        "pkg.conf.template": importstr "pkg.conf.template",
     }
 else
     {}
