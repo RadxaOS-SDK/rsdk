@@ -51,13 +51,21 @@ When it is run without any argument, `rsdk-tui` will be run instead.
 └───────────────────────────────────────────┘
 ```
 
-4. Select `Yes` to start the build process.  
-   `rsdk-tui` will then run the associated CLI commands to complete the task:
+4. Confirm and start the build.  
+   `rsdk-tui` will first optionally ask whether you want to change APT mirrors
+   (Radxa radxa-deb mirror and Debian/Ubuntu mirror). If you select **No**,
+   default mirrors will be used. If you select **Yes**, TUI will guide you to
+   choose mirrors and then run the associated CLI commands (equivalent to
+   passing `-M`/`-m` to `rsdk build`) to complete the task:
 
 ```bash
 ┌─────────────────┤ RSDK ├──────────────────┐
 │                                           │
-│ Are you sure to build for 'rock-5b-6_1'?  │
+│ Are you sure to build with:               │
+│                                           │
+│ Product: rock-5b-6_1                      │
+│ Radxa mirror: https://mirrors.example/r…  │
+│ Debian/Ubuntu mirror: https://mirrors…    │
 │                                           │
 │                                           │
 │          <Yes>             <No>           │
