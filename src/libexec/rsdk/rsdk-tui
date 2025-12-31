@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-__rsdk_build() {
-	local product
-
+__rsdk_select_product() {
 	radiolist_init
 	local products=() i
 	mapfile -t products < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "products" ""
@@ -10,15 +8,104 @@ __rsdk_build() {
 		radiolist_add "$i" "OFF"
 	done
 	if ! radiolist_show "Please select a product:" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	PRODUCT_SELECTED="$(radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}")"
+	return 0
+}
+
+__rsdk_select_radxa_mirror() {
+	radiolist_init
+	local mirrors=(
+		"default|Use official Radxa repository"
+		"https://mirrors.aghost.cn/radxa-deb|mirrors.aghost.cn (radxa-deb)"
+		"https://mirrors.lzu.edu.cn/radxa-deb|mirrors.lzu.edu.cn (radxa-deb)"
+		"https://mirrors.hust.edu.cn/radxa-deb|mirrors.hust.edu.cn (radxa-deb)"
+		"https://mirrors.sdu.edu.cn/radxa-deb|mirrors.sdu.edu.cn (radxa-deb)"
+		"https://mirror.nju.edu.cn/radxa-deb|mirror.nju.edu.cn (radxa-deb)"
+		"https://mirror.nyist.edu.cn/radxa-deb|mirror.nyist.edu.cn (radxa-deb)"
+	)
+
+	local i value label
+	local values=()
+	for i in "${mirrors[@]}"; do
+		value="${i%%|*}"
+		label="${i#*|}"
+		values+=("$value")
+		radiolist_add "$label" "OFF"
+	done
+
+	if ! radiolist_show "Select Radxa APT mirror (radxa-deb):" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	RADXA_MIRROR_SELECTED="${values[${RTUI_RADIOLIST_STATE_NEW[0]}]}"
+	return 0
+}
+
+__rsdk_select_distro_mirror() {
+	radiolist_init
+	local mirrors=(
+		"default|Use default Debian/Ubuntu mirror"
+		"https://mirrors.ustc.edu.cn|mirrors.ustc.edu.cn"
+		"https://mirrors.tuna.tsinghua.edu.cn|mirrors.tuna.tsinghua.edu.cn"
+		"https://mirrors.lzu.edu.cn|mirrors.lzu.edu.cn"
+		"https://mirrors.hust.edu.cn|mirrors.hust.edu.cn"
+		"https://mirrors.sdu.edu.cn|mirrors.sdu.edu.cn"
+		"https://mirror.nju.edu.cn|mirror.nju.edu.cn"
+		"https://mirror.nyist.edu.cn|mirror.nyist.edu.cn"
+	)
+
+	local i value label
+	local values=()
+	for i in "${mirrors[@]}"; do
+		value="${i%%|*}"
+		label="${i#*|}"
+		values+=("$value")
+		radiolist_add "$label" "OFF"
+	done
+
+	if ! radiolist_show "Select Debian/Ubuntu mirror (optional):" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	DISTRO_MIRROR_SELECTED="${values[${RTUI_RADIOLIST_STATE_NEW[0]}]}"
+	return 0
+}
+
+__rsdk_build() {
+	local PRODUCT_SELECTED RADXA_MIRROR_SELECTED DISTRO_MIRROR_SELECTED
+
+	if ! __rsdk_select_product; then
 		return
 	fi
-	product="$(radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}")"
 
-	if ! yesno "Are you sure to build for '$product'?"; then
+	# Ask user whether to change APT mirrors first
+	if yesno "Do you want to change APT mirrors?\n\nIf you select No, default mirrors will be used."; then
+		__rsdk_select_radxa_mirror || true
+		__rsdk_select_distro_mirror || true
+	fi
+
+	local summary="Product: $PRODUCT_SELECTED"
+	if [[ -n ${RADXA_MIRROR_SELECTED:-} && $RADXA_MIRROR_SELECTED != default ]]; then
+		summary+=$'\nRadxa mirror: '$RADXA_MIRROR_SELECTED
+	fi
+	if [[ -n ${DISTRO_MIRROR_SELECTED:-} && $DISTRO_MIRROR_SELECTED != default ]]; then
+		summary+=$'\nDebian/Ubuntu mirror: '$DISTRO_MIRROR_SELECTED
+	fi
+
+	if ! yesno "Are you sure to build with:\n\n$summary"; then
 		return
 	fi
 
-	rsdk build "$product"
+	local cmd=(rsdk build)
+	if [[ -n ${RADXA_MIRROR_SELECTED:-} && $RADXA_MIRROR_SELECTED != default ]]; then
+		cmd+=("-M" "$RADXA_MIRROR_SELECTED")
+	fi
+	if [[ -n ${DISTRO_MIRROR_SELECTED:-} && $DISTRO_MIRROR_SELECTED != default ]]; then
+		cmd+=("-m" "$DISTRO_MIRROR_SELECTED")
+	fi
+	cmd+=("$PRODUCT_SELECTED")
+
+	"${cmd[@]}"
 }
 
 __rsdk_about() {

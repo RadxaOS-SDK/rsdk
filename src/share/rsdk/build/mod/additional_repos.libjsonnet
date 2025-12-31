@@ -7,14 +7,16 @@ local distro_check = import "../../configs/distro_check.libjsonnet";
 local vscodium = import "vscodium.libjsonnet";
 
 local radxa_url(radxa_mirror) = (
-    if radxa_mirror == ""
+    local default_host = "https://radxa-repo.github.io";
+    local base = if radxa_mirror == "" then default_host else radxa_mirror;
+    if std.endsWith(base, "/radxa-deb")
     then
-        "https://radxa-repo.github.io/"
+        base + "/"
     else
-        radxa_mirror
+        base + "/radxa-deb/"
 );
 
-function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium) {
+function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium, use_pkgs_json = true) {
     mmdebstrap+: {
         packages+: [
             "radxa-archive-keyring",
@@ -40,43 +42,78 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
             ||| % {
                 temp_dir: temp_dir,
             },
-        ] + (if soc_specific_repo(product_soc(product))
-        then
+        ]
+        + (if soc_specific_repo(product_soc(product))
+            then
+                if use_pkgs_json then
+                    [
+                        |||
+                            echo deb %(radxa_url)s%(product_soc)s-%(suite)s %(product_soc)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc)s.list"
+                            wget -O "$1/etc/rsdk/80-radxa-%(product_soc)s.pkgs.json" %(radxa_url)s%(product_soc)s-%(suite)s/pkgs.json
+                        ||| % {
+                                radxa_url: radxa_url(radxa_mirror),
+                                suite: suite + radxa_repo_suffix,
+                                product_soc: product_soc(product),
+                            }
+                    ]
+                else
+                    [
+                        |||
+                            echo deb %(radxa_url)s%(product_soc)s-%(suite)s %(product_soc)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc)s.list"
+                        ||| % {
+                                radxa_url: radxa_url(radxa_mirror),
+                                suite: suite + radxa_repo_suffix,
+                                product_soc: product_soc(product),
+                            }
+                    ]
+            else
+                if use_pkgs_json then
+                    [
+                        |||
+                            echo deb %(radxa_url)s%(suite)s %(product_soc_family)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc_family)s.list"
+                            wget -O "$1/etc/rsdk/80-radxa-%(product_soc_family)s.pkgs.json" %(radxa_url)s%(suite)s/pkgs.json
+                        ||| % {
+                                radxa_url: radxa_url(radxa_mirror),
+                                suite: suite + radxa_repo_suffix,
+                                product_soc_family: product_soc_family(product),
+                            }
+                    ]
+                else
+                    [
+                        |||
+                            echo deb %(radxa_url)s%(suite)s %(product_soc_family)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc_family)s.list"
+                        ||| % {
+                                radxa_url: radxa_url(radxa_mirror),
+                                suite: suite + radxa_repo_suffix,
+                                product_soc_family: product_soc_family(product),
+                            }
+                    ]
+        )
+        + (if use_pkgs_json then
             [
                 |||
-                    echo deb %(radxa_url)s%(product_soc)s-%(suite)s %(product_soc)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc)s.list"
-                    wget -O "$1/etc/rsdk/80-radxa-%(product_soc)s.pkgs.json" %(radxa_url)s%(product_soc)s-%(suite)s/pkgs.json
+                    echo deb %(radxa_url)s%(suite)s %(suite)s main > "$1/etc/apt/sources.list.d/70-radxa.list"
+                    wget -O "$1/etc/rsdk/70-radxa.pkgs.json" %(radxa_url)s%(suite)s/pkgs.json
                 ||| % {
-                    radxa_url: radxa_url(radxa_mirror),
-                    suite: suite + radxa_repo_suffix,
-                    product_soc: product_soc(product),
-                }
+                            radxa_url: radxa_url(radxa_mirror),
+                            suite: suite + radxa_repo_suffix,
+                        },
+                'curl -L -o "$1/etc/radxa_apt_snapshot" %(radxa_url)s%(suite)s/pkgs.json'
+                    % {
+                            radxa_url: radxa_url(radxa_mirror),
+                            suite: suite + radxa_repo_suffix,
+                        },
             ]
         else
             [
                 |||
-                    echo deb %(radxa_url)s%(suite)s %(product_soc_family)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc_family)s.list"
-                    wget -O "$1/etc/rsdk/80-radxa-%(product_soc_family)s.pkgs.json" %(radxa_url)s%(suite)s/pkgs.json
+                    echo deb %(radxa_url)s%(suite)s %(suite)s main > "$1/etc/apt/sources.list.d/70-radxa.list"
                 ||| % {
-                    radxa_url: radxa_url(radxa_mirror),
-                    suite: suite + radxa_repo_suffix,
-                    product_soc_family: product_soc_family(product),
-                }
+                            radxa_url: radxa_url(radxa_mirror),
+                            suite: suite + radxa_repo_suffix,
+                        },
             ]
-        ) + [
-            |||
-                echo deb %(radxa_url)s%(suite)s %(suite)s main > "$1/etc/apt/sources.list.d/70-radxa.list"
-                wget -O "$1/etc/rsdk/70-radxa.pkgs.json" %(radxa_url)s%(suite)s/pkgs.json
-            ||| % {
-                    radxa_url: radxa_url(radxa_mirror),
-                    suite: suite + radxa_repo_suffix,
-                },
-            'curl -L -o "$1/etc/radxa_apt_snapshot" %(radxa_url)s%(suite)s/pkgs.json'
-                % {
-                    radxa_url: radxa_url(radxa_mirror),
-                    suite: suite + radxa_repo_suffix,
-                },
-        ],
+        ),
         "essential-hooks"+: [
             |||
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \

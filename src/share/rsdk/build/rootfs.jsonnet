@@ -27,8 +27,9 @@ function(
     linux_override = "",
     firmware_override = "",
     install_vscodium = false,
+    use_pkgs_json = true,
 ) distro(suite, distro_mirror, architecture)
-+ additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium)
++ additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium, use_pkgs_json)
 + packages(suite, edition, product, temp_dir, vendor_packages, linux_override, firmware_override)
 + cleanup()
 + {
@@ -108,6 +109,7 @@ function(
         linux_override: linux_override,
         firmware_override: firmware_override,
         install_vscodium: install_vscodium,
+        use_pkgs_json: use_pkgs_json,
         sdboot: std.extVar("sdboot"),
     },
 }
