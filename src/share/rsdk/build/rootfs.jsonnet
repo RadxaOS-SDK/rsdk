@@ -14,6 +14,7 @@ function(
     rsdk_rev = "",
 
     distro_mirror = "",
+    snapshot_timestamp = "",
 
     radxa_mirror = "",
     radxa_repo_suffix = "",
@@ -28,7 +29,7 @@ function(
     firmware_override = "",
     install_vscodium = false,
     use_pkgs_json = true,
-) distro(suite, distro_mirror, architecture)
+) distro(suite, distro_mirror, architecture, snapshot_timestamp)
 + additional_repos(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vscodium, use_pkgs_json)
 + packages(suite, edition, product, temp_dir, vendor_packages, linux_override, firmware_override)
 + cleanup()
