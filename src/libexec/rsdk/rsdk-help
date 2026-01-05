@@ -39,7 +39,7 @@ Build RadxaOS system image.
         Specify custom Debian / Ubuntu archive mirror URL.
     --snapshot <timestamp>
         Build using Debian / Ubuntu snapshot archive.
-        A timestamp needs to be provided. Ex: 20260105T082626Z.
+        A timestamp is required. Ex: 20260105T082626Z.
         This is incompatible with '-m | --mirror <mirror_url>'.
     -M <mirror_url>
         Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
