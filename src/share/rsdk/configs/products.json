@@ -337,7 +337,7 @@
         "soc": "qcs6490",
         "sector_size": [512, 4096],
         "supported_suite": ["noble"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["gnome"]
     },
     {
         "product": "radxa-airbox-q900",
@@ -346,6 +346,6 @@
         "soc": "qcs9075",
         "sector_size": [512, 4096],
         "supported_suite": ["noble"],
-        "supported_edition": ["kde"]
+        "supported_edition": ["gnome"]
     }
 ]
