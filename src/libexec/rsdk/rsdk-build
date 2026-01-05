@@ -292,6 +292,13 @@ main() {
 		return 1
 	fi
 
+	# If '--snapshot' and '-m | --mirror' switch on at the same time, exit
+	# with error because they are not compatible
+	if [ "$RSDK_OPTION_SNAPSHOT_TIMESTAMP" ] && [ "$RSDK_OPTION_DISTRO_MIRROR" ]; then
+		echo "Options '--snapshot' and '-m | --mirror' are not compatible." >&2
+		return 1
+	fi
+
 	SUITE="${2:-$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).supported_suite[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
 	EDITION="${3:-$(jq -er --arg product "$PRODUCT" '.[] | select(.product == $product).supported_edition[0]' "$SCRIPT_DIR/../../share/rsdk/configs/products.json")}"
 	local OUTPUT="$PWD/out/${PRODUCT}_${SUITE}_${EDITION}"
