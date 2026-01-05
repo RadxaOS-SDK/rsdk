@@ -12,12 +12,12 @@ local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_defa
                 distro_mirror_default
             else
                 distro_mirror)
-                + "/" +
+                +
             (if distro == "ubuntu" && architecture != "amd64"
             then
-                distro + "-ports"
+                "-ports"
             else
-                distro),
+                ""),
         ],
         "setup-hooks"+: [
             |||
@@ -26,7 +26,7 @@ local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_defa
                 # backports archive
                 head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-backports/" > "$1/etc/apt/sources.list.d/50-%(suite)s-backports.list"
                 # security archive
-                head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-security/" -e "s|/debian |/debian-security |" > "$1/etc/apt/sources.list.d/50-%(suite)s-security.list"
+                head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-security/" -e "s|/debian([ /])|/debian-security\1|" > "$1/etc/apt/sources.list.d/50-%(suite)s-security.list"
                 # main archive
                 mv "$1/etc/apt/sources.list" "$1/etc/apt/sources.list.d/50-%(suite)s.list"
             ||| % {
@@ -54,7 +54,7 @@ local distro_debian(
     distro_mirror,
     architecture,
     distro = "debian",
-) = distro_base(suite, distro_mirror, distro, architecture, "https://deb.debian.org") + {
+) = distro_base(suite, distro_mirror, distro, architecture, "https://deb.debian.org/debian") + {
     mmdebstrap+: {
         components+: std.prune([
             "contrib",
@@ -69,7 +69,7 @@ local distro_ubuntu(
     distro_mirror,
     architecture,
     distro = "ubuntu",
-) = distro_base(suite, distro_mirror, distro, architecture, "http://ports.ubuntu.com") + {
+) = distro_base(suite, distro_mirror, distro, architecture, "http://ports.ubuntu.com/ubuntu") + {
     mmdebstrap+: {
         components+: [
             "restricted",
