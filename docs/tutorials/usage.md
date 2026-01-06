@@ -51,13 +51,79 @@ When it is run without any argument, `rsdk-tui` will be run instead.
 └───────────────────────────────────────────┘
 ```
 
-4. Select `Yes` to start the build process.  
-   `rsdk-tui` will then run the associated CLI commands to complete the task:
+4. Decide whether to configure package mirrors (optional).  
+   Before starting the actual build, `rsdk-tui` will ask whether you want to
+   configure alternative package mirrors (Radxa radxa-deb mirror and
+   Debian/Ubuntu mirror). If you select **No**, default mirrors will be used
+   and the build will proceed directly to confirmation. If you select **Yes**,
+   TUI will guide you to choose mirrors (including selecting the default
+   entries). If you cancel during mirror selection, the wizard will return to
+   this question so you can decide again:
+
+```bash
+┌─────────────────┤ RSDK ├──────────────────┐
+│ Do you want to configure alternative      │
+│ package mirror?                           │
+│                                           │
+│          <Yes>             <No>           │
+│                                           │
+└───────────────────────────────────────────┘
+```
+
+If you choose **Yes**, you will be guided to select the Radxa APT mirror:
+
+```bash
+┌─────────────────┤ RSDK ├──────────────────┐
+│ Select Radxa APT mirror (radxa-deb):      │
+│                                           │
+│  (*) Use official Radxa repository        │
+│  ( ) mirrors.aghost.cn (radxa-deb)        │
+│  ( ) mirrors.lzu.edu.cn (radxa-deb)       │
+│  ( ) mirrors.hust.edu.cn (radxa-deb)      │
+│  ( ) mirrors.sdu.edu.cn (radxa-deb)       │
+│  ( ) mirror.nju.edu.cn (radxa-deb)        │
+│  ( ) mirror.nyist.edu.cn (radxa-deb)      │
+│                                           │
+│         <Ok>             <Cancel>         │
+│                                           │
+└───────────────────────────────────────────┘
+```
+
+Then select an optional Debian/Ubuntu mirror (or keep the default):
+
+```bash
+┌─────────────────┤ RSDK ├──────────────────┐
+│ Select Debian/Ubuntu mirror (optional):   │
+│                                           │
+│  (*) Use default Debian/Ubuntu mirror     │
+│  ( ) mirrors.ustc.edu.cn                  │
+│  ( ) mirrors.tuna.tsinghua.edu.cn         │
+│  ( ) mirrors.lzu.edu.cn                   │
+│  ( ) mirrors.hust.edu.cn                  │
+│  ( ) mirrors.sdu.edu.cn                   │
+│  ( ) mirror.nju.edu.cn                    │
+│  ( ) mirror.nyist.edu.cn                  │
+│                                           │
+│         <Ok>             <Cancel>         │
+│                                           │
+└───────────────────────────────────────────┘
+```
+
+5. Confirm and start the build.  
+   After mirrors (if any) are configured, `rsdk-tui` will show a summary of the
+   selected product and mirrors. This corresponds to the final CLI command that
+   will be executed (equivalent to passing `-M`/`-m` to `rsdk build` when
+   mirrors are set). Review the summary carefully and choose **Yes** to start
+   the build, or **No** to go back:
 
 ```bash
 ┌─────────────────┤ RSDK ├──────────────────┐
 │                                           │
-│ Are you sure to build for 'rock-5b-6_1'?  │
+│ Are you sure to build with:               │
+│                                           │
+│ Product: rock-5b-6_1                      │
+│ Radxa mirror: https://mirrors.example/r…  │
+│ Debian/Ubuntu mirror: https://mirrors…    │
 │                                           │
 │                                           │
 │          <Yes>             <No>           │

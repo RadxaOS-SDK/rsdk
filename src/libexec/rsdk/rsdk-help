@@ -53,6 +53,8 @@ $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type 
         Override the default firmware profile. Ex: latest, rknext, etc.
     -p | --override-product
         Override the default product profile. Ex: rock-4se, radxa-zero, etc
+    -P | --no-pkgs-json
+        Skip downloading and embedding Radxa pkgs.json metadata into the image.
     --no-vendor-packages
         Do not install the vendor package specified in product profile.
     --debs <debs_dir>
