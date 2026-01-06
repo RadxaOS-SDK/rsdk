@@ -53,6 +53,10 @@ generate_rootfs() {
 		JSONNET_ARGS+=("--tla-str" "distro_mirror=$RSDK_OPTION_DISTRO_MIRROR")
 	fi
 
+	if [[ -n ${RSDK_OPTION_SNAPSHOT_TIMESTAMP} ]]; then
+		JSONNET_ARGS+=("--tla-str" "snapshot_timestamp=$RSDK_OPTION_SNAPSHOT_TIMESTAMP")
+	fi
+
 	if [[ -n ${RSDK_OPTION_RADXA_MIRROR} ]]; then
 		JSONNET_ARGS+=("--tla-str" "radxa_mirror=$RSDK_OPTION_RADXA_MIRROR")
 	fi
