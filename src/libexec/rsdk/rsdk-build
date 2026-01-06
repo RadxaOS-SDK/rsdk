@@ -73,6 +73,10 @@ generate_rootfs() {
 		JSONNET_ARGS+=("--tla-code" "vendor_packages=$RSDK_OPTION_VENDOR_PACKAGES")
 	fi
 
+	if [[ -n $RSDK_OPTION_PKGS_JSON ]]; then
+		JSONNET_ARGS+=("--tla-code" "use_pkgs_json=$RSDK_OPTION_PKGS_JSON")
+	fi
+
 	if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
 		JSONNET_ARGS+=("--ext-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
 	fi
@@ -173,7 +177,7 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hdTm:M:i:k:f:p:s:" -l "no-efi,help,debug,dry-run,test-repo,mirror:,image-name:,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdPTm:M:i:k:f:p:s:" -l "no-efi,help,debug,dry-run,no-pkgs-json,test-repo,mirror:,image-name:,no-cache,override-kernel:,override-firmware:,override-product:,no-vendor-packages,debs:,sdboot,sector-size:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -194,6 +198,7 @@ main() {
 	local RSDK_OPTION_SYSTEMD_BOOT="${RSDK_OPTION_SYSTEMD_BOOT:-false}"
 	local RSDK_OPTION_SECTOR_SIZE="${RSDK_OPTION_SECTOR_SIZE:-512}"
 	local RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
+	local RSDK_OPTION_PKGS_JSON="${RSDK_OPTION_PKGS_JSON:-true}"
 
 	while true; do
 		TEMP="$1"
@@ -209,6 +214,9 @@ main() {
 			RSDK_OPTION_DEBUG="true"
 			RSDK_OPTION_ROOTFS="rootfs"
 			;;
+		-P | --no-pkgs-json)
+			RSDK_OPTION_PKGS_JSON="false"
+			;;
 		--dry-run)
 			RSDK_OPTION_DRY_RUN="true"
 			;;
@@ -221,6 +229,7 @@ main() {
 			;;
 		-M)
 			RSDK_OPTION_RADXA_MIRROR="$1"
+			RSDK_OPTION_PKGS_JSON="false"
 			shift
 			;;
 		-i | --image-name)
