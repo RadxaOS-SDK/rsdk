@@ -53,6 +53,10 @@ function(
 		$(KMAKE) bindeb-pkg
 		mv linux-*_arm64.deb linux-upstream*_arm64.changes linux-upstream*_arm64.buildinfo ../
 
+	.PHONY: build-dtbs
+	build-dtbs: $(SRC-KERNEL)
+		$(KMAKE) defconfig dtbs
+
 	#
 	# Clean
 	#
