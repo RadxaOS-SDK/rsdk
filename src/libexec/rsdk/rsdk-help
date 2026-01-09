@@ -37,6 +37,10 @@ Build RadxaOS system image.
         Build using Radxa APT test archives.
     -m | --mirror <mirror_url>
         Specify custom Debian / Ubuntu archive mirror URL.
+    --snapshot <timestamp>
+        Build using Debian / Ubuntu snapshot archive.
+        A timestamp is required. Ex: 20260105T082626Z.
+        This is incompatible with '-m | --mirror <mirror_url>'.
     -M <mirror_url>
         Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
         serve both Radxa archives as well as any other 3rd party archives.
