@@ -87,6 +87,7 @@ else
             "xiccd",
         ]
 ) +
+
 (if suite == "bookworm"
 then
         // Using the latest GPU user level driver, 
@@ -98,6 +99,16 @@ then
             "libegl-mesa0/bookworm-backports",
             "libgl1-mesa-dri/bookworm-backports",
             "libglx-mesa0/bookworm-backports",
+        ]
+else
+        []
+) +
+
+(if suite == "trixie"
+then
+        [
+            "gstreamer1.0-gtk4",
+            "gstreamer1.0-qt6",
         ]
 else
         []

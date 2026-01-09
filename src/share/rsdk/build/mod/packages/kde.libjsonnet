@@ -40,8 +40,6 @@ function(suite,
             "powerdevil",
             "print-manager",
             "qtvirtualkeyboard-plugin",
-            "qml-module-org-kde-newstuff",
-            "qml-module-qt-labs-platform",
             "sddm-theme-breeze",
             "sonnet-plugins",
             "systemsettings",
@@ -61,6 +59,8 @@ then
             "libkf5kdelibs4support5-bin",
             "phonon4qt5-backend-vlc",
             "phonon4qt5settings",
+            "qml-module-org-kde-newstuff",
+            "qml-module-qt-labs-platform",
         ]
 else
         []
