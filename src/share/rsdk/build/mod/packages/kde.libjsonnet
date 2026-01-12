@@ -21,9 +21,12 @@ function(suite,
         packages+:
         [
             "accountwizard",
+            "ark",
             "bluedevil",
             "dragonplayer",
+            "gwenview",
             "kamera",
+            "kcalc"
             "kde-config-plymouth",
             "kde-config-screenlocker",
             "kde-config-sddm",
