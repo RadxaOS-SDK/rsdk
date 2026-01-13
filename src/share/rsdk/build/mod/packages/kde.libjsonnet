@@ -26,7 +26,7 @@ function(suite,
             "dragonplayer",
             "gwenview",
             "kamera",
-            "kcalc"
+            "kcalc",
             "kde-config-plymouth",
             "kde-config-screenlocker",
             "kde-config-sddm",
