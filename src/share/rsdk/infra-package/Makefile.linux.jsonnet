@@ -36,10 +36,6 @@ function(
 	build-defconfig: $(SRC-KERNEL)
 		$(KMAKE) $(KERNEL_DEFCONFIG)
 
-	.PHONY: build-dtbs
-	build-dtbs: $(SRC-KERNEL)
-		$(KMAKE) dtbs
-
 	.PHONY: build-modules
 	build-modules: $(SRC-KERNEL)
 		$(KMAKE) modules
