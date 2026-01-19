@@ -96,14 +96,6 @@
         "supported_edition": ["kde"]
     },
     {
-        "product": "rock-pi-n10",
-        "product_name": "ROCK Pi N10",
-        "product_full_name": "ROCK Pi N10",
-        "soc": "rk3399pro",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["kde"]
-    },
-    {
         "product": "radxa-rk3528",
         "product_name": "Generic RK3528 Image",
         "product_full_name": "Generic RK3528 Image for Radxa products",
@@ -123,22 +115,6 @@
         "product": "radxa-cm3-rpi-cm4-io",
         "product_name": "Radxa CM3 RPI CM4 IO",
         "product_full_name": "Radxa ROCK 3 Compute Module with Raspberry Pi Compute Module 4 IO Board",
-        "soc": "rk3566",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
-    },
-    {
-        "product": "radxa-cm3-sodimm-io",
-        "product_name": "Radxa CM3S IO",
-        "product_full_name": "Radxa CM3S IO Board",
-        "soc": "rk3566",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
-    },
-    {
-        "product": "radxa-e23",
-        "product_name": "Radxa E23",
-        "product_full_name": "Radxa E23 Dual Ethernet Carrier Board",
         "soc": "rk3566",
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
