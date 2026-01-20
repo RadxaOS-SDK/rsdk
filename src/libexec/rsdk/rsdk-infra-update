@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 update_repo() {
 	local TARGET="${1}"
 	local OUTPUT="$PWD/out/infra/$TARGET"
@@ -20,6 +18,7 @@ update_repo() {
 		if git remote show -n origin &>/dev/null; then
 			if git fetch origin main; then
 				git pull origin main
+				git submodule update
 			else
 				echo "Remote repository does not have 'main' branch. Continue..."
 			fi
