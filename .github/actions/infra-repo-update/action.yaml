@@ -21,16 +21,28 @@ runs:
           GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: |
-        if [[ "${{ inputs.test-repo }}" == "true" ]]
-        then
-          repo_suffix="-test"
-        else
+        if [[ -f pkg.conf.template ]]; then
+          if [[ "${{ inputs.test-repo }}" == "true" ]]
+          then
+            grep_arg=""
+          else
+            grep_arg="-v"
+          fi
           repo_suffix=""
-        fi
+          supported_distros=()
+          mapfile -t supported_distros < <(jq -er '."*".Releases[]' pkg.conf.template | grep "$grep_arg" -- -test)
+        else
+          if [[ "${{ inputs.test-repo }}" == "true" ]]
+          then
+            repo_suffix="-test"
+          else
+            repo_suffix=""
+          fi
 
-        repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
-        supported_distros=()
-        mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+          repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
+          supported_distros=()
+          mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+        fi
 
         for distro in "${supported_distros[@]}"
         do
