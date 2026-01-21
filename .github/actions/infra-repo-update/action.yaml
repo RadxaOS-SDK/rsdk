@@ -22,15 +22,14 @@ runs:
       shell: bash
       run: |
         if [[ -f pkg.conf.template ]]; then
-          if [[ "${{ inputs.test-repo }}" == "true" ]]
+          grep_arg=()
+          if [[ "${{ inputs.test-repo }}" != "true" ]]
           then
-            grep_arg=""
-          else
-            grep_arg="-v"
+            grep_arg+=("-v")
           fi
           repo_suffix=""
           supported_distros=()
-          mapfile -t supported_distros < <(jq -er '."*".Releases[]' pkg.conf.template | grep "$grep_arg" -- -test)
+          mapfile -t supported_distros < <(jq -er '."*".Releases[]' pkg.conf.template | grep "${grep_arg[@]}" -- -test)
         else
           if [[ "${{ inputs.test-repo }}" == "true" ]]
           then
