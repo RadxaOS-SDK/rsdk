@@ -37,7 +37,9 @@ function(
                         with: {
                             script: |||
                                 const secrets = JSON.parse(process.env.SECRETS);
-                                if (secrets.GPG_KEY === undefined || secrets.RADXA_APT_KEY_2024 === undefined) {
+                                if (secrets.RADXA_APT_KEY_2024 === undefined ||
+                                    secrets.GPG_KEY === undefined ||
+                                    secrets.RADXA_APT_KEY_2026 === undefined) {
                                     core.setFailed('Required secrets are unset!');
                                 }
                             |||,

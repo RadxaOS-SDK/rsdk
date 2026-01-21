@@ -85,10 +85,13 @@ function(
                             export PATH="$APTLY_PATH:$PATH"
 
                             cat << EOF | gpg --import
+                            ${{ secrets.RADXA_APT_KEY_2024 }}
+                            EOF
+                            cat << EOF | gpg --import
                             ${{ secrets.GPG_KEY }}
                             EOF
                             cat << EOF | gpg --import
-                            ${{ secrets.RADXA_APT_KEY_2024 }}
+                            ${{ secrets.RADXA_APT_KEY_2026 }}
                             EOF
 
                             suites=(
