@@ -63,15 +63,6 @@ function(
                             GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
                         },
                         run: |||
-                            # ubuntu-latest is currently ubuntu-22.04, which provides aptly 1.4.0
-                            # Only 1.5.0 supports Ubuntu's zstd compressed packages:
-                            #   https://github.com/aptly-dev/aptly/pull/1050
-                            # ubuntu-24.04 provides 1.5.0, but will not be available till August:
-                            #   https://github.com/actions/runner-images/issues/9691#issuecomment-2063926929
-                            # Install aptly from upstream archive for now.
-                            sudo tee /etc/apt/sources.list.d/10-aptly.list <<< "deb http://repo.aptly.info/ squeeze main"
-                            sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EE727D4449467F0E
-
                             sudo apt-get update
                             sudo apt-get install -y aptly pandoc
 
