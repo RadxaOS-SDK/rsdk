@@ -19,6 +19,20 @@ function(suite,
             "login",
         ] +
 
+(if suite == "trixie" && product_soc(product) == "a733"
+then
+        [
+            // Core system package
+            // Due to limited support of a733 for framebuffer, 
+            // we switched to kmscon with drm backend as the default tty terminal.
+            // kmscon depends on libtsm4/trixie-backports.
+            "kmscon",
+            "libtsm4/trixie-backports",
+        ]
+else
+        []
+) +
+
         // Firmware
 (if distro_check(suite) == "debian"
 then
