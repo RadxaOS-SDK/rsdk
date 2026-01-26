@@ -15,9 +15,9 @@ function(rootfs, temp_dir, efi_boot, firmware_type)
         "tar-in %(rootfs)s / xattrs:true" % { rootfs: rootfs, }
     else
 |||
-    echo "WARNING: rootfs is a directory."
-    echo "You will encounter 'Permission denied' error"
-    echo "if the script is not running in escalated privilege."
+    echo "[NOTICE] rootfs is a directory."
+    echo "[NOTICE] You will encounter 'Permission denied' error"
+    echo "[NOTICE] if the script is not running in escalated privilege."
 ||| +
         "copy-in %(rootfs)s/. /" % { rootfs: rootfs, }
     ),
