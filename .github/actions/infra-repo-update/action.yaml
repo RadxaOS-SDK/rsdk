@@ -21,13 +21,16 @@ runs:
           GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: |
+        repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
+
         if [[ -f pkg.conf.template ]]; then
+          repo_suffix=""
+
           grep_arg=()
           if [[ "${{ inputs.test-repo }}" != "true" ]]
           then
             grep_arg+=("-v")
           fi
-          repo_suffix=""
           supported_distros=()
           mapfile -t supported_distros < <(jq -er '."*".Releases[]' pkg.conf.template | grep "${grep_arg[@]}" -- -test)
         else
@@ -38,7 +41,6 @@ runs:
             repo_suffix=""
           fi
 
-          repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
           supported_distros=()
           mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
         fi
