@@ -4,6 +4,7 @@
         "product_name": "Radxa ZERO 2PRO",
         "product_full_name": "Radxa ZERO 2 PRO",
         "soc": "a311d",
+        "sector_size": [512],
         "supported_suite": ["trixie"],
         "supported_edition": ["kde"]
     },
@@ -12,6 +13,7 @@
         "product_name": "Radxa ZERO",
         "product_full_name": "Radxa ZERO",
         "soc": "s905y2",
+        "sector_size": [512],
         "supported_suite": ["trixie"],
         "supported_edition": ["kde"]
     },
@@ -20,6 +22,7 @@
         "product_name": "ROCK Pi S",
         "product_full_name": "ROCK Pi S",
         "soc": "rk3308",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -28,6 +31,7 @@
         "product_name": "ROCK S0",
         "product_full_name": "ROCK S0",
         "soc": "rk3308",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -36,6 +40,7 @@
         "product_name": "ROCK Pi E",
         "product_full_name": "ROCK Pi E",
         "soc": "rk3328",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -44,6 +49,7 @@
         "product_name": "ROCK 4C+",
         "product_full_name": "ROCK 4C+",
         "soc": "rk3399t",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -52,6 +58,7 @@
         "product_name": "ROCK 4SE",
         "product_full_name": "ROCK 4SE",
         "soc": "rk3399t",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -60,6 +67,7 @@
         "product_name": "ROCK Pi 4A",
         "product_full_name": "ROCK Pi 4A",
         "soc": "rk3399",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -68,6 +76,7 @@
         "product_name": "ROCK Pi 4B",
         "product_full_name": "ROCK Pi 4B",
         "soc": "rk3399",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -76,6 +85,7 @@
         "product_name": "ROCK Pi 4C",
         "product_full_name": "ROCK Pi 4C",
         "soc": "rk3399",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -84,6 +94,7 @@
         "product_name": "ROCK Pi 4A+",
         "product_full_name": "ROCK Pi 4A+",
         "soc": "op1",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -92,6 +103,7 @@
         "product_name": "ROCK Pi 4B+",
         "product_full_name": "ROCK Pi 4B+",
         "soc": "op1",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -100,6 +112,7 @@
         "product_name": "Generic RK3528 Image",
         "product_full_name": "Generic RK3528 Image for Radxa products",
         "soc": "rk3528a",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -108,6 +121,7 @@
         "product_name": "Radxa CM3 IO",
         "product_full_name": "Radxa ROCK 3 Compute Module IO Board",
         "soc": "rk3566",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
     },
@@ -116,6 +130,7 @@
         "product_name": "Radxa CM3 RPI CM4 IO",
         "product_full_name": "Radxa ROCK 3 Compute Module with Raspberry Pi Compute Module 4 IO Board",
         "soc": "rk3566",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
     },
@@ -124,6 +139,7 @@
         "product_name": "Radxa ZERO 3",
         "product_full_name": "Radxa ZERO 3",
         "soc": "rk3566",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -132,6 +148,7 @@
         "product_name": "ROCK 3C",
         "product_full_name": "ROCK 3C",
         "soc": "rk3566",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -140,6 +157,7 @@
         "product_name": "Radxa CM3I IO",
         "product_full_name": "Radxa CM3I IO Board",
         "soc": "rk3568",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -148,6 +166,7 @@
         "product_name": "Radxa CM3J RPI CM4 IO",
         "product_full_name": "Radxa CM3J Compute Module with Raspberry Pi Compute Module 4 IO Board",
         "soc": "rk3568",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
     },
@@ -156,6 +175,7 @@
         "product_name": "Radxa E25",
         "product_full_name": "Radxa E25 Dual 2.5Gb Ethernet Carrier Board",
         "soc": "rk3568",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -164,6 +184,7 @@
         "product_name": "ROCK 3A",
         "product_full_name": "ROCK 3A",
         "soc": "rk3568",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
     },
@@ -172,6 +193,7 @@
         "product_name": "ROCK 3B",
         "product_full_name": "ROCK 3B",
         "soc": "rk3568",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["xfce"]
     },
@@ -180,6 +202,7 @@
         "product_name": "Radxa E52C",
         "product_full_name": "Radxa E52C",
         "soc": "rk3582",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -188,6 +211,7 @@
         "product_name": "Radxa E54C",
         "product_full_name": "Radxa E54C",
         "soc": "rk3582",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["cli"]
     },
@@ -205,6 +229,7 @@
         "product_name": "Radxa CM5 IO",
         "product_full_name": "Radxa CM5 IO Board",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -213,6 +238,7 @@
         "product_name": "Radxa CM5 RPI CM4 IO",
         "product_full_name": "Radxa CM5 with Raspberry Pi Compute Module 4 IO Board",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -221,6 +247,7 @@
         "product_name": "Radxa NX5 IO",
         "product_full_name": "Radxa NX5 IO Board",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -229,6 +256,7 @@
         "product_name": "ROCK 5A",
         "product_full_name": "ROCK 5A",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -237,6 +265,7 @@
         "product_name": "ROCK 5B+",
         "product_full_name": "ROCK 5B+",
         "soc": "rk3588",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -245,6 +274,7 @@
         "product_name": "ROCK 5B",
         "product_full_name": "ROCK 5B",
         "soc": "rk3588",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -253,6 +283,7 @@
         "product_name": "ROCK 5C",
         "product_full_name": "ROCK 5C",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -261,6 +292,7 @@
         "product_name": "ROCK 5D",
         "product_full_name": "ROCK 5D",
         "soc": "rk3588s2",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde", "cli"]
     },
@@ -269,6 +301,7 @@
         "product_name": "ROCK 5T",
         "product_full_name": "ROCK 5T",
         "soc": "rk3588",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -277,6 +310,7 @@
         "product_name": "ROCK 5 ITX",
         "product_full_name": "ROCK 5 ITX",
         "soc": "rk3588",
+        "sector_size": [512],
         "supported_suite": ["bookworm"],
         "supported_edition": ["kde"]
     },
@@ -294,6 +328,7 @@
         "product_name": "Radxa Cubie A5E",
         "product_full_name": "Radxa Cubie A5E",
         "soc": "a527",
+        "sector_size": [512],
         "supported_suite": ["bullseye"],
         "supported_edition": ["kde", "cli"]
     },
