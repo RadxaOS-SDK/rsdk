@@ -46,7 +46,7 @@ function(suite,
             "plymouth-theme-breeze",
             "plymouth-themes",
             "rtkit",
-            "system-config-printer"
+            "system-config-printer",
             "vdpau-driver-all",
             "vulkan-tools",
             "xdg-desktop-portal",
