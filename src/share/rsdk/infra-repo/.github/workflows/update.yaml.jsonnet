@@ -76,6 +76,9 @@ function(
                                 git add pkgs.lock
                             fi
 
+                            # Clean up wget file in case it failed (for example no lock in test repo)
+                            rm -f pkgs.lock.new
+
                             ../src/bin/rsdk infra-pkg-snapshot
                             git add pkgs.json
 
