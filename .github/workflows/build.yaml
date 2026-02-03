@@ -44,11 +44,12 @@ jobs:
           echo "products=$(jq -c '. | map(.product)' src/share/rsdk/configs/products.json)" >> $GITHUB_OUTPUT
   build-images:
     needs: [ query ]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       max-parallel: 10
       matrix:
+        os: [ ubuntu-latest, ubuntu-24.04-arm ]
         products: ${{ fromJSON(needs.query.outputs.products) }}
     steps:
       - name: Checkout
@@ -58,4 +59,4 @@ jobs:
         with:
           product: ${{ matrix.products }}
           test-repo: true
-          artifacts: true
+          artifacts: ${{ matrix.os == 'ubuntu-latest' }}
