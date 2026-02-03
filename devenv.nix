@@ -13,7 +13,6 @@
     git
     gh
     gptfdisk
-    guestfs-tools
     jq
     mdbook
     mdbook-admonish
@@ -30,6 +29,7 @@
     yq
     zx
   ] ++ lib.optionals pkgs.stdenv.isx86_64 [
+    pkgs.guestfs-tools
     pkgs.libguestfs-with-appliance
   ];
 
