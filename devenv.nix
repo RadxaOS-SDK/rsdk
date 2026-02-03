@@ -15,7 +15,6 @@
     gptfdisk
     guestfs-tools
     jq
-    libguestfs-with-appliance
     mdbook
     mdbook-admonish
     mdbook-cmdrun
@@ -30,6 +29,8 @@
     xz
     yq
     zx
+  ] ++ lib.optionals pkgs.stdenv.isx86_64 [
+    pkgs.libguestfs-with-appliance
   ];
 
   enterShell = ''

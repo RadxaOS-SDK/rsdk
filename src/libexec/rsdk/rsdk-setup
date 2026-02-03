@@ -89,6 +89,12 @@ EOF
 	)
 	sudo dpkg --add-architecture arm64
 
+	if [[ "$(uname -m)" != "x86_64" ]]; then
+		PACKAGES+=(
+			libguestfs-tools
+		)
+	fi
+
 	if [[ $riscv_support == "true" ]]; then
 		PACKAGES+=(
 			libfakechroot:riscv64
