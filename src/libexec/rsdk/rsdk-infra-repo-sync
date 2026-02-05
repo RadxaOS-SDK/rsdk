@@ -20,7 +20,7 @@ create_archive() {
 		if [[ -n $RSDK_REPO_LABEL ]]; then
 			aptly_args+=("-label=$RSDK_REPO_LABEL")
 		fi
-		aptly publish repo "${aptly_args[@]}" -skip-signing -architectures=all,arm64,armhf,riscv64 "$i" "$RSDK_REPO_ORIGIN"
+		aptly publish repo "${aptly_args[@]}" -skip-signing -architectures=all,amd64,arm64,armhf,riscv64 "$i" "$RSDK_REPO_ORIGIN"
 	done
 
 	if [[ $RSDK_OPTION_SKIP_SIGNING == "false" ]]; then
