@@ -194,8 +194,8 @@
         "product_full_name": "ROCK 3B",
         "soc": "rk3568",
         "sector_size": [512],
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["xfce"]
+        "supported_suite": ["bookworm"],
+        "supported_edition": ["kde"]
     },
     {
         "product": "radxa-e52c",
