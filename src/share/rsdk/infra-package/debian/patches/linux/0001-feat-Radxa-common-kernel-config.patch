@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 1069 +++++++++++++++++++++++++++
- 1 file changed, 1069 insertions(+)
+ src/arch/arm64/configs/radxa.config | 1070 +++++++++++++++++++++++++++
+ 1 file changed, 1070 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,1069 @@
+@@ -0,0 +1,1070 @@
 +# Enable FPDT on supported platforms
 +CONFIG_ACPI_FPDT=y
 +
@@ -923,13 +923,14 @@ index 000000000000..f5bca1bdaf69
 +# Enable r8169 driver, which supports RTL8125
 +CONFIG_R8169=m
 +
-+# Enable some drm panels
++# Enable DRM support for some display panels
 +CONFIG_DRM_PANEL_JADARD_JD9365DA_H3=m
 +CONFIG_DRM_PANEL_ORISETECH_OTA7290B=m
 +CONFIG_DRM_PANEL_RASPBERRYPI_TOUCHSCREEN=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7701=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7789V=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7789V=m
++CONFIG_TINYDRM_ILI9486=m
 +
 +# Enable input touchscreen support
 +CONFIG_INPUT_TOUCHSCREEN=y
