@@ -36,7 +36,7 @@ function(
 
     Package: u-boot-product
     Architecture: all
-    Depends: %(target)s,
+    Depends: %(target)s (= ${binary:Version}),
              ${misc:Depends},
     Section: admin
     Priority: optional
