@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 1070 +++++++++++++++++++++++++++
- 1 file changed, 1070 insertions(+)
+ src/arch/arm64/configs/radxa.config | 1079 +++++++++++++++++++++++++++
+ 1 file changed, 1079 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,1070 @@
+@@ -0,0 +1,1079 @@
 +# Enable FPDT on supported platforms
 +CONFIG_ACPI_FPDT=y
 +
@@ -1040,6 +1040,15 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_RTW89_8852BTE=m
 +CONFIG_RTW89_8852CE=m
 +CONFIG_RTW89_8922AE=m
++
++# Support Longhorn
++# https://github.com/radxa-repo/qcs6490-noble-test/issues/7
++CONFIG_XFS_FS=m
++CONFIG_VFIO=m
++CONFIG_VFIO_PCI=m
++CONFIG_UIO=m
++CONFIG_UIO_PCI_GENERIC=m
++CONFIG_NVME_TCP=m
 +
 +# Prefer r8125-dkms
 +CONFIG_R8125=n
