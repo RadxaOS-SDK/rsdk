@@ -94,7 +94,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Upload artifacts",
-                        uses: "actions/upload-artifact@v6",
+                        uses: "actions/upload-artifact@v7",
                         with: {
                             name: "${{ github.event.repository.name }}",
                             path: |||
@@ -133,7 +133,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Download generated debs",
-                        uses: "actions/download-artifact@v7",
+                        uses: "actions/download-artifact@v8",
                         with: {
                             name: "${{ github.event.repository.name }}",
                             path: ".artifacts",
