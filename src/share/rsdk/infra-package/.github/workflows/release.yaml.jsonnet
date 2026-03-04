@@ -45,7 +45,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Set up QEMU Emulation",
-                        uses: "docker/setup-qemu-action@v3",
+                        uses: "docker/setup-qemu-action@v4",
                         with: {
                             image: "tonistiigi/binfmt:latest",
                         },
