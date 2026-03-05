@@ -132,7 +132,7 @@ else
 
         [
             // Misc
-            "libopencv-dev",
+            // "libopencv-dev", // Dependencies conflict with CIX's provided FFmpeg
             "foot-terminfo",
             "kitty-terminfo",
         ],
