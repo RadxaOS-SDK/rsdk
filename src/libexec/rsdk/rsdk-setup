@@ -108,6 +108,19 @@ EOF
 	sudo apt-get install -y "${PACKAGES[@]}"
 }
 
+# Workaround devenv v2 deadlock when entering nested devenv shell
+# https://discord.com/channels/1036369714731036712/1036369758024650792/1479376272395210885
+install_devcontainer_cli() {
+	local devenv_shell=
+	if [[ -z ${DEVENV_CMDLINE:-} ]]; then
+		echo "Not in devenv shell. Enter shell to install npm."
+		devenv_shell="devenv shell"
+	fi
+	if ! $devenv_shell npm install @devcontainers/cli; then
+		broken_devenv_cache
+	fi
+}
+
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # shellcheck source=src/lib/rsdk/utils.sh
 source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
@@ -129,9 +142,7 @@ echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 
 install_native_dependency
 
-if ! devenv shell npm install @devcontainers/cli; then
-	broken_devenv_cache
-fi
+install_devcontainer_cli
 
 RSDK_COMPLETION_DIR="${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions"
 mkdir -p "$RSDK_COMPLETION_DIR"
