@@ -112,8 +112,8 @@ EOF
 # https://discord.com/channels/1036369714731036712/1036369758024650792/1479376272395210885
 install_devcontainer_cli() {
 	local devenv_shell=
-	if [[ -z ${DEVENV_CMDLINE:-} ]]; then
-		echo "Not in devenv shell. Enter shell to install npm."
+	if dpkg --compare-versions "$(devenv --version | cut -d ' ' -f 2)" lt 2.0.0; then
+		echo "devenv << 2.0.0 supports nested shell, using it to install @devcontainers/cli."
 		devenv_shell="devenv shell"
 	fi
 	if ! $devenv_shell npm install @devcontainers/cli; then
