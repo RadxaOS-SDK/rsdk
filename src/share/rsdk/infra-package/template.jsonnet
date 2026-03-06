@@ -41,6 +41,7 @@ function(
     ".envrc": importstr ".envrc",
     "devenv.lock": importstr "devenv.lock",
     "devenv.nix": importstr "devenv.nix",
+    "devenv.yaml": importstr "devenv.yaml",
     "Makefile": Makefile(target),
     "README.md": README_md(target, pkg_org),
 } + (if new_repo == true
