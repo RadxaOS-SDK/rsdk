@@ -115,6 +115,8 @@ install_devcontainer_cli() {
 	if dpkg --compare-versions "$(devenv --version | cut -d ' ' -f 2)" lt 2.0.0; then
 		echo "devenv << 2.0.0 supports nested shell, using it to install @devcontainers/cli."
 		devenv_shell="devenv shell"
+	else
+		sudo apt-get install -y npm
 	fi
 	if ! $devenv_shell npm install @devcontainers/cli; then
 		broken_devenv_cache
