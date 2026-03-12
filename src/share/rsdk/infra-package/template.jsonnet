@@ -35,7 +35,6 @@ function(
     ".github/workflows/new_version.yaml": new_version_yaml(),
     ".github/workflows/release.yaml": release_yaml(),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
-    "debian/compat": importstr "debian/compat",
     "debian/rules": importstr "debian/rules",
     "debian/common-lintian-overrides": importstr "debian/common-lintian-overrides",
     ".envrc": importstr ".envrc",
