@@ -1,6 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
-local product_soc = import "../../../configs/product_soc.libjsonnet";
+local product_soc_array = import "../../../../configs/product_soc_array.libjsonnet";
 local soc_family = import "../../../configs/soc_family.libjsonnet";
 local gdm = import "gdm.libjsonnet";
 
@@ -82,7 +82,7 @@ else
         []
 ) +
 
-(if product_soc(product) == "a733"
+(if std.contains(product_soc_array(product), "a733")
 then
         // Allwinner A733 GPU driver only support OpenGL ES,
         // so use libqt5gui5-gles instead of libqt5gui5

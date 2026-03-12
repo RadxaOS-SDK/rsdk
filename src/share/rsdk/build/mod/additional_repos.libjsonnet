@@ -1,7 +1,6 @@
 local soc_family = import "../../configs/soc_family.libjsonnet";
-local product_soc = import "../../configs/product_soc.libjsonnet";
+local product_soc_array = import "../../configs/product_soc_array.libjsonnet";
 local soc_specific_repo = import "../../configs/soc_specific_repo.libjsonnet";
-local product_soc_family(product) = soc_family(product_soc(product));
 local extra_ppa = import "../../configs/extra_ppa.libjsonnet";
 local distro_check = import "../../configs/distro_check.libjsonnet";
 local vscodium = import "vscodium.libjsonnet";
@@ -27,11 +26,11 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
     // Pre-compute common parameters to avoid repeated string concatenation below
     local base_radxa_url = radxa_url(radxa_mirror),
     local full_suite = suite + radxa_repo_suffix,
-    local soc = product_soc(product),
-    local family = product_soc_family(product),
+    local soc_array = product_soc_array(product),
 
-    // 80-radxa-* sources: SoC-specific or family repositories; only write deb entries, independent of pkgs.json
-    local radxa_80_sources = if soc_specific_repo(soc)
+    // 80-radxa-* sources: SoC-specific or family repositories for each SoC; only write deb entries, independent of pkgs.json
+    local radxa_80_sources = std.flattenArrays([
+        if soc_specific_repo(soc)
         then [
             |||
                 echo deb %(radxa_url)s%(product_soc)s-%(suite)s %(product_soc)s-%(suite)s main > "$1/etc/apt/sources.list.d/80-radxa-%(product_soc)s.list"
@@ -47,9 +46,11 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
             ||| % {
                     radxa_url: base_radxa_url,
                     suite: full_suite,
-                    product_soc_family: family,
+                    product_soc_family: soc_family(soc),
                 }
-        ],
+        ]
+        for soc in soc_array
+    ]),
 
     // 70-radxa: main Radxa repository deb entry; always present, pkgs.json controlled by hooks below
     local radxa_70_source = [
@@ -63,7 +64,8 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
 
     // Radxa pkgs.json downloads and snapshot; grouped in a single hooks list controlled by use_pkgs_json
     local radxa_pkgs_json_hooks = if use_pkgs_json then
-        (if soc_specific_repo(soc)
+        std.flattenArrays([
+            if soc_specific_repo(soc)
             then [
                 |||
                     wget -O "$1/etc/rsdk/80-radxa-%(product_soc)s.pkgs.json" %(radxa_url)s%(product_soc)s-%(suite)s/pkgs.json
@@ -79,10 +81,11 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                 ||| % {
                         radxa_url: base_radxa_url,
                         suite: full_suite,
-                        product_soc_family: family,
+                        product_soc_family: soc_family(soc),
                     }
             ]
-        )
+            for soc in soc_array
+        ])
         + [
             |||
                 wget -O "$1/etc/rsdk/70-radxa.pkgs.json" %(radxa_url)s%(suite)s/pkgs.json
