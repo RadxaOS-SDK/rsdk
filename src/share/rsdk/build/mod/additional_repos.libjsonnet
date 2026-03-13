@@ -150,20 +150,20 @@ function(suite, radxa_mirror, radxa_repo_suffix, product, temp_dir, install_vsco
                         chroot "$1" add-apt-repository -y -n "ppa:mozillateam/ppa"
                     |||,
                 ]
+                + (if std.length(extra_ppa(product)) > 0
+                then
+                    [
+                        |||
+                            chroot "$1" add-apt-repository -y -n "ppa:%(ppa)s"
+                        ||| % {
+                            ppa: ppa,
+                        } for ppa in extra_ppa(product)
+                    ]
+                else
+                    []
+                )
             else
                 []
-        )
-        + (if std.length(extra_ppa(product)) > 0
-        then
-            [
-                |||
-                    chroot "$1" add-apt-repository -y -n "ppa:%(ppa)s"
-                ||| % {
-                    ppa: ppa,
-                } for ppa in extra_ppa(product)
-            ]
-        else 
-            []
         )
         + [
             |||
