@@ -1,6 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
-local product_soc_array = import "../../../../configs/product_soc_array.libjsonnet";
+local product_soc_array = import "../../../configs/product_soc_array.libjsonnet";
 local soc_family = import "../../../configs/soc_family.libjsonnet";
 local gdm = import "gdm.libjsonnet";
 
