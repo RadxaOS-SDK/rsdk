@@ -87,6 +87,7 @@ update_repo() {
 		"--tla-str" "pkg_org=$RSDK_PACKAGE_ORG"
 		"--tla-str" "git_rev=$RSDK_REV"
 		"--tla-code" "new_repo=$NEW_REPO"
+		"--tla-str" "devcontainer_image=$RSDK_OPTION_DEVCONTAINER_IMAGE"
 		"--multi" "$OUTPUT"
 	)
 	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"
@@ -140,7 +141,7 @@ main() {
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds:tr:P:y" -l "help,dry-run,suffix:,test,run:,prefix:,yes" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds:tr:P:y" -l "help,dry-run,suffix:,test,run:,prefix:,yes,devcontainer-image:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -159,6 +160,7 @@ main() {
 	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
 	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
 	export RSDK_OPTION_PURGE_BEFORE_UPDATE="${RSDK_OPTION_PURGE_BEFORE_UPDATE:-true}"
+	export RSDK_OPTION_DEVCONTAINER_IMAGE="${RSDK_OPTION_DEVCONTAINER_IMAGE:-bookworm}"
 
 	# `gh`` will block execution if stdout cannot fit all content
 	export GH_PAGER=
@@ -225,6 +227,10 @@ main() {
 		case "$TEMP" in
 		-d | --dry-run)
 			RSDK_OPTION_DRY_RUN="true"
+			;;
+		--devcontainer-image)
+			RSDK_OPTION_DEVCONTAINER_IMAGE="$1"
+			shift
 			;;
 		-h | --help)
 			TEMP="$(basename "$0")"

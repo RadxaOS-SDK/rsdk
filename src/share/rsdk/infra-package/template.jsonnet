@@ -15,6 +15,7 @@ local changelog = import "debian/changelog.jsonnet";
 local control_linux = import "debian/control.linux.jsonnet";
 local control_u_boot = import "debian/control.u-boot.jsonnet";
 local control = import "debian/control.jsonnet";
+local devcontainer_json = import ".devcontainer/devcontainer.jsonnet";
 
 function(
     target,
@@ -23,12 +24,13 @@ function(
     pkg_org,
     git_rev,
     new_repo,
+    devcontainer_image,
 ) {
     ".devenv/.gitignore": importstr ".devenv/.gitignore",
     ".direnv/.gitignore": importstr ".direnv/.gitignore",
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
-    ".devcontainer/devcontainer.json": importstr ".devcontainer/devcontainer.json",
+    ".devcontainer/devcontainer.json": devcontainer_json(devcontainer_image),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/docs.yaml": docs_yaml(target),
