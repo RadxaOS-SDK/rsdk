@@ -1,5 +1,6 @@
 local base_packages = import "base.libjsonnet";
 local distro_check = import "../../../../configs/distro_check.libjsonnet";
+local product_soc = import "../../../../configs/product_soc.libjsonnet";
 
 function(suite,
          product,
@@ -92,15 +93,26 @@ else
 
 (if suite == "bookworm"
 then
-        // Using the latest GPU user level driver, 
-        // can avoid memory leaks in certain scenarios.
+        if product_soc(product) == "rk3399" then
         [
+            // Using the latest GPU user level driver,
+            // can avoid memory leaks in certain scenarios.
             "mesa-va-drivers/bookworm-backports",
             "mesa-vdpau-drivers/bookworm-backports",
             "mesa-vulkan-drivers/bookworm-backports",
             "libegl-mesa0/bookworm-backports",
             "libgl1-mesa-dri/bookworm-backports",
             "libglx-mesa0/bookworm-backports",
+        ]
+        else if std.startsWith(product_soc(product), "rk356") then
+        [
+            // can improve glmark2 scores.
+            "mesa-va-drivers/bookworm",
+            "mesa-vdpau-drivers/bookworm",
+            "mesa-vulkan-drivers/bookworm",
+            "libegl-mesa0/bookworm",
+            "libgl1-mesa-dri/bookworm",
+            "libglx-mesa0/bookworm",
         ]
 else
         []
