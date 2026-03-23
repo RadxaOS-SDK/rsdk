@@ -87,9 +87,14 @@ update_repo() {
 		"--tla-str" "pkg_org=$RSDK_PACKAGE_ORG"
 		"--tla-str" "git_rev=$RSDK_REV"
 		"--tla-code" "new_repo=$NEW_REPO"
-		"--tla-str" "devcontainer_image=$RSDK_OPTION_DEVCONTAINER_IMAGE"
 		"--multi" "$OUTPUT"
 	)
+	if [[ $BASE_NAME == "rsdk-infra-package-update" ]]; then
+		JSONNET_ARGS+=(
+			"--tla-str" "devcontainer_image=$RSDK_OPTION_DEVCONTAINER_IMAGE"
+		)
+	fi
+
 	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"
 
 	if ! git diff --quiet; then
