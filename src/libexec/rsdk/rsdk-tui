@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-__rsdk_build() {
-	local product
-
+__rsdk_select_product() {
 	radiolist_init
 	local products=() i
 	mapfile -t products < <(jq -er '.[].product' "$SCRIPT_DIR/../../share/rsdk/configs/products.json") && array_remove "products" ""
@@ -10,15 +8,121 @@ __rsdk_build() {
 		radiolist_add "$i" "OFF"
 	done
 	if ! radiolist_show "Please select a product:" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}"
+	return 0
+}
+
+__rsdk_select_radxa_mirror() {
+	radiolist_init
+	local mirrors=(
+		"default|Use official Radxa repository"
+		"https://mirrors.aghost.cn/radxa-deb|mirrors.aghost.cn (radxa-deb)"
+		"https://mirrors.lzu.edu.cn/radxa-deb|mirrors.lzu.edu.cn (radxa-deb)"
+		"https://mirrors.hust.edu.cn/radxa-deb|mirrors.hust.edu.cn (radxa-deb)"
+		"https://mirrors.sdu.edu.cn/radxa-deb|mirrors.sdu.edu.cn (radxa-deb)"
+		"https://mirror.nju.edu.cn/radxa-deb|mirror.nju.edu.cn (radxa-deb)"
+		"https://mirror.nyist.edu.cn/radxa-deb|mirror.nyist.edu.cn (radxa-deb)"
+	)
+
+	local i value label
+	local values=()
+	for i in "${mirrors[@]}"; do
+		value="${i%%|*}"
+		label="${i#*|}"
+		values+=("$value")
+		radiolist_add "$label" "OFF"
+	done
+
+	if ! radiolist_show "Select Radxa APT mirror (radxa-deb):" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	echo "${values[${RTUI_RADIOLIST_STATE_NEW[0]}]}"
+	return 0
+}
+
+__rsdk_select_distro_mirror() {
+	radiolist_init
+	local mirrors=(
+		"default|Use default Debian/Ubuntu mirror"
+		"https://mirrors.ustc.edu.cn|mirrors.ustc.edu.cn"
+		"https://mirrors.tuna.tsinghua.edu.cn|mirrors.tuna.tsinghua.edu.cn"
+		"https://mirrors.lzu.edu.cn|mirrors.lzu.edu.cn"
+		"https://mirrors.hust.edu.cn|mirrors.hust.edu.cn"
+		"https://mirrors.sdu.edu.cn|mirrors.sdu.edu.cn"
+		"https://mirror.nju.edu.cn|mirror.nju.edu.cn"
+		"https://mirror.nyist.edu.cn|mirror.nyist.edu.cn"
+	)
+
+	local i value label
+	local values=()
+	for i in "${mirrors[@]}"; do
+		value="${i%%|*}"
+		label="${i#*|}"
+		values+=("$value")
+		radiolist_add "$label" "OFF"
+	done
+
+	if ! radiolist_show "Select Debian/Ubuntu mirror (optional):" || ((${#RTUI_RADIOLIST_STATE_NEW[@]} == 0)); then
+		return 1
+	fi
+	echo "${values[${RTUI_RADIOLIST_STATE_NEW[0]}]}"
+	return 0
+}
+
+__rsdk_build() {
+	local product_selected radxa_mirror_selected distro_mirror_selected
+
+	if ! product_selected="$(__rsdk_select_product)"; then
 		return
 	fi
-	product="$(radiolist_getitem "${RTUI_RADIOLIST_STATE_NEW[0]}")"
 
-	if ! yesno "Are you sure to build for '$product'?"; then
+	# Ask user whether to configure mirrors first, and loop if user cancels
+	while true; do
+		if yesno "Do you want to configure alternative package mirror?"; then
+			radxa_mirror_selected=
+			distro_mirror_selected=
+			if ! radxa_mirror_selected="$(__rsdk_select_radxa_mirror)"; then
+				# User cancelled Radxa mirror selection, ask again
+				continue
+			fi
+			if ! distro_mirror_selected="$(__rsdk_select_distro_mirror)"; then
+				# User cancelled distro mirror selection, ask again
+				continue
+			fi
+			# Both selections completed (including choosing default), proceed
+			break
+		else
+			# User chose not to configure mirrors, use defaults
+			radxa_mirror_selected=
+			distro_mirror_selected=
+			break
+		fi
+	done
+
+	local summary="Product: $product_selected"
+	if [[ -n ${radxa_mirror_selected:-} && $radxa_mirror_selected != default ]]; then
+		summary+=$'\nRadxa mirror: '$radxa_mirror_selected
+	fi
+	if [[ -n ${distro_mirror_selected:-} && $distro_mirror_selected != default ]]; then
+		summary+=$'\nDebian/Ubuntu mirror: '$distro_mirror_selected
+	fi
+
+	if ! yesno "Are you sure to build with:\n\n$summary"; then
 		return
 	fi
 
-	rsdk build "$product"
+	local cmd=(rsdk build)
+	if [[ -n ${radxa_mirror_selected:-} && $radxa_mirror_selected != default ]]; then
+		cmd+=("-M" "$radxa_mirror_selected")
+	fi
+	if [[ -n ${distro_mirror_selected:-} && $distro_mirror_selected != default ]]; then
+		cmd+=("-m" "$distro_mirror_selected")
+	fi
+	cmd+=("$product_selected")
+
+	"${cmd[@]}"
 }
 
 __rsdk_about() {

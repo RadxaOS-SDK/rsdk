@@ -37,6 +37,10 @@ Build RadxaOS system image.
         Build using Radxa APT test archives.
     -m | --mirror <mirror_url>
         Specify custom Debian / Ubuntu archive mirror URL.
+    --snapshot <timestamp>
+        Build using Debian / Ubuntu snapshot archive.
+        A timestamp is required. Ex: 20260105T082626Z.
+        This is incompatible with '-m | --mirror <mirror_url>'.
     -M <mirror_url>
         Specify custom non-Debian non-Ubuntu archive mirror URL. This mirror should
         serve both Radxa archives as well as any other 3rd party archives.
@@ -53,6 +57,8 @@ $(find "$SCRIPT_DIR/../../../externals/keyrings/" -maxdepth 1 -mindepth 1 -type 
         Override the default firmware profile. Ex: latest, rknext, etc.
     -p | --override-product
         Override the default product profile. Ex: rock-4se, radxa-zero, etc
+    -P | --no-pkgs-json
+        Skip downloading and embedding Radxa pkgs.json metadata into the image.
     --no-vendor-packages
         Do not install the vendor package specified in product profile.
     --debs <debs_dir>

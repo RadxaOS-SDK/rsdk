@@ -21,21 +21,36 @@ runs:
           GH_TOKEN: ${{ inputs.token }}
       shell: bash
       run: |
-        if [[ "${{ inputs.test-repo }}" == "true" ]]
-        then
-          repo_suffix="-test"
-        else
-          repo_suffix=""
-        fi
-
         repo_org="$(.tmp/rsdk/src/bin/rsdk config infra.organizations.repository)"
-        supported_distros=()
-        mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+
+        if [[ -f pkg.conf.template ]]; then
+          repo_suffix=""
+
+          grep_arg=()
+          if [[ "${{ inputs.test-repo }}" != "true" ]]
+          then
+            grep_arg+=("-v")
+          fi
+          supported_distros=()
+          mapfile -t supported_distros < <(jq -er '."*".Releases[]' pkg.conf.template | grep "${grep_arg[@]}" -- -test)
+        else
+          if [[ "${{ inputs.test-repo }}" == "true" ]]
+          then
+            repo_suffix="-test"
+          else
+            repo_suffix=""
+          fi
+
+          supported_distros=()
+          mapfile -t supported_distros < <(jq -er .[] <<< '${{ steps.query.outputs.suites }}')
+        fi
 
         for distro in "${supported_distros[@]}"
         do
           if gh repo view "$repo_org/$distro$repo_suffix" &>/dev/null; then
-            gh workflow run .github/workflows/update.yaml --repo "$repo_org/$distro$repo_suffix"
+            if ! gh workflow run .github/workflows/update.yaml --repo "$repo_org/$distro$repo_suffix"; then
+              echo "Failed to dispatch workflow for $repo_org/$distro$repo_suffix"
+            fi
           else
             echo "$repo_org/$distro$repo_suffix does not exist. Skip."
           fi

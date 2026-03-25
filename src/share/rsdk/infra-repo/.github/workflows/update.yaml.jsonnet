@@ -37,7 +37,9 @@ function(
                         with: {
                             script: |||
                                 const secrets = JSON.parse(process.env.SECRETS);
-                                if (secrets.GPG_KEY === undefined || secrets.RADXA_APT_KEY_2024 === undefined) {
+                                if (secrets.RADXA_APT_KEY_2024 === undefined ||
+                                    secrets.GPG_KEY === undefined ||
+                                    secrets.RADXA_APT_KEY_2026 === undefined) {
                                     core.setFailed('Required secrets are unset!');
                                 }
                             |||,
@@ -73,6 +75,9 @@ function(
                                 mv pkgs.lock.new pkgs.lock
                                 git add pkgs.lock
                             fi
+
+                            # Clean up wget file in case it failed (for example no lock in test repo)
+                            rm -f pkgs.lock.new
 
                             ../src/bin/rsdk infra-pkg-snapshot
                             git add pkgs.json

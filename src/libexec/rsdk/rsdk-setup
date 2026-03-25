@@ -89,6 +89,12 @@ EOF
 	)
 	sudo dpkg --add-architecture arm64
 
+	if [[ "$(uname -m)" != "x86_64" ]]; then
+		PACKAGES+=(
+			libguestfs-tools
+		)
+	fi
+
 	if [[ $riscv_support == "true" ]]; then
 		PACKAGES+=(
 			libfakechroot:riscv64
@@ -100,6 +106,21 @@ EOF
 	sudo apt-get update
 	sudo apt-get full-upgrade -y
 	sudo apt-get install -y "${PACKAGES[@]}"
+}
+
+# Workaround devenv v2 deadlock when entering nested devenv shell
+# https://discord.com/channels/1036369714731036712/1036369758024650792/1479376272395210885
+install_devcontainer_cli() {
+	local devenv_shell=
+	if dpkg --compare-versions "$(devenv --version | cut -d ' ' -f 2)" lt 2.0.0; then
+		echo "devenv << 2.0.0 supports nested shell, using it to install @devcontainers/cli."
+		devenv_shell="devenv shell"
+	else
+		sudo apt-get install -y npm
+	fi
+	if ! $devenv_shell npm install @devcontainers/cli; then
+		broken_devenv_cache
+	fi
 }
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
@@ -123,9 +144,7 @@ echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 
 install_native_dependency
 
-if ! devenv shell npm install @devcontainers/cli; then
-	broken_devenv_cache
-fi
+install_devcontainer_cli
 
 RSDK_COMPLETION_DIR="${BASH_COMPLETION_USER_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/bash-completion}/completions"
 mkdir -p "$RSDK_COMPLETION_DIR"

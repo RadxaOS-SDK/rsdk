@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 1037 ++++++++++++++++++++++++++++
- 1 file changed, 1037 insertions(+)
+ src/arch/arm64/configs/radxa.config | 1085 +++++++++++++++++++++++++++
+ 1 file changed, 1085 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,1037 @@
+@@ -0,0 +1,1085 @@
 +# Enable FPDT on supported platforms
 +CONFIG_ACPI_FPDT=y
 +
@@ -683,6 +683,11 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_CRYPTO_LZ4HC=m
 +CONFIG_CRYPTO_ZSTD=m
 +
++# Enable CRC checksum algorithm
++# Required when loading certain compression kernel modules
++CONFIG_CRC32=m
++CONFIG_CRC64=m
++
 +# Enable ZRAM
 +CONFIG_ZSMALLOC=m
 +# zram-tools expect this to be a module
@@ -918,10 +923,14 @@ index 000000000000..f5bca1bdaf69
 +# Enable r8169 driver, which supports RTL8125
 +CONFIG_R8169=m
 +
-+# Enable Sitronix panels
++# Enable DRM support for some display panels
++CONFIG_DRM_PANEL_JADARD_JD9365DA_H3=m
++CONFIG_DRM_PANEL_ORISETECH_OTA7290B=m
++CONFIG_DRM_PANEL_RASPBERRYPI_TOUCHSCREEN=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7701=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7789V=m
 +CONFIG_DRM_PANEL_SITRONIX_ST7789V=m
++CONFIG_TINYDRM_ILI9486=m
 +
 +# Enable input touchscreen support
 +CONFIG_INPUT_TOUCHSCREEN=y
@@ -950,6 +959,7 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_TASKSTATS=y
 +
 +# Support Squashfs
++CONFIG_MISC_FILESYSTEMS=y
 +CONFIG_SQUASHFS=m
 +CONFIG_SQUASHFS_XATTR=y
 +CONFIG_SQUASHFS_ZLIB=y
@@ -962,6 +972,7 @@ index 000000000000..f5bca1bdaf69
 +# Enable additional language support
 +CONFIG_NLS_ASCII=y
 +CONFIG_NLS_ISO8859_1=y
++CONFIG_NLS_UTF8=y
 +
 +# Necessary for Android
 +# https://github.com/sunflower2333/cix_linux/commit/42264e5a6d8ac025dfe8d20a632a72cf3719e37f
@@ -1010,6 +1021,41 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_KASAN=y
 +CONFIG_KASAN_HW_TAGS=y
 +
++# Enable rtw89
++CONFIG_RTW89=m
++CONFIG_RTW89_CORE=m
++CONFIG_RTW89_PCI=m
++CONFIG_RTW89_USB=m
++CONFIG_RTW89_8851B=m
++CONFIG_RTW89_8852A=m
++CONFIG_RTW89_8852B_COMMON=m
++CONFIG_RTW89_8852B=m
++CONFIG_RTW89_8852BT=m
++CONFIG_RTW89_8852C=m
++CONFIG_RTW89_8922A=m
++CONFIG_RTW89_8851BE=m
++CONFIG_RTW89_8851BU=m
++CONFIG_RTW89_8852AE=m
++CONFIG_RTW89_8852BE=m
++CONFIG_RTW89_8852BU=m
++CONFIG_RTW89_8852BTE=m
++CONFIG_RTW89_8852CE=m
++CONFIG_RTW89_8922AE=m
++
++# Support Longhorn
++# https://github.com/radxa-repo/qcs6490-noble-test/issues/7
++CONFIG_XFS_FS=m
++CONFIG_VFIO=m
++CONFIG_VFIO_PCI=m
++CONFIG_UIO=m
++CONFIG_UIO_PCI_GENERIC=m
++CONFIG_NVME_TCP=m
++
++# perf and bpftrace expect this option enabled to be fully functional
++CONFIG_KPROBE_EVENTS=y
++# perf expects this
++CONFIG_UPROBE_EVENTS=y
++
 +# Prefer r8125-dkms
 +CONFIG_R8125=n
 +
@@ -1028,10 +1074,6 @@ index 000000000000..f5bca1bdaf69
 +
 +# Prefer 8852be-dkms
 +CONFIG_RTL8852BE=n
-+
-+# Prefer rtw89-dkms
-+CONFIG_RTW89=n
-+CONFIG_RTW89_8852BE=n
 +
 +# Disable 8723cs
 +CONFIG_RTL8723CS=n
@@ -1052,5 +1094,11 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_MD=y
 +CONFIG_BLK_DEV_LOOP=m
 +CONFIG_BLK_DEV_DM=m
++
++# Enable DMA-BUF Userland Memory Heaps supports
++CONFIG_DMABUF_HEAPS=y
++CONFIG_DMABUF_HEAPS_CMA=y
++CONFIG_DMABUF_HEAPS_SYSTEM=y
++CONFIG_UDMABUF=y
 -- 
 2.47.1

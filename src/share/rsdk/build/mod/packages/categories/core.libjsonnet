@@ -1,6 +1,6 @@
 local distro_check = import "../../../../configs/distro_check.libjsonnet";
 local product_firmware_type = import "../../../../configs/product_firmware_type.libjsonnet";
-local product_soc = import "../../../../configs/product_soc.libjsonnet";
+local product_soc_array = import "../../../../configs/product_soc_array.libjsonnet";
 local soc_install_recommends = import "../../../../configs/soc_install_recommends.libjsonnet";
 
 function(suite,
@@ -16,7 +16,22 @@ function(suite,
             // Core system package
             "init",
             "sudo",
+            "login",
         ] +
+
+(if suite == "trixie" && std.contains(product_soc_array(product), "a733")
+then
+        [
+            // Core system package
+            // Due to limited support of a733 for framebuffer, 
+            // we switched to kmscon with drm backend as the default tty terminal.
+            // kmscon depends on libtsm4/trixie-backports.
+            "kmscon",
+            "libtsm4/trixie-backports",
+        ]
+else
+        []
+) +
 
         // Firmware
 (if distro_check(suite) == "debian"
@@ -61,7 +76,7 @@ else
         ]
 ) +
 
-(if suite == "bookworm"
+(if suite != "bullseye"
 then
         [
             "efibootmgr",
@@ -85,7 +100,7 @@ else
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
-                rsetup radxa-bootutils python-is-python3 initramfs-tools zstd
+                gcc rsetup radxa-bootutils python-is-python3 initramfs-tools zstd
 
                 mkdir -p "$1/boot/efi"
                 mount -t tmpfs rsdk "$1/boot/efi"
@@ -125,7 +140,7 @@ else
                 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew --allow-downgrades
             ||| % {
-                recommends: (if soc_install_recommends(product_soc(product), suite) && vendor_packages
+                recommends: (if soc_install_recommends(product_soc_array(product), suite) && vendor_packages
                     then
                         "--install-recommends"
                     else

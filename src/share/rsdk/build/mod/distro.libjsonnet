@@ -1,23 +1,49 @@
 local distro_check = import "../../configs/distro_check.libjsonnet";
 
-local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_default) = {
+local mirror_link(
+    distro_mirror,
+    snapshot_timestamp,
+    distro,
+    architecture,
+    distro_mirror_default,
+    snapshot_mirror_default
+) = if snapshot_timestamp != ""
+then
+    // Build with snapshot service
+    snapshot_mirror_default + snapshot_timestamp
+else
+    (if distro_mirror == ""
+     then
+         // Primary archive
+         distro_mirror_default
+     else
+         distro_mirror) + "/" +
+     (if distro == "ubuntu" && architecture != "amd64"
+      then
+          distro + "-ports"
+      else
+          distro);
+
+local distro_base(
+    suite,
+    distro_mirror,
+    distro,
+    architecture,
+    snapshot_timestamp,
+    distro_mirror_default,
+    snapshot_mirror_default,
+) = {
     mmdebstrap+: {
         components+: [
             "main",
         ],
         mirrors+: [
-            // Primary archive
-            (if distro_mirror == ""
-            then
-                distro_mirror_default
-            else
-                distro_mirror)
-                + "/" +
-            (if distro == "ubuntu" && architecture != "amd64"
-            then
-                distro + "-ports"
-            else
-                distro),
+            mirror_link(distro_mirror,
+                        snapshot_timestamp,
+                        distro,
+                        architecture,
+                        distro_mirror_default,
+                        snapshot_mirror_default),
         ],
         "setup-hooks"+: [
             |||
@@ -26,7 +52,7 @@ local distro_base(suite, distro_mirror, distro, architecture, distro_mirror_defa
                 # backports archive
                 head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-backports/" > "$1/etc/apt/sources.list.d/50-%(suite)s-backports.list"
                 # security archive
-                head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-security/" -e "s|/debian |/debian-security |" > "$1/etc/apt/sources.list.d/50-%(suite)s-security.list"
+                head -n 1 "$1/etc/apt/sources.list" | sed -E -e "s/(%(suite)s)/\\1-security/" -e "s|/debian|/debian-security|" > "$1/etc/apt/sources.list.d/50-%(suite)s-security.list"
                 # main archive
                 mv "$1/etc/apt/sources.list" "$1/etc/apt/sources.list.d/50-%(suite)s.list"
             ||| % {
@@ -53,8 +79,9 @@ local distro_debian(
     suite,
     distro_mirror,
     architecture,
+    snapshot_timestamp,
     distro = "debian",
-) = distro_base(suite, distro_mirror, distro, architecture, "https://deb.debian.org") + {
+) = distro_base(suite, distro_mirror, distro, architecture, snapshot_timestamp, "https://deb.debian.org", "https://snapshot.debian.org/archive/debian/") + {
     mmdebstrap+: {
         components+: std.prune([
             "contrib",
@@ -68,8 +95,9 @@ local distro_ubuntu(
     suite,
     distro_mirror,
     architecture,
+    snapshot_timestamp,
     distro = "ubuntu",
-) = distro_base(suite, distro_mirror, distro, architecture, "http://ports.ubuntu.com") + {
+) = distro_base(suite, distro_mirror, distro, architecture, snapshot_timestamp, "http://ports.ubuntu.com", "https://snapshot.ubuntu.com/ubuntu/") + {
     mmdebstrap+: {
         components+: [
             "restricted",
@@ -79,10 +107,10 @@ local distro_ubuntu(
     }
 };
 
-function(suite, distro_mirror, architecture)
+function(suite, distro_mirror, architecture, snapshot_timestamp)
     if distro_check(suite) == "debian"
     then
-        distro_debian(suite, distro_mirror, architecture)
+        distro_debian(suite, distro_mirror, architecture, snapshot_timestamp)
     else if distro_check(suite) == "ubuntu"
     then
-        distro_ubuntu(suite, distro_mirror, architecture)
+        distro_ubuntu(suite, distro_mirror, architecture, snapshot_timestamp)

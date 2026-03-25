@@ -39,12 +39,14 @@ function(suite,
             "gvfs",
             "gvfs-backends",
             "gvfs-fuse",
+            "iio-sensor-proxy",
             "mesa-utils",
             "mesa-va-drivers",
             "plymouth",
             "plymouth-theme-breeze",
             "plymouth-themes",
             "rtkit",
+            "system-config-printer",
             "vdpau-driver-all",
             "vulkan-tools",
             "xdg-desktop-portal",
@@ -87,6 +89,7 @@ else
             "xiccd",
         ]
 ) +
+
 (if suite == "bookworm"
 then
         // Using the latest GPU user level driver, 
@@ -98,6 +101,16 @@ then
             "libegl-mesa0/bookworm-backports",
             "libgl1-mesa-dri/bookworm-backports",
             "libglx-mesa0/bookworm-backports",
+        ]
+else
+        []
+) +
+
+(if suite == "trixie"
+then
+        [
+            "gstreamer1.0-gtk4",
+            "gstreamer1.0-qt6",
         ]
 else
         []

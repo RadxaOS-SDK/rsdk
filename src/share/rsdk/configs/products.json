@@ -3,9 +3,19 @@
         "product": "radxa-cubie-a5e",
         "product_name": "Radxa Cubie A5E",
         "product_full_name": "Radxa Cubie A5E",
-        "soc": "a527",
-        "supported_suite": ["bullseye"],
-        "supported_edition": ["kde", "cli"]
+        "soc": [
+            "a527"
+        ],
+        "sector_size": [
+            512
+        ],
+        "supported_suite": [
+            "bullseye"
+        ],
+        "supported_edition": [
+            "kde",
+            "cli"
+        ]
     },
     {
         "product": "radxa-a733",

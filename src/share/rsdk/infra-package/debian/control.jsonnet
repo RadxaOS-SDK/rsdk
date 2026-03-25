@@ -6,7 +6,8 @@ function(
     Section: admin
     Priority: standard
     Standards-Version: 4.6.0
-    Build-Depends: debhelper (>=12~),
+    Build-Depends: debhelper-compat (= 13),
+                   debhelper (>=13~),
                    devscripts,
                    lintian,
                    dh-exec,

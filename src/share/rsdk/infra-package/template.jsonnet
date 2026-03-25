@@ -15,6 +15,7 @@ local changelog = import "debian/changelog.jsonnet";
 local control_linux = import "debian/control.linux.jsonnet";
 local control_u_boot = import "debian/control.u-boot.jsonnet";
 local control = import "debian/control.jsonnet";
+local devcontainer_json = import ".devcontainer/devcontainer.jsonnet";
 
 function(
     target,
@@ -23,24 +24,25 @@ function(
     pkg_org,
     git_rev,
     new_repo,
+    devcontainer_image,
 ) {
     ".devenv/.gitignore": importstr ".devenv/.gitignore",
     ".direnv/.gitignore": importstr ".direnv/.gitignore",
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
-    ".devcontainer/devcontainer.json": importstr ".devcontainer/devcontainer.json",
+    ".devcontainer/devcontainer.json": devcontainer_json(devcontainer_image),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/docs.yaml": docs_yaml(target),
     ".github/workflows/new_version.yaml": new_version_yaml(),
     ".github/workflows/release.yaml": release_yaml(),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
-    "debian/compat": importstr "debian/compat",
     "debian/rules": importstr "debian/rules",
     "debian/common-lintian-overrides": importstr "debian/common-lintian-overrides",
     ".envrc": importstr ".envrc",
     "devenv.lock": importstr "devenv.lock",
     "devenv.nix": importstr "devenv.nix",
+    "devenv.yaml": importstr "devenv.yaml",
     "Makefile": Makefile(target),
     "README.md": README_md(target, pkg_org),
 } + (if new_repo == true
@@ -53,6 +55,7 @@ then
         "debian/source/format": importstr "debian/source/format",
         ".github/CODEOWNERS": CODEOWNERS(),
         ".gitignore": importstr ".gitignore",
+        "pkg.conf.template": importstr "pkg.conf.template",
     }
 else
     {}

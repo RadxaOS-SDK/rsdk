@@ -23,6 +23,8 @@ function(
     //"pkgs.lock": pkgs_lock(),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/CODEOWNERS": CODEOWNERS(),
+    ".github/ISSUE_TEMPLATE/apt.md": importstr ".github/ISSUE_TEMPLATE/apt.md",
+    ".github/ISSUE_TEMPLATE/others.md": importstr ".github/ISSUE_TEMPLATE/others.md",
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/update.yaml": update_yaml(git_rev),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),

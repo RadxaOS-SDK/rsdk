@@ -1,36 +1,46 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   # https://devenv.sh/packages/
-  packages = with pkgs; [
-    aptly
-    bash-completion
-    cargo
-    commitizen
-    curl
-    dosfstools
-    file
-    git
-    gh
-    gptfdisk
-    guestfs-tools
-    jq
-    libguestfs-with-appliance
-    mdbook
-    mdbook-admonish
-    mdbook-cmdrun
-    mdbook-i18n-helpers
-    mdbook-linkcheck
-    mdbook-toc
-    multipath-tools
-    newt
-    parted
-    util-linux
-    wget
-    xz
-    yq
-    zx
-  ];
+  packages =
+    with pkgs;
+    [
+      aptly
+      bash-completion
+      cargo
+      commitizen
+      curl
+      dosfstools
+      file
+      git
+      git-buildpackage
+      gh
+      gptfdisk
+      jq
+      mdbook
+      mdbook-admonish
+      mdbook-cmdrun
+      mdbook-i18n-helpers
+      mdbook-linkcheck
+      mdbook-toc
+      multipath-tools
+      newt
+      parted
+      util-linux
+      wget
+      xz
+      yq
+      zx
+    ]
+    ++ lib.optionals pkgs.stdenv.isx86_64 [
+      pkgs.guestfs-tools
+      pkgs.libguestfs-with-appliance
+    ];
 
   enterShell = ''
     export PATH=$PWD/src/bin:$PWD/node_modules/.bin:$HOME/.cargo/bin:$PATH
@@ -43,7 +53,7 @@
       rsdk welcome
     else
       rsdk welcome 'Please run `rsdk shell` to enter the full development shell.
-'
+    '
     fi
   '';
 

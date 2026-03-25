@@ -4,13 +4,16 @@
         "partition_table_type": "mbr",
         "firmware_type": "u-boot",
         "soc_install_recommends": [
-            "bookworm"
+            "trixie"
         ],
         "soc_list": [
             "a311d",
             "s905y2"
         ],
-        "soc_specific_repo": []
+        "soc_specific_repo": [
+            "a311d",
+            "s905y2"
+        ]
     },
     {
         "soc_family": "rockchip",
@@ -44,10 +47,12 @@
             "rk3399t",
             "rk3399",
             "op1",
+            "rk3399pro",
+            "rk3528",
+            "rk3528a",
             "rk3566",
             "rk3566t",
             "rk3568",
-            "rk3528a",
             "rk3576",
             "rk3582",
             "rk3588s2",
@@ -93,11 +98,13 @@
         ],
         "soc_list": [
             "qcs6490",
-            "qcs9075"
+            "qcs9075",
+            "sc8280xp"
         ],
         "soc_specific_repo": [
             "qcs6490",
-            "qcs9075"
+            "qcs9075",
+            "sc8280xp"
         ],
         "extra_ppa": [
             "ubuntu-qcom-iot/qcom-ppa"

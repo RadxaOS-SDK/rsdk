@@ -171,6 +171,7 @@ _rsdk_infra-package-update_completions() {
 	local suggestions=(
 		"-d"
 		"--dry-run"
+		"--devcontainer-image"
 		"-h"
 		"--help"
 		"-r"

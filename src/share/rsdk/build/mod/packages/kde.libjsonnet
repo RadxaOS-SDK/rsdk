@@ -1,6 +1,6 @@
 local distro_check = import "../../../configs/distro_check.libjsonnet";
 local desktop_packages = import "categories/desktop.libjsonnet";
-local product_soc = import "../../../configs/product_soc.libjsonnet";
+local product_soc_array = import "../../../configs/product_soc_array.libjsonnet";
 local soc_family = import "../../../configs/soc_family.libjsonnet";
 local gdm = import "gdm.libjsonnet";
 
@@ -21,14 +21,16 @@ function(suite,
         packages+:
         [
             "accountwizard",
+            "ark",
             "bluedevil",
             "dragonplayer",
+            "gwenview",
             "kamera",
+            "kcalc",
             "kde-config-plymouth",
             "kde-config-screenlocker",
             "kde-config-sddm",
             "kdeconnect",
-            "khotkeys",
             "kinfocenter",
             "kio-extras",
             "konqueror",
@@ -36,17 +38,11 @@ function(suite,
             "kscreen",
             "kup-backup",
             "kwin-x11",
-            "libkf5kdelibs4support5",
-            "libkf5kdelibs4support5-bin",
-            "phonon4qt5-backend-vlc",
-            "phonon4qt5settings",
             "plasma-discover",
             "plasma-nm",
             "powerdevil",
             "print-manager",
             "qtvirtualkeyboard-plugin",
-            "qml-module-org-kde-newstuff",
-            "qml-module-qt-labs-platform",
             "sddm-theme-breeze",
             "sonnet-plugins",
             "systemsettings",
@@ -55,15 +51,26 @@ function(suite,
             "xdg-desktop-portal-kde",
         ] +
 
-(if suite != "focal"
+(if suite != "trixie"
 then
+        // Debian 13 KDE uses Qt 6,
+        // These packages will be useless.
         [
             "kde-config-systemd",
+            "khotkeys",
+            "libkf5kdelibs4support5",
+            "libkf5kdelibs4support5-bin",
+            "phonon4qt5-backend-vlc",
+            "phonon4qt5settings",
+            "qml-module-org-kde-newstuff",
+            "qml-module-qt-labs-platform",
         ]
 else
         []
 ) +
 
+// In Debian 13, plasma-workspace-wayland has been merged into plasma-workspace, 
+// qml6-module-org-kde-pipewire is also a dependency of plasma-workspace and has been automatically installed.
 (if suite == "bookworm" || suite == "noble"
 then
         // Install kwin-wayland for bookworm and noble
@@ -75,7 +82,7 @@ else
         []
 ) +
 
-(if product_soc(product) == "a733"
+(if std.contains(product_soc_array(product), "a733")
 then
         // Allwinner A733 GPU driver only support OpenGL ES,
         // so use libqt5gui5-gles instead of libqt5gui5
@@ -84,13 +91,17 @@ then
         [
             "libqt5gui5-gles",
         ]
-else
+else if suite != "trixie"
+then
+        // Debian 13 KDE uses Qt 6, and phonon4qt6 no longer supports GStreamer backend.
         [
             "phonon4qt5-backend-gstreamer",
         ]
+else
+        []
 ),
     },
-} + (if suite == "bookworm" || suite == "noble"
+} + (if suite != "bullseye"
 then
     // Debian 12's sddm has issue handling screen hotplug, as well as screen wake up
     // https://applink.feishu.cn/client/message/link/open?token=AmY%2FRdMxxQABZoS475OOwAQ%3D

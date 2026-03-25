@@ -86,7 +86,7 @@ function(
                 }
             },
             build: {
-                "runs-on": "ubuntu-22.04",
+                "runs-on": "ubuntu-latest",
                 needs: "prepare_release",
                 strategy: {
                     matrix: {

@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 update_repo() {
 	local TARGET="${1}"
 	local OUTPUT="$PWD/out/infra/$TARGET"
@@ -20,6 +18,7 @@ update_repo() {
 		if git remote show -n origin &>/dev/null; then
 			if git fetch origin main; then
 				git pull origin main
+				git submodule update
 			else
 				echo "Remote repository does not have 'main' branch. Continue..."
 			fi
@@ -90,6 +89,12 @@ update_repo() {
 		"--tla-code" "new_repo=$NEW_REPO"
 		"--multi" "$OUTPUT"
 	)
+	if [[ $BASE_NAME == "rsdk-infra-package-update" ]]; then
+		JSONNET_ARGS+=(
+			"--tla-str" "devcontainer_image=$RSDK_OPTION_DEVCONTAINER_IMAGE"
+		)
+	fi
+
 	jsonnet "${JSONNET_ARGS[@]}" "$RSDK_GIT_REPO_TEMPLATE/template.jsonnet"
 
 	if ! git diff --quiet; then
@@ -141,7 +146,7 @@ main() {
 	BASE_NAME="$(basename "$0")"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hds:tr:P:y" -l "help,dry-run,suffix:,test,run:,prefix:,yes" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hds:tr:P:y" -l "help,dry-run,suffix:,test,run:,prefix:,yes,devcontainer-image:" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
@@ -160,6 +165,7 @@ main() {
 	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
 	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
 	export RSDK_OPTION_PURGE_BEFORE_UPDATE="${RSDK_OPTION_PURGE_BEFORE_UPDATE:-true}"
+	export RSDK_OPTION_DEVCONTAINER_IMAGE="${RSDK_OPTION_DEVCONTAINER_IMAGE:-bookworm}"
 
 	# `gh`` will block execution if stdout cannot fit all content
 	export GH_PAGER=
@@ -226,6 +232,10 @@ main() {
 		case "$TEMP" in
 		-d | --dry-run)
 			RSDK_OPTION_DRY_RUN="true"
+			;;
+		--devcontainer-image)
+			RSDK_OPTION_DEVCONTAINER_IMAGE="$1"
+			shift
 			;;
 		-h | --help)
 			TEMP="$(basename "$0")"

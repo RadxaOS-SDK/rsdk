@@ -53,14 +53,13 @@ else
             "needrestart",
             "ntfs-3g",
             "python3-pip",
-            "software-properties-common",
             "tmux",
             "vim",
             "wget",
             "xz-utils",
         ] +
 
-(if suite == "bookworm" || suite == "noble"
+(if suite != "bullseye"
 then
         [
             "util-linux-extra",
@@ -88,7 +87,7 @@ else
             "alsa-utils",
         ] +
 
-(if suite == "bookworm" || suite == "noble"
+(if suite != "bullseye"
 then
         [
             "pipewire-audio",
@@ -119,11 +118,21 @@ else
             "radxa-otgutils",
         ] +
 
+(if suite != "trixie"
+then
+        // These packages are not compatible with Debian 13
         [
             // Misc
             "libmraa2",
             "libmraa-dev",
-            "libopencv-dev",
+        ]
+else
+        []
+) +
+
+        [
+            // Misc
+            // "libopencv-dev", // Dependencies conflict with CIX's provided FFmpeg
             "foot-terminfo",
             "kitty-terminfo",
         ],
