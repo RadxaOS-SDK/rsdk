@@ -13,6 +13,7 @@ function() std.manifestYamlDoc(
         jobs: {
             check_pull_requests: {
                 "runs-on": "ubuntu-latest",
+                "if": "github.actor != 'dependabot[bot]'",
                 name: "Check linked issues",
                 permissions: {
                     issues: "write",
