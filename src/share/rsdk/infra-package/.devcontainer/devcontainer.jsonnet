@@ -33,7 +33,9 @@ function(
             "version": "latest"
         }
     },
-    "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+    "image": "mcr.microsoft.com/devcontainers/base:%(devcontainer_image)s" % {
+        devcontainer_image: devcontainer_image,
+    },
     "mounts": [
         {
             "source": "${localWorkspaceFolder}/.devcontainer/.devenv",
