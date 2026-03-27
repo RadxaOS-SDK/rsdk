@@ -119,7 +119,7 @@ function(
                     {
                         name: "Deploy to GitHub Pages",
                         id: "deploy",
-                        uses: "actions/deploy-pages@v4",
+                        uses: "actions/deploy-pages@v5",
                         "if": "github.event_name != 'pull_request'",
                     },
                     {
