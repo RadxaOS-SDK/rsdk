@@ -107,7 +107,7 @@ function(
                     },
                     {
                         name: "Setup GitHub Pages",
-                        uses: "actions/configure-pages@v5",
+                        uses: "actions/configure-pages@v6",
                     },
                     {
                         name: "Upload artifact",
