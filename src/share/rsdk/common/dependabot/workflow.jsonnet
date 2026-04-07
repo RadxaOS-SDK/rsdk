@@ -22,13 +22,24 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
-                        name: "Approve a PR & Enable auto-merge for Dependabot PRs",
+                        name: "Approve a PR",
                         run: |||
                             gh pr review --approve "$PR_URL"
+                        |||,
+                        env: {
+                            PR_URL: "${{github.event.pull_request.html_url}}",
+                            GH_TOKEN: "${{secrets.GITHUB_TOKEN}}",
+                        },
+                    },
+                    {
+                        name: "Enable auto-merge for Dependabot PRs",
+                        run: |||
                             gh pr merge --auto --merge "$PR_URL"
                         |||,
                         env: {
                             PR_URL: "${{github.event.pull_request.html_url}}",
+                            // Need to use custom token to trigger merge_group actions
+                            // https://github.com/orgs/community/discussions/70310
                             GH_TOKEN: "${{secrets.GITHUB_TOKEN}}",
                         },
                     },

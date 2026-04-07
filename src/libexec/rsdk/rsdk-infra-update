@@ -129,7 +129,7 @@ update_repo() {
 				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/rulesets/$RULESET_ID" --input "$SCRIPT_DIR/../../share/rsdk/common/repo_rulesets/default.json"
 		fi
 		if ! gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2026-03-10" \
-  			"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/automated-security-fixes" | jq -ec '.enabled'; then
+			"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/automated-security-fixes" | jq -ec '.enabled'; then
 			gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2026-03-10" \
 				"/repos/$RSDK_TARGET_ORGANIZATION/$TARGET/vulnerability-alerts"
 			gh api --method PUT -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2026-03-10" \
