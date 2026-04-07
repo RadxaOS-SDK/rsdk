@@ -656,6 +656,25 @@
         ]
     },
     {
+        "product": "radxa-dragon-midstream",
+        "product_name": "Generic Radxa Dragon midstream Image",
+        "product_full_name": "Generic Radxa Dragon midstream Image",
+        "soc": [
+            "qcs6490",
+            "sc8280xp"
+        ],
+        "sector_size": [
+            512,
+            4096
+        ],
+        "supported_suite": [
+            "noble"
+        ],
+        "supported_edition": [
+            "gnome"
+        ]
+    },
+    {
         "product": "radxa-dragon-q6a",
         "product_name": "Radxa Dragon Q6A",
         "product_full_name": "Radxa Dragon Q6A",
