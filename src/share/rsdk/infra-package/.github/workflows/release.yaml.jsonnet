@@ -7,6 +7,7 @@ function() std.manifestYamlDoc(
             push: {
                 branches: [
                     "main",
+                    "gh-readonly-queue/main/*",
                 ],
                 "paths-ignore": [
                     "docs/**",
