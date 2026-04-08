@@ -45,6 +45,10 @@ download_pkgs() {
 						echo "No pkg.conf found when policy requires explicit distro."
 					fi
 				else
+					if ! jq -er '"Syntax check"' "$RSDK_TEMP/$pkg/pkg.conf" >/dev/null; then
+						echo "Invalid pkg.conf for '$org/$pkg@$tag', aborting." >&2
+						return 1
+					fi
 					for j in "$RSDK_TEMP/$pkg"/*.deb; do
 						mapfile -t targets < <(find_target_distros "$(basename "$j")" "$RSDK_TEMP/$pkg/pkg.conf" "${DISTROS[@]}") && array_remove "targets" ""
 						for k in "${targets[@]}"; do
@@ -81,6 +85,10 @@ main() {
 	export RSDK_OPTION_DEB_DIR="${RSDK_OPTION_DEB_DIR:-${TMPDIR:-/tmp}/rsdk-deb}"
 	export RSDK_OPTION_DEFAULT_DISTRO="${RSDK_OPTION_DEFAULT_DISTRO:-true}"
 
+	if ! jq -er '"Syntax check"' pkgs.json >/dev/null; then
+		echo "Invalid pkgs.json, aborting." >&2
+		return 1
+	fi
 	mapfile -t RSDK_PKG_REPO_ARRAY < <(jq -er 'to_entries[].key' pkgs.json) && array_remove "RSDK_PKG_REPO_ARRAY" ""
 	mapfile -t RSDK_PKG_REPO_TAG_ARRAY < <(jq -er 'to_entries[].value' pkgs.json) && array_remove "RSDK_PKG_REPO_TAG_ARRAY" ""
 
