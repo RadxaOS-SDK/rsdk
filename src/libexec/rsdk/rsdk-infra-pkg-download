@@ -73,12 +73,13 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/stdlib.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "hd" -l "help,dry-run,deb-dir:,no-default-distro" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hdv" -l "help,dry-run,deb-dir:,no-default-distro,verbose" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
 
 	export RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
+	export RSDK_OPTION_VERBOSE="${RSDK_OPTION_VERBOSE:-false}"
 	export RSDK_PACKAGE_ORG="${RSDK_PACKAGE_ORG:-$("$SCRIPT_DIR/../../bin/rsdk" config infra.organizations.package)}"
 	export RSDK_PKG_REPO_ARRAY=("${RSDK_PKG_REPO_ARRAY[@]}")
 	export RSDK_PKG_REPO_TAG_ARRAY=("${RSDK_PKG_REPO_TAG_ARRAY[@]}")
@@ -98,6 +99,9 @@ main() {
 		case "$TEMP" in
 		-d | --dry-run)
 			RSDK_OPTION_DRY_RUN="true"
+			;;
+		-v | --verbose)
+			RSDK_OPTION_VERBOSE="true"
 			;;
 		-h | --help)
 			TEMP="$(basename "$0")"

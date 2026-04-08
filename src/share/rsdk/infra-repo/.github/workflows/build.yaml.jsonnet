@@ -90,9 +90,14 @@ function(
                                 "%(target)s"
                             )
 
+                            logging=()
+                            if [[ "$ACTIONS_STEP_DEBUG" == "true" ]]; then
+                                logging+=(--verbose)
+                            fi
+
                             pushd .infra-repo
 
-                            ../src/bin/rsdk infra-pkg-download --no-default-distro "${suites[@]}"
+                            ../src/bin/rsdk infra-pkg-download "${logging[@]}" --no-default-distro "${suites[@]}"
                             ../src/bin/rsdk infra-repo-sync --origin "${suites[0]}" --label "${suites[0]}" "${suites[@]}"
                             export RSDK_REPO_ORIGIN="${suites[0]}"
 

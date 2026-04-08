@@ -72,3 +72,9 @@ wait_parallel() {
 		}
 	done
 }
+
+verbose() {
+	if [[ ${RSDK_OPTION_VERBOSE:-false} == "true" ]]; then
+		echo "$@"
+	fi
+}
