@@ -16,7 +16,7 @@ function() std.manifestYamlDoc(
                     {
                         name: "Dependabot metadata",
                         id: "metadata",
-                        uses: "dependabot/fetch-metadata@v2",
+                        uses: "dependabot/fetch-metadata@v3",
                         with: {
                             "github-token": "${{ secrets.GITHUB_TOKEN }}",
                         },
