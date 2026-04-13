@@ -163,7 +163,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Release",
-                        uses: "softprops/action-gh-release@v2",
+                        uses: "softprops/action-gh-release@v3",
                         with: {
                             tag_name: "${{ env.version }}",
                             body_path: "README.md",
@@ -181,7 +181,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Append changelog",
-                        uses: "softprops/action-gh-release@v2",
+                        uses: "softprops/action-gh-release@v3",
                         with: {
                             tag_name: "${{ env.version }}",
                             append_body: true,

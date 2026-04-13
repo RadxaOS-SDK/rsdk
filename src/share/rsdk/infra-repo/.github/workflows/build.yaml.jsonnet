@@ -138,7 +138,7 @@ function(
                     {
                         name: "Release Pages artifact",
                         "if": "steps.deploy.outcome == 'success'",
-                        uses: "softprops/action-gh-release@v2",
+                        uses: "softprops/action-gh-release@v3",
                         with: {
                             tag_name: "github-pages",
                             body: "Rolling Pages artifact",

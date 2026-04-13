@@ -69,7 +69,7 @@ function(
                     {
                         name: "Create empty release",
                         id: "release",
-                        uses: "softprops/action-gh-release@v2",
+                        uses: "softprops/action-gh-release@v3",
                         with: {
                             token: "${{ secrets.GITHUB_TOKEN }}",
                             target_commitish: "main",

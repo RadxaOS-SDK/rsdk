@@ -94,7 +94,7 @@ runs:
         file: out/**/*
     - name: Append changelog header
       if: inputs.release-id != '' && inputs.github-token != ''
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ inputs.tag_name }}
         append_body: true
@@ -112,14 +112,14 @@ runs:
           ```
     - name: Append checksum
       if: inputs.release-id != '' && inputs.github-token != ''
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ inputs.tag_name }}
         append_body: true
         body_path: out/${{ steps.prep.outputs.BUILD_TUPLE }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.sha512sum
     - name: Append changelog footer
       if: inputs.release-id != '' && inputs.github-token != ''
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: ${{ inputs.tag_name }}
         append_body: true
