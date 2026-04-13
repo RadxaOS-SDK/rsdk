@@ -113,7 +113,6 @@ else
 
         [
             // Radxa
-            "android-tools-adbd",
             "libreelec-alsa-utils",
             "radxa-otgutils",
         ] +
