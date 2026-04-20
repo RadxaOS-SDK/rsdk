@@ -317,10 +317,10 @@
             512
         ],
         "supported_suite": [
-            "bullseye"
+            "bookworm"
         ],
         "supported_edition": [
-            "xfce"
+            "kde"
         ]
     },
     {
