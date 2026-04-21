@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 1093 +++++++++++++++++++++++++++
- 1 file changed, 1093 insertions(+)
+ src/arch/arm64/configs/radxa.config | 1094 +++++++++++++++++++++++++++
+ 1 file changed, 1094 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,1093 @@
+@@ -0,0 +1,1094 @@
 +# Enable FPDT on supported platforms
 +CONFIG_ACPI_FPDT=y
 +
@@ -847,6 +847,7 @@ index 000000000000..f5bca1bdaf69
 +
 +## Enable Microchip MCP251x driver
 +CONFIG_CAN_MCP251X=m
++CONFIG_CAN_MCP251XFD=m
 +
 +## Enable USB printer driver
 +CONFIG_USB_PRINTER=m
