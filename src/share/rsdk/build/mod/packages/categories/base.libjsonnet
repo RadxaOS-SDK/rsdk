@@ -111,6 +111,13 @@ else
             "usbutils",
         ] +
 
+(if suite == "bookworm"
+then
+        [
+            "adbd/bookworm-backports",
+        ]
+) +
+
         [
             // Radxa
             "libreelec-alsa-utils",
