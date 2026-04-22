@@ -117,7 +117,7 @@ function(
                     },
                     {
                         name: "Upload artifact",
-                        uses: "actions/upload-pages-artifact@v4",
+                        uses: "actions/upload-pages-artifact@v5",
                         with: {
                             path: "${{ steps.build.outputs.pages }}"
                         },
