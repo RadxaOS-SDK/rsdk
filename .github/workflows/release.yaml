@@ -119,7 +119,7 @@ jobs:
       uses: "RadxaOS-SDK/rsdk/.github/actions/infra-repo-update@main"
       with:
         test-repo: true
-        token: "${{ secrets.RADXA_APT_TEST_REPO_TOKEN }}"
+        token: "${{ secrets.RSDK_APT_REPOSITORY_TOKEN }}"
 name: "Build & Release"
 "on":
   merge_group: {}
