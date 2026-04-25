@@ -1,31 +1,28 @@
 #!/usr/bin/env bash
 
 rate_limited() {
-	echo "You might be rate limited by GitHub."
-	echo "Please request a PAT from GitHub website, and add it to your Dev Container:"
-	echo "mkdir -p ~/.config/nix/ && echo 'access-tokens = github.com=YOUR_GITHUB_PAT' >> ~/.config/nix/nix.conf && src/bin/rsdk setup"
-	echo "You can run above command in a new terminal once you complete this one."
-	read -rp "Press Enter to continue..."
-	exit 0
+	echo "You might be rate limited by GitHub." >&2
+	echo "Please request a PAT from GitHub website, and add it to your Dev Container:" >&2
+	echo "mkdir -p ~/.config/nix/ && echo 'access-tokens = github.com=YOUR_GITHUB_PAT' >> ~/.config/nix/nix.conf && src/bin/rsdk setup" >&2
+	echo "You can run above command in a new terminal once you complete this one." >&2
+	exit 1
 }
 
 broken_nix_store() {
-	echo "You might have broken devcontainer Nix volume."
-	echo "Please stop and remove your current devcontainer container, then remove the Nix volume."
-	echo "You might need to use following commands:"
-	echo "    docker container ls"
-	echo "    docker container rm -f <devcontainer ID>"
-	echo "    docker volume ls"
-	echo "    docker volume rm <Nix volume>"
-	read -rp "Press Enter to continue..."
-	exit 0
+	echo "You might have broken devcontainer Nix volume." >&2
+	echo "Please stop and remove your current devcontainer container, then remove the Nix volume." >&2
+	echo "You might need to use following commands:" >&2
+	echo "    docker container ls" >&2
+	echo "    docker container rm -f <devcontainer ID>" >&2
+	echo "    docker volume ls" >&2
+	echo "    docker volume rm <Nix volume>" >&2
+	exit 1
 }
 
 broken_devenv_cache() {
-	echo "You might have broken devenv cache."
-	echo "Please reset the content in .devenv and .devcontainer/.devenv."
-	read -rp "Press Enter to continue..."
-	exit 0
+	echo "You might have broken devenv cache." >&2
+	echo "Please reset the content in .devenv and .devcontainer/.devenv." >&2
+	exit 1
 }
 
 get_distro_id() {
@@ -124,10 +121,40 @@ install_devcontainer_cli() {
 }
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+RSDK_ROOT="${DEVENV_ROOT:-$SCRIPT_DIR/../../../}"
 # shellcheck source=src/lib/rsdk/utils.sh
 source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
-if ! command -v direnv || ! command -v devenv; then
+ensure_nix_packages() {
+	if command -v direnv && command -v devenv; then
+		return 0
+	fi
+
+	if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix.sh ]]; then
+		# shellcheck source=/dev/null
+		. /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+	fi
+
+	if command -v direnv && command -v devenv; then
+		return 0
+	fi
+
+	if ! command -v nix-env; then
+		return 1
+	fi
+
+	echo "Installing required Nix packages (direnv, devenv, cachix)..." >&2
+	if ! nix-env -iA nixpkgs.cachix nixpkgs.direnv nixpkgs.devenv; then
+		return 1
+	fi
+
+	if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix.sh ]]; then
+		# shellcheck source=/dev/null
+		. /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+	fi
+}
+
+if ! ensure_nix_packages; then
 	broken_nix_store
 fi
 
@@ -138,7 +165,7 @@ if git status &>/dev/null && [[ -z "$(git submodule status)" ]]; then
 	fi
 fi
 
-direnv allow
+cd "$RSDK_ROOT" && direnv allow
 # shellcheck disable=SC2016
 echo 'eval "$(direnv hook bash)"' >>~/.bashrc
 
