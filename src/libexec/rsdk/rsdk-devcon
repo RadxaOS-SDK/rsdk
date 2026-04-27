@@ -1,5 +1,47 @@
 #!/usr/bin/env bash
 
+find_devcontainer_id() {
+	local RSDK_ROOT="$1"
+	docker ps -a -q --filter "label=devcontainer.local_folder=$RSDK_ROOT" | head -1
+}
+
+is_container_running() {
+	local cid="$1"
+	[[ -n "$cid" ]] && [[ "$(docker inspect -f '{{.State.Running}}' "$cid" 2>/dev/null)" == "true" ]]
+}
+
+devcon_exec() {
+	local RSDK_ROOT="$1"
+	local max_retries=3
+	local retry_delay=5
+	local attempt=1
+
+	while [[ $attempt -le $max_retries ]]; do
+		local cid
+		cid="$(find_devcontainer_id "$RSDK_ROOT")"
+
+		if is_container_running "$cid"; then
+			devcontainer exec --workspace-folder "$RSDK_ROOT" bash
+			return $?
+		fi
+
+		if [[ $attempt -lt $max_retries ]]; then
+			echo "Waiting for devcontainer to be ready (attempt $attempt/$max_retries)..." >&2
+			sleep "$retry_delay"
+		fi
+		((attempt++))
+	done
+
+	echo "Devcontainer is not running after $max_retries attempts." >&2
+	if [[ -n "$cid" ]]; then
+		echo "Container $cid exists but is not running. Check logs:" >&2
+		echo "  docker logs --tail 50 $cid" >&2
+	else
+		echo "No devcontainer found. Try running 'rsdk devcon up' first." >&2
+	fi
+	return 1
+}
+
 main() {
 	local SCRIPT_DIR
 	SCRIPT_DIR="$(dirname "$(realpath "$0")")"
@@ -11,20 +53,60 @@ main() {
 		exit 1
 	fi
 
-	local RSDK_ROOT="${DEVENV_ROOT:-$SCRIPT_DIR/../../../}"
+	local RSDK_ROOT
+	RSDK_ROOT="$(realpath "${DEVENV_ROOT:-$SCRIPT_DIR/../../../}")"
 
 	case "${1:-}" in
 	"build")
-		devcontainer "${1:-}" --workspace-folder "$RSDK_ROOT"
+		devcontainer "${1}" --workspace-folder "$RSDK_ROOT"
 		;;
 	"up")
-		devcontainer "${1:-}" --workspace-folder "$RSDK_ROOT" --remove-existing-container
+		shift
+		local up_args=("--workspace-folder" "$RSDK_ROOT")
+		local skip_post=false
+		while [[ $# -gt 0 ]]; do
+			case "$1" in
+			"--skip-post-create")
+				skip_post=true
+				;;
+			*)
+				echo "Unknown option: $1" >&2
+				;;
+			esac
+			shift
+		done
+		if [[ "$skip_post" == "true" ]]; then
+			up_args+=("--skip-post-create")
+		fi
+		up_args+=("--remove-existing-container")
+		devcontainer up "${up_args[@]}"
+		;;
+	"logs")
+		local cid
+		cid="$(find_devcontainer_id "$RSDK_ROOT")"
+		if [[ -z "$cid" ]]; then
+			echo "No devcontainer found." >&2
+			exit 1
+		fi
+		docker logs --tail 50 "$cid"
+		;;
+	"status")
+		local cid
+		cid="$(find_devcontainer_id "$RSDK_ROOT")"
+		if [[ -z "$cid" ]]; then
+			echo "No devcontainer found."
+		elif is_container_running "$cid"; then
+			echo "Devcontainer is running (${cid:0:12})."
+		else
+			echo "Devcontainer exists but is not running (${cid:0:12})."
+		fi
 		;;
 	"exec" | "")
-		devcontainer exec --workspace-folder "$RSDK_ROOT" bash
+		devcon_exec "$RSDK_ROOT"
 		;;
 	*)
 		echo "Unknown command ${1:-}." >&2
+		echo "Usage: rsdk devcon {up|build|exec|logs|status}" >&2
 		exit 1
 		;;
 	esac
