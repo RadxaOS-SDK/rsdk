@@ -116,6 +116,8 @@ then
         [
             "adbd/bookworm-backports",
         ]
+else
+        []
 ) +
 
         [
