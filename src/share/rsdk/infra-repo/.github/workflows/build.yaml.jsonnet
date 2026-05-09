@@ -35,6 +35,7 @@ function(
         jobs: {
             build: {
                 "runs-on": "ubuntu-latest",
+                "timeout-minutes": 30,
                 permissions: {
                     pages: "write",             // for pages
                     "id-token": "write",        // for pages

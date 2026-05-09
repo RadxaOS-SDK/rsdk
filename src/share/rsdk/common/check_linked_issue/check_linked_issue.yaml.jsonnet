@@ -15,6 +15,7 @@ function() std.manifestYamlDoc(
                 "runs-on": "ubuntu-latest",
                 "if": "github.actor != 'dependabot[bot]'",
                 name: "Check linked issues",
+                "timeout-minutes": 10,
                 permissions: {
                     issues: "write",
                     "pull-requests": "write",

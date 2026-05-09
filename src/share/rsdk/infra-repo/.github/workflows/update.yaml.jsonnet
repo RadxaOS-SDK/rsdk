@@ -24,6 +24,7 @@ function(
         jobs: {
             update: {
                 "runs-on": "ubuntu-latest",
+                "timeout-minutes": 10,
                 permissions: {
                     contents: "write",          // for git push
                 },

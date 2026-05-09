@@ -11,6 +11,7 @@ function() std.manifestYamlDoc(
         jobs: {
             dependabot: {
                 "runs-on": "ubuntu-latest",
+                "timeout-minutes": 10,
                 "if": "github.actor == 'dependabot[bot]'",
                 steps: [
                     {

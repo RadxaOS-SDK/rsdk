@@ -36,6 +36,7 @@ function(
         jobs: {
             "build-doc": {
                 "runs-on": "ubuntu-latest",
+                "timeout-minutes": 30,
                 permissions: {
                     pages: "write",
                     "id-token": "write",
