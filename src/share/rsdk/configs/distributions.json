@@ -20,10 +20,12 @@
         "suites": [
             "focal",
             "jammy",
-            "noble"
+            "noble",
+            "resolute"
         ],
         "supported_suites": [
-            "noble"
+            "noble",
+            "resolute"
         ]
     }
 ]

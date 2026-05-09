@@ -16,7 +16,9 @@
       "jammy",
       "jammy-test",
       "noble",
-      "noble-test"
+      "noble-test",
+      "resolute",
+      "resolute-test"
     ]
   }
 }

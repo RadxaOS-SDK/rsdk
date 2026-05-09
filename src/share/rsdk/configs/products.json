@@ -668,7 +668,8 @@
             4096
         ],
         "supported_suite": [
-            "noble"
+            "noble",
+            "resolute"
         ],
         "supported_edition": [
             "gnome"

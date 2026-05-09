@@ -94,7 +94,8 @@
         "partition_table_type": "gpt",
         "firmware_type": "edk2",
         "soc_install_recommends": [
-            "noble"
+            "noble",
+            "resolute"
         ],
         "soc_list": [
             "qcs6490",
