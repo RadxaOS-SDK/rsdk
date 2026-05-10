@@ -648,7 +648,7 @@
             4096
         ],
         "supported_suite": [
-            "bullseye"
+            "trixie"
         ],
         "supported_edition": [
             "kde",
