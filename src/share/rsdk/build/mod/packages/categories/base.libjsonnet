@@ -122,11 +122,11 @@ else
 
         [
             // Radxa
-            "libreelec-alsa-utils",
+            if suite != "resolute" then "libreelec-alsa-utils",
             "radxa-otgutils",
         ] +
 
-(if suite != "trixie"
+(if suite != "trixie" && suite != "resolute"
 then
         // These packages are not compatible with Debian 13
         [
