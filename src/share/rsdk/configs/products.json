@@ -669,7 +669,8 @@
         ],
         "supported_suite": [
             "noble",
-            "resolute"
+            "resolute",
+            "trixie"
         ],
         "supported_edition": [
             "gnome"
