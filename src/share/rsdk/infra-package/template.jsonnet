@@ -2,6 +2,7 @@ local LICENSE = import "../common/licenses/GPLv3.jsonnet";
 local CODEOWNERS = import "../common/codeowners/CODEOWNERS.jsonnet";
 local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
+local dependabot_rebase = import "../common/dependabot/rebase.jsonnet";
 local check_linked_issue_yaml = import "../common/check_linked_issue/check_linked_issue.yaml.jsonnet";
 local docs_yaml = import ".github/workflows/docs.yaml.jsonnet";
 local new_version_yaml = import ".github/workflows/new_version.yaml.jsonnet";
@@ -33,6 +34,7 @@ function(
     ".devcontainer/devcontainer.json": devcontainer_json(devcontainer_image),
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
+    ".github/workflows/dependabot_rebase.yaml": dependabot_rebase(),
     ".github/workflows/docs.yaml": docs_yaml(target),
     ".github/workflows/new_version.yaml": new_version_yaml(),
     ".github/workflows/release.yaml": release_yaml(),

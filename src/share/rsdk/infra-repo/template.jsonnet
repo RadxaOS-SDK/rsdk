@@ -2,6 +2,7 @@ local LICENSE = import "../common/licenses/GPLv3.jsonnet";
 local CODEOWNERS = import "../common/codeowners/CODEOWNERS.jsonnet";
 local dependabot_yaml = import "../common/dependabot/dependabot.yaml.jsonnet";
 local dependabot_workflow = import "../common/dependabot/workflow.jsonnet";
+local dependabot_rebase = import "../common/dependabot/rebase.jsonnet";
 local check_linked_issue_yaml = import "../common/check_linked_issue/check_linked_issue.yaml.jsonnet";
 local README_md = import "README.md.jsonnet";
 local pkgs_lock = import "pkgs.lock.jsonnet";
@@ -26,6 +27,7 @@ function(
     ".github/ISSUE_TEMPLATE/apt.md": importstr ".github/ISSUE_TEMPLATE/apt.md",
     ".github/ISSUE_TEMPLATE/others.md": importstr ".github/ISSUE_TEMPLATE/others.md",
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
+    ".github/workflows/dependabot_rebase.yaml": dependabot_rebase(),
     ".github/workflows/update.yaml": update_yaml(git_rev),
     ".github/workflows/check_linked_issue.yaml": check_linked_issue_yaml(),
     ".github/workflows/build.yaml": build_yaml(target, pkg_org, git_rev),

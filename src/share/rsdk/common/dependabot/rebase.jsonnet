@@ -1,0 +1,44 @@
+function() std.manifestYamlDoc(
+    {
+        name: "Dependabot rebase PRs",
+        on: {
+            workflow_dispatch: {},
+        },
+        permissions: {},
+        jobs: {
+            rebase: {
+                "runs-on": "ubuntu-latest",
+                "timeout-minutes": 10,
+                permissions: {
+                    "pull-requests": "write",
+                },
+                steps: [
+                    {
+                        name: "Rebase PRs",
+                        uses: "actions/github-script@v9",
+                        with: {
+                            "github-token": "${{secrets.PR_WRITE_TOKEN}}",
+                            script: |||
+                                const { data: prs } = await github.rest.pulls.list({
+                                    owner: context.repo.owner,
+                                    repo: context.repo.repo,
+                                    state: "open",
+                                    head: "dependabot/*"
+                                });
+                                for (const pr of prs) {
+                                    await github.rest.issues.createComment({
+                                        owner: context.repo.owner,
+                                        repo: context.repo.repo,
+                                        issue_number: pr.number,
+                                        body: "@dependabot rebase"
+                                    });
+                                }
+                            |||,
+                        },
+                    },
+                ],
+            },
+        },
+    },
+    quote_keys=false,
+)
