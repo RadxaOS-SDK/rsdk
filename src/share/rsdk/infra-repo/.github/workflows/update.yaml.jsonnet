@@ -59,7 +59,7 @@ function(
                         uses: "actions/checkout@v6",
                         with: {
                             path: ".infra-repo",
-                            token: "${{secrets.GIT_PUSH_TOKEN}}",
+                            token: "${{secrets.CODE_WRITE_TOKEN}}",
                         },
                     },
                     {

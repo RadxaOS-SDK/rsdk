@@ -34,7 +34,7 @@ function() std.manifestYamlDoc(
                         with: {
                             "fetch-depth": 0,
                             submodules: "recursive",
-                            token: "${{secrets.GIT_PUSH_TOKEN}}",
+                            token: "${{secrets.CODE_WRITE_TOKEN}}",
                         },
                     },
                     {

@@ -9,7 +9,7 @@ jobs:
       with:
         fetch-depth: 0
         submodules: "recursive"
-        token: "${{secrets.GIT_PUSH_TOKEN}}"
+        token: "${{secrets.CODE_WRITE_TOKEN}}"
     - if: "github.event.inputs.update == 'true'"
       name: "Update submodules"
       run: |
