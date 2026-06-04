@@ -96,7 +96,8 @@
         "firmware_type": "edk2",
         "soc_install_recommends": [
             "noble",
-            "resolute"
+            "resolute",
+            "trixie"
         ],
         "soc_list": [
             "qcs6490",
