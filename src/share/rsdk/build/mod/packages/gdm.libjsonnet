@@ -1,6 +1,9 @@
 function() {
     mmdebstrap+: {
-        packages+: [ "gdm3" ],
+        packages+: [
+            "gdm3",
+            "libpam-gnome-keyring",
+        ],
         "customize-hooks"+:
         [
             // Manually set gdm3 as the default display manager, as dpkg-reconfigure does not work under chroot
