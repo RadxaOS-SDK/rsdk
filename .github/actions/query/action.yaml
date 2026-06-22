@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Checkout
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: RadxaOS-SDK/rsdk
         path: .tmp/rsdk

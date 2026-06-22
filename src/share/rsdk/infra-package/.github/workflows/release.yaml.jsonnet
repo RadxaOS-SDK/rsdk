@@ -37,7 +37,7 @@ function() std.manifestYamlDoc(
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v6",
+                        uses: "actions/checkout@v7",
                         with: {
                             "fetch-depth": 0,
                             "fetch-tags": true,
@@ -130,7 +130,7 @@ function() std.manifestYamlDoc(
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v6",
+                        uses: "actions/checkout@v7",
                     },
                     {
                         name: "Download generated debs",
