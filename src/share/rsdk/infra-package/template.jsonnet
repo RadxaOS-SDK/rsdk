@@ -32,6 +32,7 @@ function(
     ".devcontainer/.devenv/.gitignore": importstr ".devcontainer/.devenv/.gitignore",
     ".devcontainer/.direnv/.gitignore": importstr ".devcontainer/.direnv/.gitignore",
     ".devcontainer/devcontainer.json": devcontainer_json(devcontainer_image),
+    ".devcontainer/devcontainer-lock.json": importstr ".devcontainer/devcontainer-lock.json",
     ".github/dependabot.yaml": dependabot_yaml(),
     ".github/workflows/dependabot.yaml": dependabot_workflow(),
     ".github/workflows/dependabot_rebase.yaml": dependabot_rebase(),
