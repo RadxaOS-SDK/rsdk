@@ -110,6 +110,7 @@ function() std.manifestYamlDoc(
                         run: |||
                             version="$(dpkg-parsechangelog -S Version)"
                             version="${version//\~/.}"
+                            version="${version#*:}"
                             if [[ -n "$(git tag -l "$version")" ]]
                             then
                                 echo "distro=UNRELEASED"
@@ -146,6 +147,7 @@ function() std.manifestYamlDoc(
                         run: |||
                             version="$(dpkg-parsechangelog -S Version)"
                             version="${version//\~/.}"
+                            version="${version#*:}"
                             {
                                 echo "version=$version"
                                 echo "changes<<EOF"
