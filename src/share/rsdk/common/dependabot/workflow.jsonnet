@@ -33,6 +33,17 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
+                        name: "Approve a PR with private token",
+                        run: |||
+                            gh pr review --approve "$PR_URL"
+                        |||,
+                        env: {
+                            PR_URL: "${{github.event.pull_request.html_url}}",
+                            GH_TOKEN: "${{secrets.CODE_WRITE_TOKEN}}",
+                        },
+                        "continue-on-error": true,
+                    },
+                    {
                         name: "Enable auto-merge for Dependabot PRs",
                         run: |||
                             gh pr merge --auto --merge "$PR_URL"

@@ -19,12 +19,15 @@ function() std.manifestYamlDoc(
                         with: {
                             "github-token": "${{secrets.PR_WRITE_TOKEN}}",
                             script: |||
-                                const { data: prs } = await github.rest.pulls.list({
+                                const { data: pulls } = await github.rest.pulls.list({
                                     owner: context.repo.owner,
                                     repo: context.repo.repo,
                                     state: "open",
-                                    head: "dependabot/*"
                                 });
+                                const prs = pulls.filter(pr =>
+                                    pr.user.login === 'dependabot[bot]' ||
+                                    pr.user.login === 'dependabot'
+                                );
                                 for (const pr of prs) {
                                     await github.rest.issues.createComment({
                                         owner: context.repo.owner,
