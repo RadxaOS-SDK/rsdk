@@ -29,15 +29,48 @@ function() std.manifestYamlDoc(
         },
         permissions: {},
         jobs: {
-            build: {
+            "check-runner": {
                 "runs-on": "ubuntu-latest",
+                outputs: {
+                    runner: "${{ steps.env.outputs.runner }}",
+                    build_env: "${{ steps.env.outputs.build_env }}",
+                },
+                steps: [
+                    {
+                        name: "Checkout",
+                        uses: "actions/checkout@v6",
+                    },
+                    {
+                        name: "Determine runner and build env",
+                        id: "env",
+                        shell: "bash",
+                        run: |||
+                            if [[ -f .github/local/runner ]]; then
+                                runner="$(head -1 .github/local/runner)"
+                                echo "runner=$runner" | tee -a "$GITHUB_OUTPUT"
+                            else
+                                runner="ubuntu-latest"
+                                echo "runner=$runner" | tee -a "$GITHUB_OUTPUT"
+                            fi
+                            if echo "$runner" | grep -q arm; then
+                                echo "build_env=host" | tee -a "$GITHUB_OUTPUT"
+                            else
+                                echo "build_env=devcontainer" | tee -a "$GITHUB_OUTPUT"
+                            fi
+                        |||,
+                    },
+                ],
+            },
+            build: {
+                "runs-on": "${{ needs.check-runner.outputs.runner }}",
+                needs: "check-runner",
                 outputs: {
                     distro: "${{ steps.distro_check.outputs.distro }}",
                 },
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v7",
+                        uses: "actions/checkout@v6",
                         with: {
                             "fetch-depth": 0,
                             "fetch-tags": true,
@@ -46,6 +79,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Set up QEMU Emulation",
+                        "if": "${{ needs.check-runner.outputs.build_env != 'host' }}",
                         uses: "docker/setup-qemu-action@v4",
                         with: {
                             image: "tonistiigi/binfmt:latest",
@@ -53,6 +87,7 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Test",
+                        "if": "${{ needs.check-runner.outputs.build_env == 'devcontainer' }}",
                         uses: "devcontainers/ci@v0.3",
                         with: {
                             push: "never",
@@ -75,7 +110,30 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
+                        name: "Test",
+                        "if": "${{ needs.check-runner.outputs.build_env == 'host' }}",
+                        shell: "bash",
+                        run: |||
+                            set -euo pipefail
+                            sudo apt-get update
+                            sudo apt-get install --no-install-recommends -y git-buildpackage
+                            sudo apt-get build-dep . -y
+                            export DEBEMAIL="dev@radxa.com"
+                            export DEBFULLNAME='"Radxa Computer Co., Ltd"'
+                            git config user.name "github-actions[bot]"
+                            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                            git branch -m GITHUB_RUNNER || true
+                            git branch -D main || true
+                            git switch -c main || true
+                            make dch
+                            make test deb
+                            git reset --hard HEAD~1
+                            rm ../*.deb
+                        |||,
+                    },
+                    {
                         name: "Build",
+                        "if": "${{ needs.check-runner.outputs.build_env == 'devcontainer' }}",
                         uses: "devcontainers/ci@v0.3",
                         with: {
                             push: "never",
@@ -84,6 +142,15 @@ function() std.manifestYamlDoc(
                                 make deb
                             |||,
                         },
+                    },
+                    {
+                        name: "Build",
+                        "if": "${{ needs.check-runner.outputs.build_env == 'host' }}",
+                        shell: "bash",
+                        run: |||
+                            set -euo pipefail
+                            make deb
+                        |||,
                     },
                     {
                         name: "Workaround actions/upload-artifact#176",
@@ -110,7 +177,6 @@ function() std.manifestYamlDoc(
                         run: |||
                             version="$(dpkg-parsechangelog -S Version)"
                             version="${version//\~/.}"
-                            version="${version#*:}"
                             if [[ -n "$(git tag -l "$version")" ]]
                             then
                                 echo "distro=UNRELEASED"
@@ -122,8 +188,11 @@ function() std.manifestYamlDoc(
                 ],
             },
             release: {
-                "runs-on": "ubuntu-latest",
-                needs: "build",
+                "runs-on": "${{ needs.check-runner.outputs.runner }}",
+                needs: [
+                    "check-runner",
+                    "build",
+                ],
                 permissions: {
                     contents: "write",
                 },
@@ -131,7 +200,7 @@ function() std.manifestYamlDoc(
                 steps: [
                     {
                         name: "Checkout",
-                        uses: "actions/checkout@v7",
+                        uses: "actions/checkout@v6",
                     },
                     {
                         name: "Download generated debs",
@@ -147,7 +216,6 @@ function() std.manifestYamlDoc(
                         run: |||
                             version="$(dpkg-parsechangelog -S Version)"
                             version="${version//\~/.}"
-                            version="${version#*:}"
                             {
                                 echo "version=$version"
                                 echo "changes<<EOF"
