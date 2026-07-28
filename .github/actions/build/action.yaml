@@ -49,6 +49,11 @@ runs:
           options+=("--override-firmware" "${{ inputs.override-firmware }}")
         fi
         echo "options=${options[*]}" >> $GITHUB_ENV
+        src/bin/rsdk setup
+        sector_sizes=( $(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[] | if has("sector_size") then .sector_size[] else 512 end' src/share/rsdk/configs/products.json) )
+        for size in "${sector_sizes[@]}"; do
+          echo "build_${size}=true" >> $GITHUB_ENV
+        done
     - name: Build within devcontainer
       uses: devcontainers/ci@v0.3
       with:
@@ -101,12 +106,34 @@ runs:
         body: |
           ## ${{ steps.prep.outputs.BUILD_TUPLE }} 
 
+          ```
+    - name: Append standard image link
+      if: inputs.release-id != '' && inputs.github-token != '' && env.build_512
+      uses: softprops/action-gh-release@v3
+      with:
+        tag_name: ${{ inputs.tag_name }}
+        append_body: true
+        body: |
           [Download standard Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_512.img.xz)
 
-          [Download UFS Image*](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_4096.img.xz)
+          ```
+    - name: Append UFS image link
+      if: inputs.release-id != '' && inputs.github-token != '' && env.build_4096
+      uses: softprops/action-gh-release@v3
+      with:
+        tag_name: ${{ inputs.tag_name }}
+        append_body: true
+        body: |
+          [Download UFS Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_4096.img.xz)
 
-          Note: only selected systems support UFS and have UFS image.
-
+          ```
+    - name: Append checksum header
+      if: inputs.release-id != '' && inputs.github-token != ''
+      uses: softprops/action-gh-release@v3
+      with:
+        tag_name: ${{ inputs.tag_name }}
+        append_body: true
+        body: |
           ### SHA-512 Checksum
 
           ```
