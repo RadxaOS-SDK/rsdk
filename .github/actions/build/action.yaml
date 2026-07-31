@@ -49,7 +49,6 @@ runs:
           options+=("--override-firmware" "${{ inputs.override-firmware }}")
         fi
         echo "options=${options[*]}" >> $GITHUB_ENV
-        src/bin/rsdk setup
         sector_sizes=( $(jq -ec '. | map(select(.product == "${{ inputs.product }}"))[] | if has("sector_size") then .sector_size[] else 512 end' src/share/rsdk/configs/products.json) )
         for size in "${sector_sizes[@]}"; do
           echo "build_${size}=true" >> $GITHUB_ENV
