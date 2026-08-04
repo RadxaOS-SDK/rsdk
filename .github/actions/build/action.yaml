@@ -105,7 +105,6 @@ runs:
         body: |
           ## ${{ steps.prep.outputs.BUILD_TUPLE }} 
 
-          ```
     - name: Append standard image link
       if: inputs.release-id != '' && inputs.github-token != '' && env.build_512
       uses: softprops/action-gh-release@v3
@@ -115,7 +114,6 @@ runs:
         body: |
           [Download standard Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_512.img.xz)
 
-          ```
     - name: Append UFS image link
       if: inputs.release-id != '' && inputs.github-token != '' && env.build_4096
       uses: softprops/action-gh-release@v3
@@ -125,7 +123,6 @@ runs:
         body: |
           [Download UFS Image](https://github.com/radxa-build/${{ inputs.product }}/releases/download/${{ inputs.tag_name }}/${{ steps.prep.outputs.BUILD_TUPLE }}_${{ inputs.timestamp }}.output_4096.img.xz)
 
-          ```
     - name: Append checksum header
       if: inputs.release-id != '' && inputs.github-token != ''
       uses: softprops/action-gh-release@v3

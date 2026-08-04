@@ -71,7 +71,7 @@ function(
                         id: "release",
                         uses: "softprops/action-gh-release@v3",
                         with: {
-                            token: "${{ secrets.GITHUB_TOKEN }}",
+                            token: "${{ github.token }}",
                             target_commitish: "main",
                             draft: false,
                             prerelease: true,
@@ -86,6 +86,9 @@ function(
                 }
             },
             build: {
+                permissions: {
+                    contents: "write",
+                },
                 "runs-on": "ubuntu-latest",
                 needs: "prepare_release",
                 strategy: {
@@ -108,7 +111,7 @@ function(
                             suite: "${{ matrix.suite }}",
                             edition: "${{ matrix.edition }}",
                             "release-id": "${{ needs.prepare_release.outputs.release_id }}",
-                            "github-token": "${{ secrets.GITHUB_TOKEN }}",
+                            "github-token": "${{ github.token }}",
                         } + if variant == "test"
                         then
                             {
