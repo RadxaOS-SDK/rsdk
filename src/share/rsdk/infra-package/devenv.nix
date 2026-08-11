@@ -11,6 +11,7 @@
   # https://devenv.sh/packages/
   packages = with pkgs; [
     bash-completion
+    gettext
     git-buildpackage
     mdbook
     mdbook-cmdrun

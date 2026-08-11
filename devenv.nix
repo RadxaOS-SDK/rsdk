@@ -17,6 +17,7 @@
       curl
       dosfstools
       file
+      gettext
       git
       git-buildpackage
       gh

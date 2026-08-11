@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: rsdk\n"
-"POT-Creation-Date: 2024-04-19T07:46:48Z\n"
+"POT-Creation-Date: 2026-08-11T18:33:39+08:00\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Language zh-CN\n"
@@ -19,55 +19,111 @@ msgstr "概述"
 msgid "Introduction"
 msgstr "介绍"
 
-#: docs/SUMMARY.md:5
-msgid "Tutorials"
-msgstr "教程"
+#: docs/SUMMARY.md:4
+#, fuzzy
+msgid "Why rsdk?"
+msgstr "为什么开发 rsdk ？"
 
-#: docs/SUMMARY.md:7
+#: docs/SUMMARY.md:6
 msgid "Installation"
 msgstr "安装"
 
 #: docs/SUMMARY.md:8
-msgid "With devcontainer"
-msgstr "使用开发容器"
+#, fuzzy
+msgid "With Visual Studio Code & devcontainer"
+msgstr "在 Visual Studio Code 下使用开发容器"
 
 #: docs/SUMMARY.md:9
-msgid "Using released Debian package"
-msgstr "使用发布的Debian包"
+#, fuzzy
+msgid "With devcontainer alone"
+msgstr "使用开发容器"
 
 #: docs/SUMMARY.md:10
+msgid "Using released Debian package"
+msgstr "使用发布的 Debian 包"
+
+#: docs/SUMMARY.md:11
 msgid "Native installation"
 msgstr "本地安装"
 
-#: docs/SUMMARY.md:11 docs/tutorials/usage.md:1
+#: docs/SUMMARY.md:13
+msgid "Tutorials"
+msgstr "教程"
+
+#: docs/SUMMARY.md:15 docs/tutorials/usage.md:1
 msgid "Basic usage"
 msgstr "基本用法"
 
-#: docs/SUMMARY.md:12 docs/tutorials/migration.md:1
+#: docs/SUMMARY.md:16 docs/tutorials/migration.md:1
 msgid "Migrating from old toolchain"
 msgstr "从旧工具链迁移"
 
-#: docs/SUMMARY.md:14
+#: docs/SUMMARY.md:17 docs/tutorials/customize.md:1
+msgid "Build customization"
+msgstr "定制化构建"
+
+#: docs/SUMMARY.md:18 docs/tutorials/new_device.md:1
+msgid "Adding support for new device"
+msgstr "添加新设备支持"
+
+#: docs/SUMMARY.md:19 docs/tutorials/global_options.md:1
+msgid "Global build options"
+msgstr "设置默认构建选项"
+
+#: docs/SUMMARY.md:20 docs/tutorials/local_pkg.md:1
+msgid "Work with local packages"
+msgstr "使用本地生成的 Debian 包"
+
+#: docs/SUMMARY.md:22
 msgid "Command References"
 msgstr "命令参考"
 
-#: docs/SUMMARY.md:16 docs/cmd/rsdk.md:1
+#: docs/SUMMARY.md:24 docs/cmd/rsdk.md:1
 msgid "rsdk"
 msgstr "rsdk"
 
-#: docs/SUMMARY.md:17
-msgid "rsdk-shell"
-msgstr "rsdk-shell"
-
-#: docs/SUMMARY.md:18
+#: docs/SUMMARY.md:25
 msgid "rsdk-build"
 msgstr "rsdk-build"
 
+#: docs/SUMMARY.md:26
+msgid "rsdk-chroot"
+msgstr "rsdk-chroot"
+
+#: docs/SUMMARY.md:27
+#, fuzzy
+msgid "rsdk-install"
+msgstr "rsdk-install"
+
+#: docs/SUMMARY.md:28
+msgid "rsdk-shell"
+msgstr "rsdk-shell"
+
 #: docs/intro.md:1
+#, fuzzy
+msgid "`rsdk`"
+msgstr "`rsdk`"
+
+#: docs/intro.md:3
+msgid "`rsdk` is the latest system development kit from Radxa."
+msgstr "`rsdk` 是目前瑞莎最新的系统构建工具。"
+
+#: docs/intro.md:5
+msgid ""
+"It is built upon our previous experiences with [`rbuild`](https://github.com/"
+"radxa-repo/rbuild) and [`debos-radxa`](https://github.com/radxa/debos-"
+"radxa), while also adds many other utilities to improve the developer / "
+"maintainer experience."
+msgstr ""
+"`rsdk` 在此前 [`rbuild`](https://github.com/radxa-repo/rbuild) 和 [`debos-radxa`]"
+"(https://github.com/radxa/debos-radxa) 的基础上进一步提供了更多工具来改善开发体验。"
+
+
+#: docs/why.md:1
 msgid "Why another system builder?"
 msgstr "为什么要迁移到另一个系统构建器?"
 
-#: docs/intro.md:3
+#: docs/why.md:3
 msgid ""
 "`rsdk` is yet another evolution of Radxa's system builder. The primary goal "
 "is to move away from [`debos`](https://github.com/go-debos/debos) for "
@@ -76,27 +132,27 @@ msgstr ""
 "`rsdk` 是 Radxa 系统构建器的又一次进化。主要目标是为了摆脱 [`debos`](https://"
 "github.com/go-debos/debos)，原因如下："
 
-#: docs/intro.md:6
+#: docs/why.md:6
 msgid ""
 "(Previously) [Lack of ARM64 support](https://github.com/go-debos/debos/"
 "issues/363)."
 msgstr ""
 "（以前）[缺乏 ARM64 支持](https://github.com/go-debos/debos/issues/363)。"
 
-#: docs/intro.md:7
+#: docs/why.md:7
 msgid ""
 "We use pagefile to workaround dkms build failure, which [requires KVM to be "
-"available](https://github.com/radxa-repo/rbuild/"
-"issues/16#issuecomment-1534176754)."
+"available](https://github.com/radxa-repo/rbuild/issues/"
+"16#issuecomment-1534176754)."
 msgstr ""
 "我们使用 pagefile 来解决 dkms 编译失败的问题，这 [需要 KVM 可用](https://"
 "github.com/radxa-repo/rbuild/issues/16#issuecomment-1534176754)."
 
-#: docs/intro.md:8
+#: docs/why.md:8
 msgid "Go templates leave much to be desired."
 msgstr "Go 模板有待改进。"
 
-#: docs/intro.md:9
+#: docs/why.md:9
 msgid ""
 "[Provided actions](https://pkg.go.dev/github.com/go-debos/debos/actions) are "
 "becoming limiting to achieve our desired result."
@@ -104,7 +160,7 @@ msgstr ""
 "[提供的 actions ](https://pkg.go.dev/github.com/go-debos/debos/actions)正在成"
 "为限制我们实现预期结果的因素。"
 
-#: docs/intro.md:11
+#: docs/why.md:11
 msgid ""
 "Beyond those, our system has grown into 100+ repositories, interconnected by "
 "various CI/CD workflows. From an operational standpoint we also need a tool "
@@ -115,7 +171,7 @@ msgstr ""
 "连接。从操作的角度来看，我们还需要一个工具来集中管理它们，同时客户还可以使用"
 "同样的工具来复制我们的设置，供他们自己使用。"
 
-#: docs/intro.md:15
+#: docs/why.md:15
 msgid ""
 "Finally, we want to have a short answer to the commonly asked question "
 "\"where can I download the SDK for X\". So far, our answer has always been a "
@@ -127,19 +183,29 @@ msgstr ""
 "于系统设计的复杂性，我们的回答一直是对系统设计的简要说明。我们想做一个更符合"
 "客户期望的系统，其中所有相关的 Radxa 源代码只有一个入口。"
 
-#: docs/intro.md:20
+#: docs/why.md:20
 msgid "Thus, `rsdk` is born."
 msgstr "因此，`rsdk` 诞生了。"
 
-#: docs/install/devcontainer.md:1
-msgid "Running `rsdk` with devcontainer"
-msgstr "使用 devcontainer 运行 `rsdk`"
+#: docs/install/vscode.md:1
+#, fuzzy
+msgid "Run `rsdk` with Visual Studio Code & devcontainer"
+msgstr "在 Visual Studio Code 下使用开发容器运行 `rsdk`"
 
-#: docs/install/devcontainer.md:8
-msgid "Please first follow Visual Studio Code's documentation to:"
+#: docs/install/vscode.md:4
+msgid "\\[!TIP\\] This is the preferred method to run `rsdk`."
+msgstr "\\[!TIP\\] 这是我们推荐的 `rsdk` 运行方式。"
+
+#: docs/install/vscode.md:7 docs/install/devcontainer.md:5
+msgid "First, please install the required dependencies:"
+msgstr "首先，请安装一下运行时依赖："
+
+#: docs/install/vscode.md:14
+#, fuzzy
+msgid "Then follow Visual Studio Code's documentation to:"
 msgstr "请首先按照 Visual Studio Code 的文档进行操作："
 
-#: docs/install/devcontainer.md:10
+#: docs/install/vscode.md:16
 msgid ""
 "[Install Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-"
 "overview)"
@@ -147,7 +213,7 @@ msgstr ""
 "[安装 Visual Studio Code](https://code.visualstudio.com/docs/setup/setup-"
 "overview)"
 
-#: docs/install/devcontainer.md:11
+#: docs/install/vscode.md:17
 msgid ""
 "[Setup devcontainer](https://code.visualstudio.com/docs/devcontainers/"
 "containers)"
@@ -155,11 +221,11 @@ msgstr ""
 "[设置 devcontainer](https://code.visualstudio.com/docs/devcontainers/"
 "containers)"
 
-#: docs/install/devcontainer.md:13
+#: docs/install/vscode.md:19
 msgid "Then clone the project with `git`:"
 msgstr "然后使用 `git` 克隆该项目："
 
-#: docs/install/devcontainer.md:19
+#: docs/install/vscode.md:25
 msgid ""
 "Open the project in Visual Studio Code. A notification will pop up on the "
 "corner asking if you want to reopen in devcontainer. Click `yes` and wait "
@@ -168,32 +234,89 @@ msgstr ""
 "在 Visual Studio Code 中打开项目。项目的右下角上会弹出一个通知，询问你是否要"
 "在 devcontainer 中重新打开。点击`是`，然后等待容器设置完成。"
 
-#: docs/install/devcontainer.md:23
+#: docs/install/vscode.md:29
+msgid ""
+"This can be combined with VS Code remote development extension to run rsdk "
+"in other systems."
+msgstr "你可以同时使用 VS Code remote development 拓展，从而在其他系统上远程运行 rsdk。"
+
+#: docs/install/vscode.md:31 docs/install/devcontainer.md:35
 msgid "Common issues"
 msgstr "常见问题"
 
-#: docs/install/devcontainer.md:25
+#: docs/install/vscode.md:33 docs/install/devcontainer.md:37
 msgid ""
 "devcontainer setup paused with `You might be rate limited by GitHub.` message"
 msgstr "devcontainer 设置暂停，出现`您可能受到 GitHub 的速率限制.`消息"
 
-#: docs/install/devcontainer.md:27
+#: docs/install/vscode.md:35 docs/install/devcontainer.md:39
 msgid ""
 "You might be rate limited by GitHub. Please follow the instruction listed in "
 "the output."
 msgstr "您可能受到 GitHub 的速率限制。请遵循输出中列出的说明。"
 
-#: docs/install/devcontainer.md:29
+#: docs/install/vscode.md:37 docs/install/devcontainer.md:41
 msgid "Failed to launch devcontainer."
 msgstr "devcontainer 启动失败。"
 
-#: docs/install/devcontainer.md:31
+#: docs/install/vscode.md:39
 msgid ""
 "Please edit `.devcintainer/devcontainer.json`, and adjust `runArgs` property."
 msgstr "请编辑 `.devcintainer/devcontainer.json`，并调整 `runArgs` 属性。"
 
+#: docs/install/devcontainer.md:1
+#, fuzzy
+msgid "Run `rsdk` with devcontainer alone"
+msgstr "使用 devcontainer 运行 `rsdk`"
+
+#: docs/install/devcontainer.md:3
+msgid "This is similar to how we build system images in the CI pipelines."
+msgstr ""
+
+#: docs/install/devcontainer.md:14
+msgid ""
+"If you were not in the `docker` group before, you will need to log out and "
+"log back in."
+msgstr ""
+
+#: docs/install/devcontainer.md:16
+msgid "For SSH, simple disconnect the current session and reconnect."
+msgstr ""
+
+#: docs/install/devcontainer.md:18
+#, fuzzy
+msgid "Then clone the project with `git` and install `devcontainer`:"
+msgstr "然后使用 `git` 克隆该项目："
+
+#: docs/install/devcontainer.md:24
+msgid "\"$PWD/src/bin:$PWD/node_modules/.bin:$PATH\""
+msgstr ""
+
+#: docs/install/devcontainer.md:29
+msgid "You are now inside the `rsdk`'s `devcontainer` shell."
+msgstr ""
+
+#: docs/install/devcontainer.md:31
+msgid ""
+"The following recording demostates how to set up `rsdk` and build an image "
+"on a fresh Debian 12 install:"
+msgstr ""
+
+#: docs/install/devcontainer.md:33
+msgid ""
+"[![asciicast](https://asciinema.org/a/A064TrKbZsXncNkEveIUFAGvp.svg)]"
+"(https://asciinema.org/a/A064TrKbZsXncNkEveIUFAGvp)"
+msgstr ""
+
+#: docs/install/devcontainer.md:43
+#, fuzzy
+msgid ""
+"Please edit `.devcontainer/devcontainer.json`, and adjust `runArgs` property."
+msgstr "请编辑 `.devcintainer/devcontainer.json`，并调整 `runArgs` 属性。"
+
 #: docs/install/deb.md:1
-msgid "Running `rsdk` using released Debian package"
+#, fuzzy
+msgid "Run `rsdk` using released Debian package"
 msgstr "使用已发布的 Debian 软件包运行 `rsdk`"
 
 #: docs/install/deb.md:3
@@ -201,17 +324,34 @@ msgid "To be released."
 msgstr "待发布"
 
 #: docs/install/native.md:1
-msgid "Running `rsdk` natively"
+#, fuzzy
+msgid "Run `rsdk` natively"
 msgstr "本地运行 `rsdk`"
 
-#: docs/install/native.md:11
+#: docs/install/native.md:3
+msgid ""
+"\\[!WARNING\\] This is not a well supported or tested installation method."
+msgstr ""
+
+#: docs/install/native.md:6
+msgid ""
+"When you have issues, please check the source code for up-to-date runtime "
+"dependencies."
+msgstr ""
+
+#: docs/install/native.md:8
+msgid ""
+"We do not answer support questions related to this type of installation."
+msgstr ""
+
+#: docs/install/native.md:10
 msgid ""
 "To run `rsdk` natively, you will ideally need an Ubuntu system, as it is the "
 "base system used in Dev Container."
 msgstr ""
 "要本地运行 `rsdk`，您最好使用 Ubuntu 系统，因为 devcontainer 基于此系统。"
 
-#: docs/install/native.md:13
+#: docs/install/native.md:12
 msgid ""
 "Please first install [`devenv`](https://devenv.sh/getting-started/#2-install-"
 "cachix) on your system."
@@ -219,7 +359,7 @@ msgstr ""
 "请首先在您的系统上安装 [`devenv`](https://devenv.sh/getting-started/#2-"
 "install-cachix) 。"
 
-#: docs/install/native.md:15
+#: docs/install/native.md:14
 msgid ""
 "Optionally you can setup [`direnv`](https://devenv.sh/automatic-shell-"
 "activation/), then run `direnv allow` within the project folder to enable it."
@@ -227,7 +367,7 @@ msgstr ""
 "可选择安装 [`direnv`](https://devenv.sh/automatic-shell-activation/)，然后在"
 "项目文件夹中运行 `direnv allow` 来启用它。"
 
-#: docs/install/native.md:17
+#: docs/install/native.md:16
 msgid ""
 "You can then run `devenv shell` to enter the development shell. This shell "
 "will manipulate your PATH to have the development dependency available."
@@ -235,7 +375,7 @@ msgstr ""
 "然后运行 `devenv shell` 进入开发 shell。这个 shell 将对您的 PATH 变量进行操"
 "作，使开发依赖可用。"
 
-#: docs/install/native.md:19
+#: docs/install/native.md:18
 msgid ""
 "If you have `direnv` setup, you don't have to run the above command when you "
 "enter the project directory to use the SDK. However, the `direnv` shell "
@@ -245,7 +385,7 @@ msgstr ""
 "如果安装了 `direnv`，就不必在进入项目目录使用 SDK 时运行上述命令。不过，"
 "`direnv` shell 缺少 `starship` 集成和 `rsdk` 自动补全，因为它只保存环境变量。"
 
-#: docs/install/native.md:21
+#: docs/install/native.md:20
 msgid ""
 "There are some additional system configurations and packages that are "
 "currently not managed by `devenv`. They are mostly covered by "
@@ -299,8 +439,9 @@ msgid ""
 "key to leave current window.  \n"
 "In this example, we will choose `Build system image`:"
 msgstr ""
-"选择要运行的任务。  \n您可以使用方向键导航，使用回车键进行选择，"
-"使用 Escape 键离开当前窗口。  \n在这个示例中，我们将选择 `Build system image`："
+"选择要运行的任务。  \n"
+"您可以使用方向键导航，使用回车键进行选择，使用 Escape 键离开当前窗口。  \n"
+"在这个示例中，我们将选择 `Build system image`："
 
 #: docs/tutorials/usage.md:36
 msgid ""
@@ -310,19 +451,47 @@ msgid ""
 "**Enter key does not select the product when used alone!**  \n"
 "In this example, we will choose `rock-5b-6_1`:"
 msgstr ""
-"选择想要构建的产品。  \n您可以使用空格键选择产品，选择的产品将在括号出现星号。  \n"
-"**只使用回车键不会选择产品！**  \n在本例中，我们将选择 `rock-5b-6_1`："
+"选择想要构建的产品。  \n"
+"您可以使用空格键选择产品，选择的产品将在括号出现星号。  \n"
+"**只使用回车键不会选择产品！**  \n"
+"在本例中，我们将选择 `rock-5b-6_1`："
 
 #: docs/tutorials/usage.md:54
 msgid ""
-"Select `Yes` to start the build process.  \n"
-"`rsdk-tui` will then run the associated CLI commands to complete the task:"
+"Decide whether to configure package mirrors (optional).  \n"
+"Before starting the actual build, `rsdk-tui` will ask whether you want to "
+"configure alternative package mirrors (Radxa radxa-deb mirror and Debian/"
+"Ubuntu mirror). If you select **No**, default mirrors will be used and the "
+"build will proceed directly to confirmation. If you select **Yes**, TUI will "
+"guide you to choose mirrors (including selecting the default entries). If "
+"you cancel during mirror selection, the wizard will return to this question "
+"so you can decide again:"
 msgstr ""
-"选择 `Yes`，启动构建程序。  \n然后 `rsdk-tui` 将运行相关的 CLI 命令来完成任务："
 
-#: docs/tutorials/usage.md:60
-msgid "'rock-5b-6_1'"
-msgstr "'rock-5b-6_1'"
+#: docs/tutorials/usage.md:73
+msgid ""
+"If you choose **Yes**, you will be guided to select the Radxa APT mirror:"
+msgstr ""
+
+#: docs/tutorials/usage.md:92
+msgid "Then select an optional Debian/Ubuntu mirror (or keep the default):"
+msgstr ""
+
+#: docs/tutorials/usage.md:112
+msgid ""
+"Confirm and start the build.  \n"
+"After mirrors (if any) are configured, `rsdk-tui` will show a summary of the "
+"selected product and mirrors. This corresponds to the final CLI command that "
+"will be executed (equivalent to passing `-M`/`-m` to `rsdk build` when "
+"mirrors are set). Review the summary carefully and choose **Yes** to start "
+"the build, or **No** to go back:"
+msgstr ""
+
+#: docs/tutorials/usage.md:134
+msgid ""
+"Advanced build should use [`rsdk-build`](../cmd/rsdk-build.md) command "
+"instead."
+msgstr ""
 
 #: docs/tutorials/migration.md:3
 msgid "`rbuild`"
@@ -352,9 +521,11 @@ msgstr ""
 "`rsdk build` 并不支持所有 `rbuild` 选项。请查看 help 命令以了解更多详情。"
 
 #: docs/tutorials/migration.md:13
+#, fuzzy
 msgid ""
-"`.rbuild-config` file is now replaced by `devenv.local.nix`, and option "
-"names are adjusted. You can check `devenv.local.nix.example` for syntax."
+"`.rbuild-config` file is now replaced by [`devenv.local.nix`]"
+"(global_options.md), and option names are adjusted. You can check "
+"`devenv.local.nix.example` for syntax."
 msgstr ""
 "`.rbuild-config` 文件现在由 `devenv.local.nix` 取代，选项名称也进行了调整。您"
 "可以查看 `devenv.local.nix.example`，了解语法。"
@@ -390,9 +561,600 @@ msgid ""
 msgstr ""
 "`rsdk write-image` 是 `rbuild write-image` 的替代。它使用相同的参数顺序。"
 
+#: docs/tutorials/customize.md:3
+msgid ""
+"`rsdk` uses [`devenv`](https://devenv.sh/) to manage its **dev**elopment "
+"**env**rionronment, but itself is not `nix` based. `nix` has good support "
+"generating `NixOS` images, but here we are dealing with a Debian system, and "
+"some parts are [currently missing](https://github.com/NixOS/nixpkgs/pull/"
+"270095)."
+msgstr ""
+
+#: docs/tutorials/customize.md:5
+msgid ""
+"We currently uses [`bdebstrap`](https://github.com/bdrung/bdebstrap), which "
+"is a YAML frontend for [`mmdebstrap`](https://gitlab.mister-muffin.de/josch/"
+"mmdebstrap). `mmdebstrap` is [the recommended tool](https://wiki.debian.org/"
+"RISC-V#Creating_a_riscv64_chroot) for building RISC-V systems compared to "
+"traditional `debootstrap`."
+msgstr ""
+
+#: docs/tutorials/customize.md:7
+msgid ""
+"YAML itself is not a templating language, so it cannot dynamically generate "
+"different configurations for different builds. We use [`jsonnet`](https://"
+"jsonnet.org) for this purpose."
+msgstr ""
+
+#: docs/tutorials/customize.md:9
+msgid ""
+"Lastly, `mmdebstrap` does not handle disk image generation. We again use "
+"`jsonnet` to dynamically generate a [`guestfish`](https://libguestfs.org/"
+"guestfish.1.html) script to handle this task."
+msgstr ""
+
+#: docs/tutorials/customize.md:11
+msgid ""
+"All of those tools are glued by `bash` to provide a frontend, known as "
+"[`rsdk-build`](https://github.com/RadxaOS-SDK/rsdk/tree/main/src/libexec/"
+"rsdk/rsdk-build)."
+msgstr ""
+
+#: docs/tutorials/customize.md:13
+msgid ""
+"Depending on your goal, you would need the knowledge of some of the above "
+"tools."
+msgstr ""
+
+#: docs/tutorials/customize.md:15
+msgid "Rootfs customization"
+msgstr ""
+
+#: docs/tutorials/customize.md:17
+msgid ""
+"[`rootfs.jsonnet`](https://github.com/RadxaOS-SDK/rsdk/tree/main/src/share/"
+"rsdk/build/rootfs.jsonnet) is the entry point for rootfs template. It "
+"collects the various inputs and passes them to different modules."
+msgstr ""
+
+#: docs/tutorials/customize.md:19
+msgid ""
+"Module loading order matters, as that will determine [`*-hooks`](https://"
+"manpages.debian.org/testing/mmdebstrap/mmdebstrap.1.en.html#HOOKS)'s "
+"execution order. The safest way is to only edit the `customize-hooks` field "
+"in `rootfs.jsonnet` and only adding new entries after the existing ones."
+msgstr ""
+
+#: docs/tutorials/customize.md:21
+msgid ""
+"You can also edit the `packages` field in `rootfs.jsonnet` to add additional "
+"packages to the system. `customize-hooks` will be run after `packages` are "
+"installed in the rootfs."
+msgstr ""
+
+#: docs/tutorials/customize.md:23
+msgid ""
+"Checkout [`Work with local packages`](local_pkg.md#rsdk-build---debs) if you "
+"have local packages to install."
+msgstr ""
+
+#: docs/tutorials/customize.md:25
+msgid "Disk image customization"
+msgstr ""
+
+#: docs/tutorials/customize.md:27
+msgid ""
+"[`image.jsonnet`](https://github.com/RadxaOS-SDK/rsdk/tree/main/src/share/"
+"rsdk/build/rootfs.jsonnet) is the template for the deployment script. It is "
+"generally not necessary to change this part."
+msgstr ""
+
+#: docs/tutorials/new_device.md:3
+msgid ""
+"Every device supported by RadxaOS requires several metapackages available in "
+"the apt repositories. They are usually unique to each hardware, as such "
+"cannot be shared between devices."
+msgstr ""
+
+#: docs/tutorials/new_device.md:7
+msgid ""
+"It is intentional to keep this info in form of package dependencies, and "
+"spread out in several packages, instead of a single hard coded config file. "
+"This is because:"
+msgstr ""
+
+#: docs/tutorials/new_device.md:10
+msgid ""
+"Different build tools don't need to track this config in order to build with "
+"correct packages."
+msgstr ""
+
+#: docs/tutorials/new_device.md:12
+msgid ""
+"Ease of migration between tools.  \n"
+"For example, from `rbuild` to `rsdk`, we use the same simple package logic "
+"instead doing data transform, which was the case for `rbuild`'s `configs` "
+"files."
+msgstr ""
+
+#: docs/tutorials/new_device.md:16
+msgid "Allow underlying package to be changed/updated in the future."
+msgstr ""
+
+#: docs/tutorials/new_device.md:18
+msgid "Adding new device"
+msgstr ""
+
+#: docs/tutorials/new_device.md:20
+msgid "Currently, there are 4 places that need to be updated:"
+msgstr ""
+
+#: docs/tutorials/new_device.md:22
+msgid ""
+"Kernel metapackages  \n"
+"Those includes Linux kernel image as well as kernel header, and some other "
+"less used packages.  \n"
+"Currently you need to edit the related `bsp` [Linux profile](https://"
+"github.com/radxa-repo/bsp/blob/main/linux/latest/fork.conf) to include the "
+"new device."
+msgstr ""
+
+#: docs/tutorials/new_device.md:28
+msgid ""
+"Firmware metapackage  \n"
+"This is similar to the kernel package in case of U-Boot, where the [U-Boot "
+"profile](https://github.com/radxa-repo/bsp/blob/main/u-boot/latest/"
+"fork.conf) needs to be updated.  \n"
+"For EDK2 you will need to [add the metapackage](https://github.com/radxa-pkg/"
+"edk2-cix/blob/main/debian/control) in the related repo."
+msgstr ""
+
+#: docs/tutorials/new_device.md:34
+msgid ""
+"Product metapackage  \n"
+"Each product also needs its own package to pull device-specific drivers, and "
+"some common config options. Those are defined in [`radxa-profiles`](https://"
+"github.com/radxa-pkg/radxa-profiles/blob/main/debian/control) repo."
+msgstr ""
+
+#: docs/tutorials/new_device.md:39
+msgid ""
+"[`products.json`](https://github.com/RadxaOS-SDK/rsdk/blob/main/src/share/"
+"rsdk/configs/products.json)  \n"
+"This registers the supported products for `rsdk` and their default "
+"configurations."
+msgstr ""
+
+#: docs/tutorials/new_device.md:42
+msgid ""
+"Right now, product metapackage does not specify dependencies to kernel and "
+"firmware (even though we have product-agnostic metapackages for those two). "
+"This is to allow users to install custom kernels only without breaking the "
+"dependencies."
+msgstr ""
+
+#: docs/tutorials/new_device.md:47
+msgid ""
+"Note that vendor metapackage is listed as recommended in product "
+"metapackages. This way users can install the system without SoC vendors' "
+"binary packages."
+msgstr ""
+
+#: docs/tutorials/new_device.md:50
+msgid ""
+"Finally, create the new product build repo under [`radxa-build`](https://"
+"github.com/radxa-build) with `rsdk-infra-product-update` command."
+msgstr ""
+
+#: docs/tutorials/new_device.md:53
+msgid "What if we introduce a new SoC?"
+msgstr ""
+
+#: docs/tutorials/new_device.md:55 docs/tutorials/new_device.md:75
+msgid "You need to additionally update following places:"
+msgstr ""
+
+#: docs/tutorials/new_device.md:57
+msgid ""
+"Vendor metapackage  \n"
+"Each SoC needs their own package to pull SoC-specific packages, and some "
+"common config options. Those are defined in [`vendor-profiles`](https://"
+"github.com/radxa-pkg/vendor-profiles/blob/main/debian/control) repo."
+msgstr ""
+
+#: docs/tutorials/new_device.md:62
+msgid ""
+"[`socs.json`](https://github.com/RadxaOS-SDK/rsdk/blob/main/src/share/rsdk/"
+"configs/socs.json)  \n"
+"New SoC **MUST** be added to `soc_specific_repo` array as well."
+msgstr ""
+
+#: docs/tutorials/new_device.md:64
+msgid ""
+"New SoC-specific apt repo under [`radxa-repo`](https://github.com/radxa-"
+"repo) organization."
+msgstr ""
+
+#: docs/tutorials/new_device.md:65
+msgid ""
+"SoC-specific package repo  \n"
+"In case of Rockchip, those are managed by [`rockchip-prebuilt`](https://"
+"github.com/radxa-pkg/rockchip-prebuilt) repo, and we create Rockchip SDK "
+"prebuilt packages in GitHub Releases, which will be uploaded to the SoC-"
+"specific apt repo.  \n"
+"If the new SoC is only a variant of already supported SoC, then you only "
+"need to edit the related [`pkg.conf`](https://github.com/radxa-pkg/rockchip-"
+"prebuilt/blob/main/pkg.conf.linux-6.1-stan-rkr1) to include the new SoC-"
+"specific apt repo."
+msgstr ""
+
+#: docs/tutorials/new_device.md:73
+msgid "What if we introduce a new SoC vendor?"
+msgstr ""
+
+#: docs/tutorials/new_device.md:77
+msgid ""
+"Vendor metapackage  \n"
+"Each vendor needs their own package to pull common config options. Those are "
+"defined in [`vendor-profiles`](https://github.com/radxa-pkg/vendor-profiles/"
+"blob/main/debian/control) repo."
+msgstr ""
+
+#: docs/tutorials/new_device.md:81
+msgid ""
+"[`socs.json`](https://github.com/RadxaOS-SDK/rsdk/blob/main/src/share/rsdk/"
+"configs/socs.json)  \n"
+"There should be a new item for the new vendor."
+msgstr ""
+
+#: docs/tutorials/global_options.md:3
+msgid ""
+"Like [`rbuild`](https://radxa-repo.github.io/rbuild/dev/config.html), `rsdk` "
+"also allows defining global build options. The underlying mechanical is the "
+"same: predefined environmental variables. However, since we use `devenv` to "
+"manage the environment, the way to define them is also changed."
+msgstr ""
+
+#: docs/tutorials/global_options.md:8
+msgid ""
+"For now, you will need to add your definitions in `devenv.local.nix` file. "
+"We provide `devenv.local.nix.example` as a reference for file structure. "
+"This is also what we use in the office, but the server is locally hosted, so "
+"you won't be able to use it."
+msgstr ""
+
+#: docs/tutorials/global_options.md:13
+msgid "Example: set up local apt cache to speed up build"
+msgstr ""
+
+#: docs/tutorials/global_options.md:15
+msgid ""
+"If you want to speed up image building time, one way is to use a locally "
+"hosted apt cache to reduce download time."
+msgstr ""
+
+#: docs/tutorials/global_options.md:18
+msgid ""
+"First, copy `devenv.local.nix.example` to `devenv.local.nix`. You can then "
+"remove `RSDK_OPTION_REPO_SUFFIX` if you do not want to build test image by "
+"default, and then change `RSDK_OPTION_*_MIRROR` to your own address. Typical "
+"options are:"
+msgstr ""
+
+#: docs/tutorials/global_options.md:22
+msgid ""
+"`RSDK_OPTION_DISTRO_MIRROR`: default Debian/Ubuntu mirror (equivalent to "
+"`rsdk build -m`)."
+msgstr ""
+
+#: docs/tutorials/global_options.md:23
+msgid ""
+"`RSDK_OPTION_RADXA_MIRROR`: default Radxa APT mirror for radxa-deb "
+"(equivalent to `rsdk build -M`)."
+msgstr ""
+
+#: docs/tutorials/global_options.md:25
+msgid ""
+"When using Radxa repositories, `rsdk` will use Radxa `pkgs.json` metadata by "
+"default whenever it is available. You can disable this behavior at build "
+"time by passing `-P`/`--no-pkgs-json` or by setting "
+"`RSDK_OPTION_PKGS_JSON=false` explicitly in the environment."
+msgstr ""
+
+#: docs/tutorials/global_options.md:29
+msgid ""
+"Below are example NixOS configuration to set up a local apt cache service, "
+"as well as the mirror definition for `acng.conf` file. They may not be "
+"complete, so adjust to match your own use case."
+msgstr ""
+
+#: docs/tutorials/global_options.md:33
+msgid ""
+"```nix\n"
+"{\n"
+"  virtualisation = {\n"
+"    oci-containers = {\n"
+"      backend = \"podman\";\n"
+"      containers = {\n"
+"        acng = {\n"
+"          image = \"docker.io/mbentley/apt-cacher-ng\";\n"
+"          ports = [\n"
+"            \"3142:3142\"\n"
+"          ];\n"
+"          volumes = [\n"
+"            \"/home/acng/containers/acng.conf:/etc/apt-cacher-ng/"
+"acng.conf\"\n"
+"            \"/home/acng/containers/acng/:/var/cache/apt-cacher-ng/\"\n"
+"          ];\n"
+"          environment = {\n"
+"            PUID = \"1000\";\n"
+"            PGID = \"100\";\n"
+"            TZ = \"Asia/Shanghai\";\n"
+"          };\n"
+"        };\n"
+"      };\n"
+"    };\n"
+"  };\n"
+"}\n"
+"```"
+msgstr ""
+
+#: docs/tutorials/global_options.md:60
+msgid ""
+"```\n"
+"Remap-debian: /debian ; http://mirrors.tuna.tsinghua.edu.cn/debian\n"
+"Remap-debian-security: /debian-security ; http://"
+"mirrors.tuna.tsinghua.edu.cn/debian-security\n"
+"Remap-ubuntu: /ubuntu ; http://mirrors.tuna.tsinghua.edu.cn/ubuntu\n"
+"Remap-ubuntu-ports: /ubuntu-ports ; http://mirrors.tuna.tsinghua.edu.cn/"
+"ubuntu-ports\n"
+"Remap-armbian: /armbian ; http://mirrors.tuna.tsinghua.edu.cn/armbian\n"
+"Remap-proxmox: /proxmox ; http://mirrors.tuna.tsinghua.edu.cn/proxmox/"
+"debian\n"
+"Remap-proxmox-new: /debian/pve ; http://mirrors.tuna.tsinghua.edu.cn/proxmox/"
+"debian/pve\n"
+"Remap-rbuild: /rbuild ; http://radxa-repo.github.io/apt\n"
+"Remap-rbuild-buster: /rbuild-buster ; http://radxa-repo.github.io/buster\n"
+"Remap-rbuild-buster-test: /rbuild-buster-test ; http://radxa-repo.github.io/"
+"buster-test\n"
+"Remap-rbuild-bullseye: /rbuild-bullseye ; http://radxa-repo.github.io/"
+"bullseye\n"
+"Remap-rbuild-bullseye-test: /rbuild-bullseye-test ; http://radxa-"
+"repo.github.io/bullseye-test\n"
+"Remap-rbuild-rk3528a-bullseye-test: /rbuild-rk3528a-bullseye-test ; http://"
+"radxa-repo.github.io/rk3528a-bullseye-test\n"
+"Remap-rbuild-focal: /rbuild-focal ; http://radxa-repo.github.io/focal\n"
+"Remap-rbuild-focal-test: /rbuild-focal-test ; http://radxa-repo.github.io/"
+"focal-test\n"
+"Remap-rbuild-jammy: /rbuild-jammy ; http://radxa-repo.github.io/jammy\n"
+"Remap-rbuild-jammy-test: /rbuild-jammy-test ; http://radxa-repo.github.io/"
+"jammy-test\n"
+"Remap-rbuild-bookworm: /rbuild-bookworm ; http://radxa-repo.github.io/"
+"bookworm\n"
+"Remap-rbuild-bookworm-test: /rbuild-bookworm-test ; http://radxa-"
+"repo.github.io/bookworm-test\n"
+"Remap-rbuild-rk3588-bookworm-test: /rbuild-rk3588-bookworm-test ; http://"
+"radxa-repo.github.io/rk3588-bookworm-test\n"
+"Remap-rbuild-rk3588s2-bookworm-test: /rbuild-rk3588s2-bookworm-test ; http://"
+"radxa-repo.github.io/rk3588s2-bookworm-test\n"
+"Remap-rbuild-sid: /rbuild-sid ; http://radxa-repo.github.io/sid\n"
+"Remap-rbuild-sid-test: /rbuild-sid-test ; http://radxa-repo.github.io/sid-"
+"test\n"
+"Remap-rbuild-noble-test: /rbuild-noble-test ; http://radxa-repo.github.io/"
+"noble-test\n"
+"Remap-rbuild-vscodium: /rbuild-debs ; https://paulcarroty.gitlab.io/vscodium-"
+"deb-rpm-repo/debs\n"
+"```"
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:3
+msgid "Background"
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:5
+msgid ""
+"When working at the bleeding edge, developer needs to test some locally "
+"built packages before committing the changes. However, to ensure the build "
+"is reproducible, maintainer wants to lock up all inputs, usually in a "
+"version-controlled way."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:9
+msgid ""
+"At Radxa, this conflict primarily impacts our BSP developers, who are not "
+"involved in toolchain development. As such, `rbuild` provides [some helper "
+"flags](https://radxa-repo.github.io/rbuild/dev/bsp.html) to allow better "
+"integration with `bsp`'s build outputs. The scope of local packages is "
+"intentionally limited to kernel and firmware packages, since the development "
+"workflow for the OS maintainers is different: just test the package on a "
+"live system."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:16
+msgid ""
+"`rsdk` initially dropped this support. As an evolution of `rbuild`, the "
+"package situation was stable enough that BSP developers did not need to "
+"build images with custom packages very often. The support is now available "
+"in more general form, in hope to support fully offline system building in "
+"the future."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:21
+#, fuzzy
+msgid "`rsdk-build --debs`"
+msgstr "rsdk-build"
+
+#: docs/tutorials/local_pkg.md:23
+msgid ""
+"`rsdk-build` now supports `--debs <debs_dir>` flag. A folder containing "
+"locally built packages are needed with this flag."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:26
+msgid ""
+"When this flag is specified, the content of `debs_dir` will be copied inside "
+"the target system, and will be added as a local apt repository under `/srv/"
+"local-apt-repository`, and it will have pin priority of 1999, effecitive "
+"making it the only provider of the included package."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:30
+msgid ""
+"\\[!WARNING\\] Unlike `rbuild`, this local apt repository will persist in "
+"the rootfs. This will block future package upgrade via `apt` if it is "
+"available in an online source, and also serves as the build input for future "
+"reproduceible build."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:35
+msgid ""
+"Consider clear `/srv/local-apt-repository` after the build if this behaviour "
+"is undesired."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:38
+msgid ""
+"When running `rsdk` in `devcontainer`, we recommend `debs_dir` to be inside "
+"`rsdk` project folder (for example, the `debs` folder in the project root). "
+"As the host path may not be mapped inside `devcontainer`, `rsdk-build` may "
+"not be able to access it."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:43
+msgid "Add packages that are not part of the default install"
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:45
+msgid ""
+"Because the package are not explicitly installed like the case of `rbuild`, "
+"if you want a package to be installed, it has to also be installed by the "
+"normal build steps."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:49
+msgid ""
+"If your package is not installed by default, you will need to follow "
+"[`Rootfs customization`](customize.md#rootfs-customization) to add them to "
+"the build steps."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:52
+msgid "Override packages that are part of the default install"
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:54
+msgid ""
+"For example, if we want to replace the U-Boot for ROCK 4SE, we need to "
+"provide both the `u-boot-rock-4se` metapackage, which is [installed by the "
+"build script](https://github.com/RadxaOS-SDK/rsdk/blob/"
+"47a766e773b187543dd5f38f7fc8c0df7d49e8b0/src/share/rsdk/build/mod/packages/"
+"categories/core.libjsonnet#L81), and the `u-boot-latest` binary package, "
+"which provides the bootloader and is `u-boot-rock-4se`'s dependency."
+msgstr ""
+
+#: docs/tutorials/local_pkg.md:59
+msgid ""
+"Usually you should copy every generated packages to `debs_dir` for each "
+"project you are going to override. This is to reduce the likelihood of "
+"missing a dependency."
+msgstr ""
+
 #: docs/cmd/rsdk.md:5
-msgid "When it was run without any argument, it will run `rsdk-tui` instead."
+#, fuzzy
+msgid "When it is run without any argument, it will run `rsdk-tui` instead."
 msgstr "在不带任何参数的情况下运行时，将运行 `rsdk-tui`。"
+
+#: docs/cmd/rsdk-build.md:3
+msgid "Build RadxaOS image"
+msgstr "构建 RadxaOS 镜像"
+
+#: docs/cmd/rsdk-build.md:5
+msgid ""
+"When no suite or edition options is supplied, `rsdk-build` will use the "
+"product-specific default values, which are defined in `src/share/rsdk/"
+"configs/products.json` as the first element of the respective array.  \n"
+"Using ROCK 3C as an example, if you want to build a CLI image for RadxaOS "
+"Bullseye, you can run the following command:"
+msgstr ""
+"当没有提供套件或版本参数时，`rsdk-build` 将使用特定产品的默认值，这些默认值定"
+"义在 `src/share/rsdk/configs/products.json` 中相应数组的第一个元素。  \n"
+"以 ROCK 3C 为例，如果要为 RadxaOS Bullseye 构建 CLI 映像，可以运行以下命令："
+
+#: docs/cmd/rsdk-build.md:12
+msgid "Mirror options"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:14
+msgid ""
+"`rsdk build` supports changing both the Radxa APT repository (radxa-deb) and "
+"the Debian/Ubuntu upstream mirror:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:16
+msgid "`-M <radxa-mirror>`: change Radxa APT mirror (radxa-deb). For example:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:22
+msgid ""
+"If you pass a third‑party radxa-deb mirror here, `rsdk` will **disable Radxa "
+"pkgs.json usage by default**, because those mirrors usually do not provide "
+"`pkgs.json`."
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:24
+msgid ""
+"`-m | --mirror <distro-mirror>`: change Debian/Ubuntu mirror. For example:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:30
+msgid ""
+"You can also use them together to change both Radxa and Debian/Ubuntu "
+"mirrors:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:39
+msgid "Radxa pkgs.json option"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:41
+msgid ""
+"By default, when using the official Radxa repository (`https://radxa-"
+"repo.github.io/radxa-deb` and its variants), `rsdk` downloads and embeds "
+"Radxa `pkgs.json` metadata into the image."
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:43
+msgid ""
+"For third‑party radxa-deb mirrors that do not provide `pkgs.json`, you may "
+"want to disable this behavior."
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:45
+msgid "You can explicitly skip downloading and embedding `pkgs.json` by using:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:51
+msgid "or:"
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:57
+msgid ""
+"This option is useful when you know the current mirror does not provide "
+"`pkgs.json`."
+msgstr ""
+
+#: docs/cmd/rsdk-build.md:59
+msgid "RadxaOS output path"
+msgstr "RadxaOS 镜像输出路径"
+
+#: docs/cmd/rsdk-build.md:61
+#, fuzzy
+msgid ""
+"You can find the generated RadxaOS image as `out/${product}_${suite}_$"
+"{edition}/output.img`."
+msgstr ""
+"您可以在 `out/${product}_${suite}_${edition}/output.img` 找到生成的 RadxaOS "
+"镜像"
 
 #: docs/cmd/rsdk-shell.md:1
 msgid "`rsdk-shell`"
@@ -407,32 +1169,16 @@ msgid ""
 "available outside of `rsdk shell` by default."
 msgstr ""
 "建议先运行 `rsdk shell` 设置工作环境，然后再运行其他命令。  \n"
-"不过，大多数命令都能顺利运行。  \n在 `rsdk shell` 之外，"
-"某些增强功能（例如，bash 补全和 shell 提示）在默认情况下可能不可用。"
+"不过，大多数命令都能顺利运行。  \n"
+"在 `rsdk shell` 之外，某些增强功能（例如，bash 补全和 shell 提示）在默认情况"
+"下可能不可用。"
 
-#: docs/cmd/rsdk-build.md:3
-msgid "Build RadxaOS image"
-msgstr "构建 RadxaOS 镜像"
+#~ msgid ""
+#~ "Select `Yes` to start the build process.  \n"
+#~ "`rsdk-tui` will then run the associated CLI commands to complete the task:"
+#~ msgstr ""
+#~ "选择 `Yes`，启动构建程序。  \n"
+#~ "然后 `rsdk-tui` 将运行相关的 CLI 命令来完成任务："
 
-#: docs/cmd/rsdk-build.md:5
-msgid ""
-"When no suite or edition options is supplied, `rsdk-build` will use the "
-"product-specific default values, which are defined in `src/share/rsdk/"
-"configs/products.json` as the first element of the respective array.  \n"
-"Using ROCK 3C as an example, if you want to build a CLI image for RadxaOS "
-"Bullseye, you can run the following command:"
-msgstr ""
-"当没有提供套件或版本参数时，`rsdk-build` 将使用特定产品的默认值，这些默认值定义在"
-" `src/share/rsdk/configs/products.json` 中相应数组的第一个元素。  \n"
-"以 ROCK 3C 为例，如果要为 RadxaOS Bullseye 构建 CLI 映像，可以运行以下命令："
-
-#: docs/cmd/rsdk-build.md:12
-msgid "RadxaOS output path"
-msgstr "RadxaOS 镜像输出路径"
-
-#: docs/cmd/rsdk-build.md:14
-msgid ""
-"you can find the generated RadxaOS image as `out/${product}_${suite}"
-"_${edition}/output.img`."
-msgstr ""
-"您可以在 `out/${product}_${suite}_${edition}/output.img` 找到生成的 RadxaOS 镜像"
+#~ msgid "'rock-5b-6_1'"
+#~ msgstr "'rock-5b-6_1'"
