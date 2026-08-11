@@ -1,9 +1,8 @@
 # Run `rsdk` with Visual Studio Code & devcontainer
 
 
-```admonish info
-This is the preferred method to run `rsdk`.
-```
+> [!TIP]
+> This is the preferred method to run `rsdk`.
 
 First, please install the required dependencies:
 

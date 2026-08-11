@@ -27,14 +27,13 @@ When this flag is specified, the content of `debs_dir` will be copied inside the
 target system, and will be added as a local apt repository under `/srv/local-apt-repository`,
 and it will have pin priority of 1999, effecitive making it the only provider of the included package.
 
-```admonish warning
-Unlike `rbuild`, this local apt repository will persist in the rootfs. This will
-block future package upgrade via `apt` if it is available in an online source,
-and also serves as the build input for future reproduceible build.
-
-Consider clear `/srv/local-apt-repository` after the build if this behaviour is
-undesired.
-```
+> [!WARNING]
+> Unlike `rbuild`, this local apt repository will persist in the rootfs. This will
+> block future package upgrade via `apt` if it is available in an online source,
+> and also serves as the build input for future reproduceible build.
+>
+> Consider clear `/srv/local-apt-repository` after the build if this behaviour is
+> undesired.
 
 When running `rsdk` in `devcontainer`, we recommend `debs_dir` to be inside `rsdk`
 project folder (for example, the `debs` folder in the project root). As the host

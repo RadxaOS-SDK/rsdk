@@ -7,19 +7,14 @@ title = "rsdk"
 [build]
 extra-watch-dirs = ["po"]
 
-[output.linkcheck]
+[output.linkcheck2]
 
 [output.html]
 git-repository-url = "https://github.com/RadxaOS-SDK/rsdk/tree/main"
 edit-url-template = "https://github.com/RadxaOS-SDK/rsdk/edit/main/{path}"
 additional-css = [
-    "./theme/css/mdbook-admonish.css",
     "./theme/css/language-picker.css",
 ]
-
-[preprocessor.admonish]
-command = "mdbook-admonish"
-assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
 
 [preprocessor.gettext]
 after = ["links"]

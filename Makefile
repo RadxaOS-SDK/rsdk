@@ -61,10 +61,6 @@ translate:
 		msgmerge --update $$i po/messages.pot; \
 	done
 
-.PHONY: update-admonish
-update-admonish:
-	mdbook-admonish install --css-dir theme/css
-
 #
 # Clean
 #

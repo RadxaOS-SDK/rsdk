@@ -13,7 +13,6 @@
     bash-completion
     git-buildpackage
     mdbook
-    mdbook-admonish
     mdbook-cmdrun
     mdbook-i18n-helpers
     mdbook-linkcheck2

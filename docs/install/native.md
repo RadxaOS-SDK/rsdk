@@ -1,12 +1,11 @@
 # Run `rsdk` natively
 
-```admonish warning
-This is not a well supported or tested installation method.
-
-When you have issues, please check the source code for up-to-date runtime dependencies.
-
-We do not answer support questions related to this type of installation.
-```
+> [!WARNING]
+> This is not a well supported or tested installation method.
+>
+> When you have issues, please check the source code for up-to-date runtime dependencies.
+>
+> We do not answer support questions related to this type of installation.
 
 To run `rsdk` natively, you will ideally need an Ubuntu system, as it is the base system used in Dev Container.
 
