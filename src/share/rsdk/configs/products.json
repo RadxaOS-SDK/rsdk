@@ -713,6 +713,24 @@
         ]
     },
     {
+        "product": "radxa-vmarc-q9075-io",
+        "product_name": "Radxa VMARC-Q9075 IO",
+        "product_full_name": "Radxa VMARC-Q9075 IO",
+        "soc": [
+            "qcs9075"
+        ],
+        "sector_size": [
+            512,
+            4096
+        ],
+        "supported_suite": [
+            "noble"
+        ],
+        "supported_edition": [
+            "gnome"
+        ]
+    },
+    {
         "product": "radxa-dragon-qcs9075",
         "product_name": "Radxa Dragon QCS9075",
         "product_full_name": "Radxa Dragon QCS9075",
