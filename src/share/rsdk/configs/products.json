@@ -68,6 +68,23 @@
         ]
     },
     {
+        "product": "radxa-rcore-rk3308-io",
+        "product_name": "Radxa rCore-RK3308 IO",
+        "product_full_name": "Radxa rCore-RK3308 IO",
+        "soc": [
+            "rk3308"
+        ],
+        "sector_size": [
+            512
+        ],
+        "supported_suite": [
+            "bookworm"
+        ],
+        "supported_edition": [
+            "cli"
+        ]
+    },
+    {
         "product": "rock-pi-e",
         "product_name": "ROCK Pi E",
         "product_full_name": "ROCK Pi E",
