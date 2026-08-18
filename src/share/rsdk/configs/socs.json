@@ -44,6 +44,8 @@
             "rk3588"
         ],
         "soc_specific_repo": [
+            "rk3308",
+            "rk3308bs",
             "rk3399t",
             "rk3399",
             "op1",
