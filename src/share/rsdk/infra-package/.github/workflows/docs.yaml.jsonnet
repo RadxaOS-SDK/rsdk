@@ -34,7 +34,35 @@ function(
             "cancel-in-progress": true,
         },
         jobs: {
+            "check-mdbook": {
+                "runs-on": "ubuntu-latest",
+                "timeout-minutes": 10,
+                outputs: {
+                    has_book: "${{ steps.check.outputs.has_book }}",
+                },
+                steps: [
+                    {
+                        name: "Checkout",
+                        uses: "actions/checkout@v7",
+                    },
+                    {
+                        name: "Check for book.toml",
+                        id: "check",
+                        shell: "bash",
+                        run: |||
+                            if [ -f book.toml ]; then
+                                echo "has_book=true" >> "$GITHUB_OUTPUT"
+                            else
+                                echo "has_book=false" >> "$GITHUB_OUTPUT"
+                                echo "book.toml not found; skipping documentation build."
+                            fi
+                        |||,
+                    },
+                ],
+            },
             "build-doc": {
+                needs: "check-mdbook",
+                "if": "needs.check-mdbook.outputs.has_book == 'true'",
                 "runs-on": "ubuntu-latest",
                 "timeout-minutes": 30,
                 permissions: {
