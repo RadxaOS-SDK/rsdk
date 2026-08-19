@@ -128,7 +128,8 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 # devcontainer.json's `packages` field is broken
-nix profile install nixpkgs#cachix nixpkgs#direnv nixpkgs#devenv
+nix profile remove cachix direnv devenv || true
+nix profile add nixpkgs#cachix nixpkgs#direnv nixpkgs#devenv
 
 if ! command -v direnv || ! command -v devenv; then
 	broken_nix_store
