@@ -54,6 +54,7 @@ else
             "ntfs-3g",
             "python3-pip",
             "tmux",
+            "tzdata",
             "vim",
             "wget",
             "xz-utils",
