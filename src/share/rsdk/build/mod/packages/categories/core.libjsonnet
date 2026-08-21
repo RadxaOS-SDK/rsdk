@@ -99,6 +99,7 @@ else
                 set -e
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 gcc rsetup radxa-bootutils python-is-python3 initramfs-tools zstd
 
@@ -111,6 +112,7 @@ then
                 set -e
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 systemd-boot sdboot-is-embloader
                 chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1 bootctl install --esp-path=/boot/efi/ --no-variables --entry-token=literal:RadxaOS"
@@ -124,19 +126,23 @@ else
                 export SYSTEMD_RELAX_ESP_CHECKS=1
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 %(firmware)s-%(firmware_override)s linux-headers-%(linux_override)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 linux-image-%(linux_override)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get install -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew %(recommends)s \
                 task-%(product)s
 
                 APT_CONFIG="$MMDEBSTRAP_APT_CONFIG" \
+                DEBIAN_FRONTEND=noninteractive \
                 apt-get full-upgrade -oDPkg::Chroot-Directory="$1" -y \
                 -oDpkg::Options::=--force-confnew --allow-downgrades
             ||| % {
