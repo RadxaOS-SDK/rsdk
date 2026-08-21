@@ -124,6 +124,24 @@ then
         ]
 else
         []
+),
+        "customize-hooks"+:
+(if suite == "trixie" && std.contains(product_soc_array(product), "a733")
+then
+        // Keep kmscon as logind's on-demand VT provider, but do not start a
+        // persistent console on tty1 where it can race the display manager
+        // for DRM master while the graphical session is restarting.
+        [
+            |||
+                set -e
+
+                rm -f \
+                    "$1/etc/systemd/system/getty.target.wants/getty@tty1.service" \
+                    "$1/etc/systemd/system/getty.target.wants/kmsconvt@tty1.service"
+            |||,
+        ]
+else
+        []
 )
     },
 }
