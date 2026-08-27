@@ -75,6 +75,7 @@ else
             "ca-certificates",
             "dnsmasq-base",
             "ldnsutils",
+            "libnss-mdns",
             "iproute2",
             "iptables",
             "iputils-ping",
