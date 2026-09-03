@@ -129,13 +129,22 @@ main() {
 		fi
 	fi
 
+	local blocked_runs=()
 	while (($# != 0)); do
-		local repo
+		local repo run_url
 		repo="$(get_repo_with_modifier "$1")"
 		shift
 
-		gh workflow run ".github/workflows/$RSDK_WORKFLOW_FILE" --repo "$RSDK_GIT_REPO_ORG/$repo"
+		run_url="$(gh workflow run ".github/workflows/$RSDK_WORKFLOW_FILE" --repo "$RSDK_GIT_REPO_ORG/$repo")"
+		if [[ "$(gh run view "${run_url##*/}" --repo "$RSDK_GIT_REPO_ORG/$repo" --json conclusion --jq '.conclusion')" == "action_required" ]]; then
+			blocked_runs+=("$run_url")
+		fi
 	done
+
+	if ((${#blocked_runs[@]} != 0)); then
+		echo "Some workflow runs require your attention:"
+		printf '%s\n' "${blocked_runs[@]}"
+	fi
 }
 
 main "$@"
