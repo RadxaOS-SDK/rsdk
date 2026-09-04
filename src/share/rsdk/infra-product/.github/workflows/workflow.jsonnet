@@ -31,6 +31,9 @@ function(
         },
         jobs: {
             prepare_release: {
+                permissions: {
+                    contents: "write",
+                },
                 "runs-on": "ubuntu-latest",
                 steps: [
                     {
@@ -45,9 +48,13 @@ function(
                         name: "Check for existing releases",
                         run: |||
                             TAG="%(tag_name)s"
-                            if git show-ref --tags --verify --quiet "refs/tags/${TAG}"; then
+                            if gh release view "${TAG}" >/dev/null 2>&1; then
                                 echo "Release ${TAG} exists."
                                 exit 1
+                            fi
+                            if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/${TAG}" >/dev/null 2>&1; then
+                                echo "Tag ${TAG} exists without a release. Deleting it so the build can recreate it."
+                                gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}"
                             fi
                         ||| % {tag_name: release_info(variant).tag_name},
                     },
