@@ -126,6 +126,11 @@ Requires `systemd-nspawn` (provided by `systemd-container` package in Debian).
 
     $ rsdk install <target path> <artifact path>
 
+## Options
+
+    -f | --fail-fast
+        If deb installation fails, do not attempt to fix broken dependencies.
+
 ## Supported target type
 
 * Raw block devices (i.e. ordinary disks)

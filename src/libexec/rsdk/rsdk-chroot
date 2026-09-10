@@ -8,15 +8,20 @@ main() {
 	source "$SCRIPT_DIR/../../lib/rsdk/utils.sh"
 
 	local TEMP
-	if ! TEMP="$(getopt -o "h" -l "help" -n "$0" -- "$@")"; then
+	if ! TEMP="$(getopt -o "hf" -l "help,fail-fast" -n "$0" -- "$@")"; then
 		return
 	fi
 	eval set -- "$TEMP"
+
+	export RSDK_FAIL_FAST="${RSDK_FAIL_FAST:-false}"
 
 	while true; do
 		TEMP="$1"
 		shift
 		case "$TEMP" in
+		-f | --fail-fast)
+			RSDK_FAIL_FAST=true
+			;;
 		-h | --help)
 			rsdk help "${SCRIPT_NAME#rsdk-}"
 			return
@@ -110,7 +115,7 @@ main() {
 			sudo cp "$file" "$RSDK_TEMP"
 			sudo systemd-nspawn -D "$RSDK_TEMP" /usr/bin/bash -c \
 				"export PATH=/usr/bin:/usr/sbin:/bin:/sbin;
-				if ! dpkg -i '/$(basename "$file")'; then
+				if ! dpkg -i '/$(basename "$file")' && [[ $RSDK_FAIL_FAST != true ]]; then
 					apt-get install -y --fix-missing --allow-downgrades || (
 						apt-get update;
 						apt-get install -y --fix-missing --fix-broken --allow-downgrades
