@@ -85,6 +85,7 @@
         settings.ignored-words = [
           "Synopsys"
           "HSI"
+          "zink"
         ];
       };
     };
