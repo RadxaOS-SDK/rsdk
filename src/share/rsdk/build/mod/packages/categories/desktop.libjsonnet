@@ -114,16 +114,29 @@ then
                 []
 else
         []
-) +
+)
+    },
+} +
 
 (if suite == "trixie"
 then
-        [
+{
+    mmdebstrap+: {
+        packages: [
+            i for i in super.packages if 
+                i != "mesa-va-drivers" &&
+                i != "mesa-vdpau-drivers"
+        ] + [
             "gstreamer1.0-gtk4",
             "gstreamer1.0-qt6",
-        ]
-else
-        []
-)
-    },
+            "mesa-vulkan-drivers/trixie-backports",
+            "mesa-libgallium/trixie-backports",
+            "libegl-mesa0/trixie-backports",
+            "libgl1-mesa-dri/trixie-backports",
+            "libglx-mesa0/trixie-backports",
+        ],
+    }
 }
+else
+{}
+)
