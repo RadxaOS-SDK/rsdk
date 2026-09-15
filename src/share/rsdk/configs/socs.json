@@ -112,7 +112,8 @@
             "sc8280xp"
         ],
         "extra_ppa": [
-            "ubuntu-qcom-iot/qcom-ppa"
+            "ubuntu-qcom-iot/qcom-ppa",
+            "kisak/turtle"
         ]
     }
 ]
