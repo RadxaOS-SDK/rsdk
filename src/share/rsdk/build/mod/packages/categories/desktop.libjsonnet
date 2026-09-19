@@ -139,4 +139,24 @@ then
 }
 else
 {}
+) +
+
+(if suite == "noble" && (
+    std.contains(product_soc_array(product), "qcs6490") ||
+    std.contains(product_soc_array(product), "qcs9075") ||
+    std.contains(product_soc_array(product), "sc8280xp") ||
+    false
+)
+then
+{
+    mmdebstrap+: {
+        packages: [
+            i for i in super.packages if 
+                i != "mesa-va-drivers" &&
+                i != "mesa-vdpau-drivers"
+        ],
+    }
+}
+else
+{}
 )
