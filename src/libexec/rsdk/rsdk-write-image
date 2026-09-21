@@ -14,7 +14,7 @@ BLOCKDEV="$2"
 if [[ ! -f $IMAGE ]]; then
 	error "$EXIT_FILE_NOT_EXIST" "$IMAGE"
 elif [[ ! -b $BLOCKDEV ]]; then
-	echo "$EXIT_NOT_BLOCK_DEVICE" "$BLOCKDEV"
+	error "$EXIT_NOT_BLOCK_DEVICE" "$BLOCKDEV"
 fi
 
 # Prepopulate sudo token, so echo message won't be mixed with password prompt
