@@ -10,7 +10,7 @@ function(target) |||
     License: External Code Patch
 
     Files: *
-    Copyright: © 2025 Radxa Computer Co., Ltd
+    Copyright: © 2025 Radxa Computer (Shenzhen) Co., Ltd.
     License: GPL-3+
 
     License: External Code

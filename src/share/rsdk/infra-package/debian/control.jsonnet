@@ -2,7 +2,7 @@ function(
     target,
 ) |||
     Source: %(target)s
-    Maintainer: "Radxa Computer Co., Ltd" <dev@radxa.com>
+    Maintainer: "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>
     Section: admin
     Priority: standard
     Standards-Version: 4.6.0

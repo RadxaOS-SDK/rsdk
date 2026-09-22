@@ -128,7 +128,7 @@ __rsdk_build() {
 __rsdk_about() {
 	msgbox "rsdk - RadxaOS Software Development Kit
 
-Copyright 2024-$(date +%Y) Radxa Computer Co., Ltd"
+Copyright 2024-$(date +%Y) Radxa Computer (Shenzhen) Co., Ltd."
 }
 
 tui_main() {

@@ -3,7 +3,7 @@ function(target) |||
 
       * Add initial Debian packaging support
 
-     -- "Radxa Computer Co., Ltd" <dev@radxa.com>  Thu, 01 Jan 1970 08:00:00 +0800
+     -- "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>  Thu, 01 Jan 1970 08:00:00 +0800
 ||| % {
     target: target,
 }
