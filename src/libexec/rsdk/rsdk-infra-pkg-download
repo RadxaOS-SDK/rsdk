@@ -44,7 +44,7 @@ download_pkgs() {
 
 			if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
 				retry=3
-				while ! gh release download "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"; do
+				while ! gh release download --clobber "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"; do
 					if ((retry-- <= 0)); then
 						echo "Failed to download '$org/$pkg@$tag', aborting."
 						return 2
