@@ -100,6 +100,7 @@ function() std.manifestYamlDoc(
                             name: "${{ github.event.repository.name }}",
                             path: |||
                                 ${{ steps.artifacts_path.outputs.artifacts_path }}/*.deb
+                                pkg.conf
                             |||,
                         },
                     },
@@ -176,6 +177,7 @@ function() std.manifestYamlDoc(
                             fail_on_unmatched_files: false,
                             files: |||
                                 .artifacts/**/*.deb
+                                .artifacts/pkg.conf
                                 pkg.conf
                                 VERSION
                             |||,
