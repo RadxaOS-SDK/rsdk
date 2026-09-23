@@ -87,10 +87,9 @@ function() std.manifestYamlDoc(
                     },
                     {
                         name: "Workaround actions/upload-artifact#176",
-                        id: "artifacts_path",
                         shell: "bash",
                         run: |||
-                            echo "artifacts_path=$(realpath ..)" | tee -a "$GITHUB_OUTPUT"
+                            mv ../*.deb ./
                         |||,
                     },
                     {
@@ -99,7 +98,7 @@ function() std.manifestYamlDoc(
                         with: {
                             name: "${{ github.event.repository.name }}",
                             path: |||
-                                ${{ steps.artifacts_path.outputs.artifacts_path }}/*.deb
+                                *.deb
                                 pkg.conf
                             |||,
                         },
