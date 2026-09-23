@@ -86,6 +86,18 @@ function() std.manifestYamlDoc(
                         },
                     },
                     {
+                        name: "Check pkg.conf",
+                        shell: "bash",
+                        run: |||
+                            if [[ -e pkg.conf ]]; then
+                                jq 'true' pkg.conf
+                            fi
+                            if [[ -e pkg.conf.template ]]; then
+                                jq 'true' pkg.conf.template
+                            fi
+                        |||,
+                    },
+                    {
                         name: "Workaround actions/upload-artifact#176",
                         shell: "bash",
                         run: |||
