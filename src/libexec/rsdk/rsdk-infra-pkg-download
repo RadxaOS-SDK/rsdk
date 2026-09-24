@@ -25,6 +25,29 @@ find_target_distros() {
 	fi
 }
 
+gh_release_download() {
+	local retry=3
+	while ! gh release download --clobber "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg" "$@"; do
+		if ((retry-- <= 0)); then
+			echo "Failed to download '$org/$pkg@$tag'." >&2
+			return 2
+		fi
+		sleep 5
+	done
+}
+
+gh_release_view() {
+	local retry=3 filter="${1:-.assets[].name | select(endswith(\".deb\"))}" assets
+	while ! assets="$(gh release view "$tag" --repo "$org/$pkg" --json assets --jq "$filter")"; do
+		if ((retry-- <= 0)); then
+			echo "Failed to view release '$org/$pkg@$tag'." >&2
+			return 2
+		fi
+		sleep 5
+	done
+	echo "$assets"
+}
+
 download_pkgs() {
 	local RSDK_TEMP i DISTROS=("$@") OUTPUT="$RSDK_OPTION_DEB_DIR"
 	RSDK_TEMP="$(mktemp -d)"
@@ -43,29 +66,31 @@ download_pkgs() {
 			mkdir -p "$RSDK_TEMP/$pkg"
 
 			if [[ $RSDK_OPTION_DRY_RUN == "false" ]]; then
-				retry=3
-				while ! gh release download --clobber "$tag" --repo "$org/$pkg" --dir "$RSDK_TEMP/$pkg"; do
-					if ((retry-- <= 0)); then
-						echo "Failed to download '$org/$pkg@$tag', aborting."
-						return 2
-					fi
-					sleep 5
-				done
-				if [[ ! -f "$RSDK_TEMP/$pkg/pkg.conf" ]]; then
+				local pkg_conf_blob
+				pkg_conf_blob="$(gh_release_view '.assets[].name | select(. == "pkg.conf")')"
+				if [[ -z $pkg_conf_blob ]]; then
 					if [[ $RSDK_OPTION_DEFAULT_DISTRO == "true" ]]; then
+						gh_release_download
 						cp "$RSDK_TEMP/$pkg"/*.deb "$OUTPUT/${DISTROS[0]}"
 					else
-						echo "No pkg.conf found when policy requires explicit distro."
+						echo "No pkg.conf found when policy requires explicit distro." >&2
 					fi
 				else
+					gh_release_download -p "pkg.conf"
 					if ! jq -er '"Syntax check"' "$RSDK_TEMP/$pkg/pkg.conf" >/dev/null; then
 						echo "Invalid pkg.conf for '$org/$pkg@$tag', aborting." >&2
 						return 1
 					fi
-					for j in "$RSDK_TEMP/$pkg"/*.deb; do
-						mapfile -t targets < <(find_target_distros "$(basename "$j")" "$RSDK_TEMP/$pkg/pkg.conf" "${DISTROS[@]}") && array_remove "targets" ""
+					local assets_blob
+					assets_blob="$(gh_release_view)"
+					mapfile -t assets <<<"$assets_blob" && array_remove "assets" ""
+					for j in "${assets[@]}"; do
+						mapfile -t targets < <(find_target_distros "$j" "$RSDK_TEMP/$pkg/pkg.conf" "${DISTROS[@]}") && array_remove "targets" ""
 						for k in "${targets[@]}"; do
-							cp "$j" "$OUTPUT/$k"
+							if [[ ! -f "$RSDK_TEMP/$pkg/$j" ]]; then
+								gh_release_download -p "$j"
+							fi
+							cp "$RSDK_TEMP/$pkg/$j" "$OUTPUT/$k"
 						done
 					done
 				fi
