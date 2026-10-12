@@ -43,6 +43,20 @@ function(
                 },
                 steps: [
                     {
+                        name: "Secret tests",
+                        uses: "actions/github-script@v9",
+                        with: {
+                            script: |||
+                                const secrets = JSON.parse(process.env.SECRETS);
+                                if (secrets.RADXA_APT_KEY_2024 === undefined ||
+                                    secrets.GPG_KEY === undefined ||
+                                    secrets.RADXA_APT_KEY_2026 === undefined) {
+                                    core.setFailed('Required secrets are unset!');
+                                }
+                            |||,
+                        },
+                    },
+                    {
                         name: "Checkout rsdk",
                         uses: "actions/checkout@v7",
                         with: {
