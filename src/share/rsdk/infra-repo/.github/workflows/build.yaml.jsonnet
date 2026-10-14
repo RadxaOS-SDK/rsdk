@@ -45,6 +45,9 @@ function(
                     {
                         name: "Secret tests",
                         uses: "actions/github-script@v9",
+                        env: {
+                            SECRETS: "${{ toJSON(secrets) }}",
+                        },
                         with: {
                             script: |||
                                 const secrets = JSON.parse(process.env.SECRETS);
