@@ -6,6 +6,7 @@ function(
     # %(target)s
 
     [![Update packages](https://github.com/%(repo_org)s/%(target)s/actions/workflows/update.yaml/badge.svg)](https://github.com/%(repo_org)s/%(target)s/actions/workflows/update.yaml)
+    [![Publish packages](https://github.com/%(repo_org)s/%(target)s/actions/workflows/build.yaml/badge.svg)](https://github.com/%(repo_org)s/%(target)s/actions/workflows/build.yaml)
 
     ## Content
 
