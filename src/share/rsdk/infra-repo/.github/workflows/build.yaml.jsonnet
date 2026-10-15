@@ -45,15 +45,11 @@ function(
                     {
                         name: "Secret tests",
                         uses: "actions/github-script@v9",
-                        env: {
-                            SECRETS: "${{ toJSON(secrets) }}",
-                        },
                         with: {
                             script: |||
-                                const secrets = JSON.parse(process.env.SECRETS);
-                                if (secrets.RADXA_APT_KEY_2024 === undefined ||
-                                    secrets.GPG_KEY === undefined ||
-                                    secrets.RADXA_APT_KEY_2026 === undefined) {
+                                if (${{ secrets.RADXA_APT_KEY_2024 == '' }} ||
+                                    ${{ secrets.GPG_KEY == '' }} ||
+                                    ${{ secrets.RADXA_APT_KEY_2026 == '' }}) {
                                     core.setFailed('Required secrets are unset!');
                                 }
                             |||,
@@ -106,6 +102,8 @@ function(
 
                             suites=(
                                 "%(target)s"
+                                "amlogic-%(target)s"
+                                "rockchip-%(target)s"
                             )
 
                             logging=()
@@ -115,9 +113,9 @@ function(
 
                             pushd .infra-repo
 
-                            ../src/bin/rsdk infra-pkg-download "${logging[@]}" --no-default-distro "${suites[@]}"
-                            ../src/bin/rsdk infra-repo-sync --origin "${suites[0]}" --label "${suites[0]}" "${suites[@]}"
-                            export RSDK_REPO_ORIGIN="${suites[0]}"
+                            ../src/bin/rsdk infra-pkg-download "${logging[@]}" "${suites[@]}"
+                            ../src/bin/rsdk infra-repo-sync "${suites[@]}"
+                            export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
 
                             pushd "$HOME/.aptly/public/$RSDK_REPO_ORIGIN/"
                                 cp "$OLDPWD/pkgs.json" "$OLDPWD/install.sh" ./
