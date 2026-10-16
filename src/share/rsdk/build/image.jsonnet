@@ -179,8 +179,11 @@ else
     !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/(append[[:space:]]+)/append root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/extlinux.conf"
     !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/^/root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/cmdline"
     copy-in "%(temp_dir)s/fstab" /etc/
+    chown 0 0 /etc/fstab
     copy-in "%(temp_dir)s/extlinux.conf" /boot/extlinux/
+    chown 0 0 /boot/extlinux/extlinux.conf
     copy-in "%(temp_dir)s/cmdline" /etc/kernel/
+    chown 0 0 /etc/kernel/cmdline
 ||| % {
     temp_dir: temp_dir,
     rootdev: rootdev(efi),
@@ -190,6 +193,7 @@ then
 |||
     !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/(options[[:space:]]*)/options root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" %(temp_dir)s/entries/*.conf
     copy-in "%(temp_dir)s/entries" /boot/efi/loader/
+    chown 0 0 /boot/efi/loader/entries
 ||| % {
     temp_dir: temp_dir,
 }
