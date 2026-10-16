@@ -149,7 +149,7 @@ generate_image() {
 		JSONNET_ARGS+=("--tla-str" "suite=$SUITE")
 	fi
 
-	jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image.jsonnet" -o "$RSDK_TEMP/build-image"
+	jsonnet "${JSONNET_ARGS[@]}" "$SCRIPT_DIR/../../share/rsdk/build/image-ng.jsonnet" -o "$RSDK_TEMP/build-image"
 	chmod +x "$RSDK_TEMP/build-image"
 
 	if [[ $RSDK_OPTION_DRY_RUN == "true" ]]; then
