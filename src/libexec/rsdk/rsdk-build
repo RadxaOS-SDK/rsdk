@@ -126,7 +126,9 @@ generate_image() {
 	)
 
 	if [[ -n ${RSDK_OPTION_EFI} ]]; then
-		JSONNET_ARGS+=("--tla-code" "efi=$RSDK_OPTION_EFI")
+		JSONNET_ARGS+=("--tla-code" "create_efi_part=$RSDK_OPTION_EFI")
+	elif [[ $RSDK_OPTION_SYSTEMD_BOOT == "true" ]]; then
+		JSONNET_ARGS+=("--tla-code" "create_efi_part=true")
 	fi
 
 	if [[ -n ${RSDK_OPTION_ROOTFS} ]]; then
@@ -137,8 +139,8 @@ generate_image() {
 		JSONNET_ARGS+=("--tla-str" "output=$RSDK_OPTION_IMAGE_NAME")
 	fi
 
-	if [[ -n $RSDK_OPTION_SYSTEMD_BOOT ]]; then
-		JSONNET_ARGS+=("--tla-code" "sdboot=$RSDK_OPTION_SYSTEMD_BOOT")
+	if [[ $RSDK_OPTION_SYSTEMD_BOOT == "true" ]]; then
+		JSONNET_ARGS+=("--tla-code" "efi_boot=${RSDK_OPTION_EFI:-true}")
 	fi
 
 	if [[ -n $RSDK_OPTION_SECTOR_SIZE ]]; then
@@ -186,7 +188,7 @@ main() {
 	fi
 	eval set -- "$TEMP"
 
-	local RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-true}"
+	local RSDK_OPTION_EFI="${RSDK_OPTION_EFI:-}"
 	local RSDK_OPTION_DEBUG="${RSDK_OPTION_DEBUG:-false}"
 	local RSDK_OPTION_REPO_SUFFIX="${RSDK_OPTION_REPO_SUFFIX:-}"
 	local RSDK_OPTION_DISTRO_MIRROR="${RSDK_OPTION_DISTRO_MIRROR:-}"
@@ -201,7 +203,7 @@ main() {
 	local RSDK_OPTION_VENDOR_PACKAGES="${RSDK_OPTION_VENDOR_PACKAGES:-true}"
 	local RSDK_OPTION_LOCAL_APT_ARCHIVE="${RSDK_OPTION_LOCAL_APT_ARCHIVE:-}"
 	local RSDK_OPTION_SYSTEMD_BOOT="${RSDK_OPTION_SYSTEMD_BOOT:-false}"
-	local RSDK_OPTION_SECTOR_SIZE="${RSDK_OPTION_SECTOR_SIZE:-512}"
+	local RSDK_OPTION_SECTOR_SIZE="${RSDK_OPTION_SECTOR_SIZE:-}"
 	local RSDK_OPTION_DRY_RUN="${RSDK_OPTION_DRY_RUN:-false}"
 	local RSDK_OPTION_PKGS_JSON="${RSDK_OPTION_PKGS_JSON:-true}"
 
