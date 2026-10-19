@@ -18,7 +18,7 @@ else
     ""
 ) +
 |||
-    blkid /dev/sda%(root_part_num)d | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s / %(rootfs_type)s defaults 0 1\n" >> "%(temp_dir)s/fstab"
+    blkid /dev/sda%(root_part_num)d | grep "^UUID:" | cut -d " " -f 2 | xargs printf "UUID=%%s / %(rootfs_type)s %(rootfs_options)s 0 1\n" >> "%(temp_dir)s/fstab"
     blkid /dev/sda%(root_part_num)d | grep "^UUID:" | cut -d " " -f 2 > "%(temp_dir)s/rootfs_uuid"
     !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/(append[[:space:]]+)/append root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/extlinux.conf"
     !sed -i -E -e "s/([[:space:]]*root=[^[:space:]]*[[:space:]]*)/ /g" -e "s/^/root=UUID=$(cat "%(temp_dir)s/rootfs_uuid") /g" "%(temp_dir)s/cmdline"
@@ -32,6 +32,7 @@ else
     temp_dir: temp_dir,
     root_part_num: root_part_num,
     rootfs_type: rootfs_type,
+    rootfs_options: (if rootfs_type == "btrfs" then "defaults,compress=zstd" else "defaults"),
 } +
 (if efi_boot
 then
