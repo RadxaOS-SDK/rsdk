@@ -437,7 +437,7 @@
             4096
         ],
         "supported_suite": [
-            "bookworm"
+            "trixie"
         ],
         "supported_edition": [
             "kde"
