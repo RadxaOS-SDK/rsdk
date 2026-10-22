@@ -5,8 +5,8 @@ Subject: [PATCH] feat: Radxa common kernel config
 
 Signed-off-by: ZHANG Yuntian <yt@radxa.com>
 ---
- src/arch/arm64/configs/radxa.config | 1124 +++++++++++++++++++++++++++
- 1 file changed, 1124 insertions(+)
+ src/arch/arm64/configs/radxa.config | 1131 +++++++++++++++++++++++++++
+ 1 file changed, 1131 insertions(+)
  create mode 100644 src/arch/arm64/configs/radxa.config
 
 diff --git a/src/arch/arm64/configs/radxa.config b/src/arch/arm64/configs/radxa.config
@@ -14,7 +14,7 @@ new file mode 100644
 index 000000000000..f5bca1bdaf69
 --- /dev/null
 +++ b/src/arch/arm64/configs/radxa.config
-@@ -0,0 +1,1124 @@
+@@ -0,0 +1,1131 @@
 +# Enable FPDT on supported platforms
 +CONFIG_ACPI_FPDT=y
 +
@@ -1107,6 +1107,13 @@ index 000000000000..f5bca1bdaf69
 +CONFIG_FUNCTION_TRACER=y
 +CONFIG_DYNAMIC_FTRACE=y
 +CONFIG_QCOM_PMIC_PDCHARGER_ULOG=m
++
++# Enable USB DVB v2 devices and the AF9035/IT9135/IT9303 driver
++# https://github.com/radxa-pkg/linux-qcom/issues/30
++CONFIG_MEDIA_DIGITAL_TV_SUPPORT=y
++CONFIG_DVB_CORE=m
++CONFIG_DVB_USB_V2=m
++CONFIG_DVB_USB_AF9035=m
 +
 +# =n CONFIG SECTION
 +
