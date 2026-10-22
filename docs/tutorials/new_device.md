@@ -22,15 +22,19 @@ Currently, there are 4 places that need to be updated:
 1. Kernel metapackages  
    Those includes Linux kernel image as well as kernel header, and some other
    less used packages.  
-   Currently you need to edit the related `bsp`
-   [Linux profile](https://github.com/radxa-repo/bsp/blob/main/linux/latest/fork.conf)
-   to include the new device.
+   Either update existing kernel repo to include your device, or use `rsdk infra-package-update linux-<fork>`
+   to bootstrap a new one.
 2. Firmware metapackage  
-   This is similar to the kernel package in case of U-Boot, where the
-   [U-Boot profile](https://github.com/radxa-repo/bsp/blob/main/u-boot/latest/fork.conf)
-   needs to be updated.  
+   This is similar to the kernel package in case of U-Boot. 
+   Either update existing U-Boot repo to include your device, or use `rsdk infra-package-update u-boot-<fork>`
+   to bootstrap a new one.
    For EDK2 you will need to [add the metapackage](https://github.com/radxa-pkg/edk2-cix/blob/main/debian/control)
-   in the related repo.
+   in the related repo, or bootstrap a new `edk2-<fork>` repo.
+
+   > [!TIP]
+   > `linux-` and `u-boot-` are special prefix for `rsdk infra-package-update`, which create additional files in the repo.
+   > `edk2-` currently has no special meaning.
+
 3. Product metapackage  
    Each product also needs its own package to pull device-specific drivers, and
    some common config options.

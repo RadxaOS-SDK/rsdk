@@ -1,6 +1,5 @@
 # Run `rsdk` with Visual Studio Code & devcontainer
 
-
 > [!TIP]
 > This is the preferred method to run `rsdk`.
 
