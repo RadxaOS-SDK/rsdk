@@ -21,7 +21,8 @@
         "firmware_type": "u-boot",
         "soc_install_recommends": [
             "bookworm",
-            "bullseye"
+            "bullseye",
+            "trixie"
         ],
         "soc_list": [
             "rk3308",
