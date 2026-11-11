@@ -102,8 +102,6 @@ function(
 
                             suites=(
                                 "%(target)s"
-                                "amlogic-%(target)s"
-                                "rockchip-%(target)s"
                             )
 
                             logging=()
@@ -113,9 +111,9 @@ function(
 
                             pushd .infra-repo
 
-                            ../src/bin/rsdk infra-pkg-download "${logging[@]}" "${suites[@]}"
-                            ../src/bin/rsdk infra-repo-sync "${suites[@]}"
-                            export RSDK_REPO_ORIGIN="$(../src/bin/rsdk config infra.repository.origin)"
+                            ../src/bin/rsdk infra-pkg-download "${logging[@]}" --no-default-distro "${suites[@]}"
+                            ../src/bin/rsdk infra-repo-sync --origin "${suites[0]}" --label "${suites[0]}" "${suites[@]}"
+                            export RSDK_REPO_ORIGIN="${suites[0]}"
 
                             pushd "$HOME/.aptly/public/$RSDK_REPO_ORIGIN/"
                                 cp "$OLDPWD/pkgs.json" "$OLDPWD/install.sh" ./
