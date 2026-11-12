@@ -20,8 +20,9 @@
         "partition_table_type": "gpt",
         "firmware_type": "u-boot",
         "soc_install_recommends": [
+            "bullseye",
             "bookworm",
-            "bullseye"
+            "trixie"
         ],
         "soc_list": [
             "rk3308",
