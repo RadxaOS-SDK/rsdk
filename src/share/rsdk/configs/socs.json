@@ -20,8 +20,8 @@
         "partition_table_type": "gpt",
         "firmware_type": "u-boot",
         "soc_install_recommends": [
-            "bookworm",
             "bullseye",
+            "bookworm",
             "trixie"
         ],
         "soc_list": [
