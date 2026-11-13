@@ -172,11 +172,11 @@ main() {
 	export RSDK_GIT_REPO_TYPE="${RSDK_GIT_REPO_TYPE:-}"
 	export RSDK_GIT_REPO_ARRAY=("${RSDK_GIT_REPO_ARRAY[@]}")
 	export RSDK_GIT_REPO_TEMPLATE="${RSDK_GIT_REPO_TEMPLATE:-}"
-	export RSDK_TARGET_SUFFIX="${RSDK_TARGET_SUFFIX:-}"
+	export RSDK_TARGET_SUFFIX=("${RSDK_TARGET_SUFFIX[@]}")
 	export RSDK_TARGET_ORGANIZATION="${RSDK_TARGET_ORGANIZATION:-}"
 	export RSDK_GIT_REPO_KEEP_FILES=("${RSDK_GIT_REPO_KEEP_FILES[@]}")
 	export RSDK_OPTION_RUN_WORKFLOW="${RSDK_OPTION_RUN_WORKFLOW:-}"
-	export RSDK_TARGET_PREFIX="${RSDK_TARGET_PREFIX:-}"
+	export RSDK_TARGET_PREFIX=("${RSDK_TARGET_PREFIX[@]}")
 	export RSDK_OPTION_NO_CONFIRM="${RSDK_OPTION_NO_CONFIRM:-false}"
 	export RSDK_OPTION_PURGE_BEFORE_UPDATE="${RSDK_OPTION_PURGE_BEFORE_UPDATE:-true}"
 	export RSDK_OPTION_DEVCONTAINER_IMAGE="${RSDK_OPTION_DEVCONTAINER_IMAGE:-bookworm}"
@@ -257,18 +257,18 @@ main() {
 			return
 			;;
 		-s | --suffix)
-			RSDK_TARGET_SUFFIX="$1"
+			RSDK_TARGET_SUFFIX+=("$1")
 			shift
 			;;
 		-t | --test)
-			RSDK_TARGET_SUFFIX="-test"
+			RSDK_TARGET_SUFFIX+=("-test")
 			;;
 		-r | --run)
 			RSDK_OPTION_RUN_WORKFLOW="$1"
 			shift
 			;;
 		-P | --prefix)
-			RSDK_TARGET_PREFIX="$1"
+			RSDK_TARGET_PREFIX+=("$1")
 			shift
 			;;
 		-y | --yes)
@@ -290,11 +290,18 @@ main() {
 		return 1
 	fi
 
+	local target prefix suffix
 	if (($# == 0)); then
 		echo "No $RSDK_GIT_REPO_TYPE supplied."
 		echo "============="
 		echo "Currently, following $RSDK_GIT_REPO_TYPE are supported:"
-		printf "${RSDK_TARGET_PREFIX}%s${RSDK_TARGET_SUFFIX}\n" "${RSDK_GIT_REPO_ARRAY[@]}"
+		for target in "${RSDK_GIT_REPO_ARRAY[@]}"; do
+			for prefix in "${RSDK_TARGET_PREFIX[@]:-}"; do
+				for suffix in "${RSDK_TARGET_SUFFIX[@]:-}"; do
+					printf '%s%s%s\n' "$prefix" "$target" "$suffix"
+				done
+			done
+		done
 		read -rp "Do you want to update ALL supported ${RSDK_GIT_REPO_TYPE}s? [y/N] "
 		if [[ ${REPLY/Y/y} != "y" ]]; then
 			echo "Operation cancelled."
@@ -303,9 +310,12 @@ main() {
 		set -- "${RSDK_GIT_REPO_ARRAY[@]}"
 	fi
 
-	while (($# != 0)); do
-		update_repo "${RSDK_TARGET_PREFIX}${1}${RSDK_TARGET_SUFFIX}"
-		shift
+	for target in "$@"; do
+		for prefix in "${RSDK_TARGET_PREFIX[@]:-}"; do
+			for suffix in "${RSDK_TARGET_SUFFIX[@]:-}"; do
+				update_repo "${prefix}${target}${suffix}"
+			done
+		done
 	done
 
 	echo "============="
