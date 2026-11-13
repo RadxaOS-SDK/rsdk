@@ -3,4 +3,36 @@ rsdk (0.1.0) UNRELEASED; urgency=medium
   [ "Radxa Computer (Shenzhen) Co., Ltd." ]
   * Add initial Debian packaging support
 
- -- "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>  Tue, 02 Sep 2025 08:10:24 +0000
+  [ ZHANG Yuntian ]
+  * chore: add rk3328 SoC repo
+  * fix: overwrite failed download
+  * fix: allow package to supply pkg.conf at build time
+  * fix: upload-artifact will use top most dir as archive root
+  * fix: ensure pkg.conf is valid json
+  * feat: only download what is necessary
+  * fix: remove legacy distros
+  * fix: move secret test at build time
+  * fix: access secrets in github-script
+  * fix: add build.yaml badge
+  * fix: avoid GitHub workflow false positive
+  * fix: change system files owner to root
+  * feat: default to image-ng
+  * fix: add compress in fstab for btrfs
+  * fix: update ABI for image-ng
+  * docs: update with current package condition
+  * fix: allow dryrun to complete
+  * fix: revert legacy repo setup
+  * feat: support multiple prefix and suffix
+
+  [ Jiali Chen ]
+  * feat: enable CPU idle thermal cooling
+  * feat: enable AR0234 camera sensor
+  * feat: enable Qualcomm PMIC charger ULOG
+
+  [ Florin Vlaicu ]
+  * feat: enable USB DVB v2 and the AF9035 driver
+
+  [ Wang Yongsen ]
+  * infra-package: linux: enable software RAID 4/5/6
+
+ -- "Radxa Computer (Shenzhen) Co., Ltd." <dev@radxa.com>  Fri, 13 Nov 2026 08:54:23 +0000
