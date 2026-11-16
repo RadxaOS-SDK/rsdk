@@ -22,3 +22,6 @@
 
 # Logs
 /*.log
+
+# omo
+/.omo
