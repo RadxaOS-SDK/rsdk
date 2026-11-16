@@ -33,6 +33,7 @@ function() std.manifestYamlDoc(
                         uses: "actions/checkout@v7",
                         with: {
                             "fetch-depth": 0,
+                            lfs: true,
                             submodules: "recursive",
                             token: "${{secrets.CODE_WRITE_TOKEN}}",
                         },

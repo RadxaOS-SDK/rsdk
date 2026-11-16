@@ -41,6 +41,7 @@ function() std.manifestYamlDoc(
                         with: {
                             "fetch-depth": 0,
                             "fetch-tags": true,
+                            lfs: true,
                             submodules: "recursive",
                         },
                     },
