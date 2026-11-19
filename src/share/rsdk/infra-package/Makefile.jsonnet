@@ -103,7 +103,7 @@ function(
 	distclean: clean
 
 	.PHONY: clean
-	clean: clean-deb clean-man 
+	clean: clean-deb clean-man clean-submodule
 
 	.PHONY: clean-deb
 	clean-deb:
@@ -112,6 +112,11 @@ function(
 	.PHONY: clean-man
 	clean-man:
 		rm -rf $(MANS)
+
+	.PHONY: clean-submodule
+	clean-submodule:
+		git submodule deinit -f .
+		git submodule update --init
 
 	#
 	# Release
