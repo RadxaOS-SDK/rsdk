@@ -103,7 +103,7 @@ function(
 	distclean: clean
 
 	.PHONY: clean
-	clean: clean-deb clean-man clean-submodule
+	clean: clean-deb clean-man
 
 	.PHONY: clean-deb
 	clean-deb:
