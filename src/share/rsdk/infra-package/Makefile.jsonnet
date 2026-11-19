@@ -54,7 +54,18 @@ function(
 		chmod +x debian/rules
 	
 	.PHONY: main_build
-	main_build:
+	main_build: build-man
+
+	PANDOC ?= pandoc
+
+	SRC-MAN		:=	man
+	SRCS-MAN	:=	$(wildcard $(SRC-MAN)/*.md)
+	MANS		:=	$(SRCS-MAN:.md=)
+	.PHONY: build-man
+	build-man: $(MANS)
+
+	$(SRC-MAN)/%%: $(SRC-MAN)/%%.md
+		$(PANDOC) "$<" -o "$@" --from markdown-smart --to man -s
 
 	.PHONY: post_build
 	post_build:
@@ -92,11 +103,15 @@ function(
 	distclean: clean
 
 	.PHONY: clean
-	clean: clean-deb
+	clean: clean-deb clean-man 
 
 	.PHONY: clean-deb
 	clean-deb:
 		rm -rf debian/.debhelper debian/$(PROJECT)*/ debian/tmp/ debian/debhelper-build-stamp debian/files debian/*.debhelper.log debian/*.*.debhelper debian/*.substvars
+
+	.PHONY: clean-man
+	clean-man:
+		rm -rf $(MANS)
 
 	#
 	# Release
