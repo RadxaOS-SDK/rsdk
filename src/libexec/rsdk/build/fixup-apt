@@ -7,6 +7,8 @@
 # It can be safely removed from a normal system.
 #
 
+/usr/lib/local-apt-repository/rebuild
+
 apt update
 apt install -y curl
 
