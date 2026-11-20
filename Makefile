@@ -87,6 +87,7 @@ clean-deb:
 #
 .PHONY: dch
 dch: debian/changelog
+	DEBEMAIL="dev@radxa.com" DEBFULLNAME='"Radxa Computer (Shenzhen) Co., Ltd."' \
 	gbp dch --ignore-branch --multimaint-merge --release --spawn-editor=never \
 	--git-log='--no-merges --perl-regexp --invert-grep --grep=^(chore:\stemplates\sgenerated)' \
 	--dch-opt=--upstream --commit --commit-msg="feat: release %(version)s"

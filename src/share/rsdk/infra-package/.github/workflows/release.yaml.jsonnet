@@ -61,8 +61,6 @@ function() std.manifestYamlDoc(
                                 set -euo pipefail
                                 sudo apt-get update
                                 sudo apt-get install --no-install-recommends -y git-buildpackage
-                                export DEBEMAIL="dev@radxa.com"
-                                export DEBFULLNAME='"Radxa Computer (Shenzhen) Co., Ltd."'
                                 git config user.name "github-actions[bot]"
                                 git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                                 git branch -m GITHUB_RUNNER || true
